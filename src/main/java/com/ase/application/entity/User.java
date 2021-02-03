@@ -2,16 +2,11 @@ package com.ase.application.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,7 +32,7 @@ public class User implements Serializable {
     private String userMail;
 
     @NotEmpty
-    @Pattern(regexp = "^[0-9]+$", message = "Your Contact number must be numberic ")
+    @Pattern(regexp = "^[0-9]+$", message = "Your Contact number must be numeric ")
     private String userContact;
 
     private UserType userType;
@@ -49,16 +44,16 @@ public class User implements Serializable {
         User user = (User) o;
         return
                 Objects.equals(fullName, user.fullName) &&
-                Objects.equals(userName, user.userName) &&
-                Objects.equals(userPassword, user.userPassword) &&
-                Objects.equals(userMail, user.userMail) &&
-                Objects.equals(userContact, user.userContact) &&
-                userType == user.userType;
+                        Objects.equals(userName, user.userName) &&
+                        Objects.equals(userPassword, user.userPassword) &&
+                        Objects.equals(userMail, user.userMail) &&
+                        Objects.equals(userContact, user.userContact) &&
+                        userType == user.userType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( fullName, userName, userPassword, userMail, userContact, userType);
+        return Objects.hash(fullName, userName, userPassword, userMail, userContact, userType);
     }
 
     @Override
