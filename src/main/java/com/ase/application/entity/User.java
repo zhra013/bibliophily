@@ -16,7 +16,7 @@ import java.util.Objects;
 public class User implements Serializable {
 
     @NotEmpty
-    @Size(min = 5, max = 50, message = "Your full name must be between 5 to 50  characters long.")
+    @Size(min = 5, max = 60, message = "Your full name must be between 5 to 50  characters long.")
     private String fullName;
 
     @NotNull
