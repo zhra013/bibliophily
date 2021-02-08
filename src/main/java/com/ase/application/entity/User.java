@@ -5,10 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
@@ -20,13 +17,18 @@ import java.util.Objects;
 @Table(name = "users")
 public class User implements Serializable {
 
+    @Id
+    @Column(name = "ID", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotEmpty
     @Size(min = 5, max = 50, message = "Your full name must be between 5 to 50  characters long.")
     private String fullName;
 
     @NotNull
     @Size(min = 5, max = 20, message = "Username must be between 5 to 20  characters long.")
-    @Pattern(regexp = "^[a-zA-Z0-9] + $", message = "Username must be alphanumeric with no space")
+//    @Pattern(regexp = "^[a-zA-Z0-9] + $", message = "Username must be alphanumeric with no space")
     private String userName;
 
     @NotEmpty
@@ -37,9 +39,10 @@ public class User implements Serializable {
     private String userMail;
 
     @NotEmpty
-    @Pattern(regexp = "^[0-9]+$", message = "Your Contact number must be numberic ")
+    @Pattern(regexp = "^[0-9]+$", message = "Your Contact number must be numeric ")
     private String userContact;
 
+    @Enumerated(EnumType.STRING)
     private UserType userType;
 
     @Override

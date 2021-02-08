@@ -1,6 +1,7 @@
-package com.ase.application.entity;
+package com.ase.application.dto;
 
 
+import com.ase.application.entity.UserType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,8 @@ import java.util.Objects;
 @Getter
 public class UserDTO {
 
-    private int userId;
+    private Long id;
+
     @NotEmpty
     @Size(min = 5, max = 50, message = "Your full name must be between 5 to 50  characters long.")
     private String fullName;
@@ -39,7 +41,7 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDTO = (UserDTO) o;
-        return userId == userDTO.userId &&
+        return id == userDTO.id &&
                 Objects.equals(fullName, userDTO.fullName) &&
                 Objects.equals(userName, userDTO.userName) &&
                 Objects.equals(userPassword, userDTO.userPassword) &&
@@ -49,13 +51,13 @@ public class UserDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, fullName, userName, userPassword, userMail, userContact, userType);
+        return Objects.hash(id, fullName, userName, userPassword, userMail, userContact, userType);
     }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
