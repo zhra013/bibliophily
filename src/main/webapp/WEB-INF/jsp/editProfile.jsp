@@ -6,8 +6,6 @@
 <html>
 <head>
     <title>Profile Information Update</title>
-
-    <%@include file="bootstrapFiles.jsp" %>
 </head>
 <body>
 
@@ -67,7 +65,7 @@
             </div>
 
             <input type="hidden" name="userType" value="${user.userType}">
-            <input type="hidden" name="userId" value="${user.Id}">
+            <input type="hidden" name="userId" value="${user.id}">
         </div>
     </div>
 

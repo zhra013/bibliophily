@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -27,7 +26,7 @@ public class UserController {
         return "profile";
     }
 
-    @RequestMapping(value = "editProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
     public String viewEditProfilePage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
         modelMap.put("user", user);
@@ -38,7 +37,7 @@ public class UserController {
     @RequestMapping(value = "editProfile", method = RequestMethod.POST)
     public String updateUserProfile(@ModelAttribute User user,@RequestParam("userId") Long userId) {
         userService.updateUserInformation(user,userId);
-        return "redirect:http://localhost:9090/profile?userId=" + user.getId();
+        return "redirect:http://localhost:9090/profile";
     }
 
 }
