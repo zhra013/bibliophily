@@ -40,4 +40,11 @@ public class UserController {
         return "redirect:http://localhost:9090/profile";
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(ModelMap modelMap, HttpSession session) {
+        session.removeAttribute("currentUser");
+        session.invalidate();
+        return "redirect:login";
+    }
+
 }
