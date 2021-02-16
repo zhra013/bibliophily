@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8">
     <title>LOGIN PAGE</title>
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="/../css/Style.css">
   </head>
   <body>
@@ -17,7 +17,7 @@
        <form:form modelAttribute="user" method="post" enctype="multipart/form-data">
       <div class="textbook">
           <i class="fas fa-user"></i>
-        <form:input cssClass="input" path="userName" size="15" maxlength="15" placeholder="Username" required="required"/>
+        <form:input cssClass="input" path="userName" size="15" maxlength="15" placeholder="Username" onblur="checkUsername()" required="required"/>
       </div>
       <div class="textbook">
         <i class="fas fa-lock"></i>
@@ -37,5 +37,8 @@
                 <input type="button" class="button" value="Forgot Password" onclick="window.location.href='/forgotPassword'">
           </div>
    </form:form>
+
+   <script src="/../js/jQuery-3.4.1.js"> </script>
+
   </body>
 </html>

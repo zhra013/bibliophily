@@ -68,6 +68,9 @@
 <div class="logo-div text-right" style="margin-top: 20px;">
     <a href="${editProfile}" class="btn btn-primary">Update</a>
 </div>
+<div class="logo-div text-right" style="margin-top: 20px;">
+    <a href="/logout" class="btn btn-primary">Logout</a>
+</div>
 
 </body>
 </html>
