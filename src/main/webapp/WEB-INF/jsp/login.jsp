@@ -30,12 +30,9 @@
 
    </div>
       <input type="submit" class="submit" value="Sign In">
-           <input type="button" class="button" value="Sign Up" onclick="window.location.href='/signUp'">
+           <input type="button" class="button" value="Sign Up" onclick="window.location.href='/signUp'"/>
+           <a href="/forgotPassword"> forgot password</a>
      </div>
-     </div>
-           <input type="submit" class="submit" value="Forgot Password">
-                <input type="button" class="button" value="Forgot Password" onclick="window.location.href='/forgotPassword'">
-          </div>
    </form:form>
 
    <script src="/../js/jQuery-3.4.1.js"> </script>

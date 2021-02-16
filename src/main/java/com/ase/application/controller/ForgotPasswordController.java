@@ -42,7 +42,7 @@ public class ForgotPasswordController {
                        ModelMap modelMap,
                        HttpSession session) {
 
-       /* user = userService.findUserByEmail(user);
+        user = userService.findUserByuserMail(user.getUserMail());
 
         if (Objects.isNull(user)) {
             ObjectError objectError = new ObjectError("username", "User name or password is invalid");
@@ -53,9 +53,9 @@ public class ForgotPasswordController {
             modelMap.put("error",bindingResult);
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "login";
-        } else {*/
-            email.SendEmailWithAttach();
-        /*}*/
+        } else {
+            email.SendEmailWithAttach(user);
+        }
         return "redirect:http://localhost:9090/login";
     }
 }

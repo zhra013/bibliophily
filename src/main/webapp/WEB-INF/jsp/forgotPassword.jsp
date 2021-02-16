@@ -13,14 +13,15 @@
   </head>
   <body>
     <div class="login">
-      <h2>Login Bibliophily Connect</h2>
+      <h2>Forgot Password</h2>
        <form:form modelAttribute="user" method="post" enctype="multipart/form-data">
       <div class="textbook">
           <i class="fas fa-user"></i>
-        <form:input cssClass="input" path="userMail" size="15" maxlength="15" placeholder="User-email" required="required"/>
+      <form:input type="email" path="userMail" size = "35" maxlength="35"  cssClass="email" placeholder="E-mail" required="required" onblur="validateForgotPasswordEmail()"/>
+                                 <form:errors path="userMail" />
+        <div id="userMail_error" class="d-none invalid-feedback"></div>
       </div>
       <input type="submit" class="submit" value="send mail">
-           <input type="button" class="button" value="Sign Up" onclick="window.location.href='/forgotPassword'">
      </div>
    </form:form>
   </body>
