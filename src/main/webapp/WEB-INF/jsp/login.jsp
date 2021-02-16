@@ -32,6 +32,10 @@
       <input type="submit" class="submit" value="Sign In">
            <input type="button" class="button" value="Sign Up" onclick="window.location.href='/signUp'">
      </div>
+     </div>
+           <input type="submit" class="submit" value="Forgot Password">
+                <input type="button" class="button" value="Forgot Password" onclick="window.location.href='/forgotPassword'">
+          </div>
    </form:form>
   </body>
 </html>

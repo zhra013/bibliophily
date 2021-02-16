@@ -18,9 +18,9 @@
                       <form:errors path="userName" />
    <form:password path="userPassword" size = "20" maxlength="20" cssClass="password" placeholder="Password" required="required"/>
                                           <form:errors path="userPassword" />
-        <form:input type="email"  path="userMail" size = "35" maxlength="35"  cssClass="email" placeholder="E-mail" required="required"/>
+        <form:input type="email"  path="userMail" size = "35" maxlength="35" placeholder="E-mail" required="required"/>
                            <form:errors path="userMail" />
-    <form:input type="number" path="userContact" size = "20" maxlength="20" cssClass="number" placeholder="Contact number" required="required"/>
+    <form:input type="text"  path="userContact" size = "20" maxlength="20" cssClass="number" placeholder="Contact number" required="required"/>
                        <form:errors path="userContact"/>
     <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block" value="Sign Up"/>
 
