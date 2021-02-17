@@ -73,3 +73,29 @@ function validateContact(){
             }
     })
 }
+
+function validateForgotPasswordEmail(){
+    var userMail = document.getElementById("userMail").value;
+    $.ajax({
+        type: 'get',
+        url: 'validate',
+        data: { userMail: userMail, action: "validateEmail" },
+        success: function (data) {
+            if(data === "Allow"){
+                $("#userMail_error").removeClass("d-none");
+                document.getElementById("userMail_error").innerHTML = "Email not registered";
+                document.getElementById("userMail_error").style.color = "red";
+                document.getElementById("userMail_error").style.display = "block";
+                $("#userMail_error").addClass("is-invalid");
+                document.getElementById("submitBtn").disabled = true;
+            }
+            else if(data === "User Already Exist"){
+                document.getElementById("submitBtn").disabled = false;
+                $("#userMail_error").removeClass("is-invalid");
+                document.getElementById("userMail_error").innerHTML = "";
+                document.getElementById("userMail_error").style.display = "none";
+                $("#userMail_error").addClass("d-none");
+            }
+        }
+    })
+}

@@ -21,7 +21,8 @@
                                  <form:errors path="userMail" />
         <div id="userMail_error" class="d-none invalid-feedback"></div>
       </div>
-      <input type="submit" class="submit" value="send mail">
+      <div id="userContact_error" class="d-none invalid-feedback"></div>
+        <input type="submit" name="button" id="submitBtn" class="btn btn-lg btn-primary btn-block" value="Send Mail"/>
      </div>
    </form:form>
   </body>

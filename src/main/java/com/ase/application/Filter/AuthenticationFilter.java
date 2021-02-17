@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class AuthenticationFilter implements javax.servlet.Filter{
 
-    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp", "/logout","/forgotPassword"};
+    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp", "/logout", "/forgotPassword", "/validate"};
     private static final String[] RESOURCE_URL_PRFIX = new String[]{"/js/", "/css/", "/img/"};
 
     @Override

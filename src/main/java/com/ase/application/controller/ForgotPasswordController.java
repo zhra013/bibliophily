@@ -42,7 +42,7 @@ public class ForgotPasswordController {
                        ModelMap modelMap,
                        HttpSession session) {
 
-        user = userService.findUserByuserMail(user.getUserMail());
+        user = userService.findUserByUserMail(user.getUserMail());
 
         if (Objects.isNull(user)) {
             ObjectError objectError = new ObjectError("username", "User name or password is invalid");
