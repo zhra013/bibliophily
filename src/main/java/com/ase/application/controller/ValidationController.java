@@ -29,6 +29,7 @@ public class ValidationController {
 
     @RequestMapping(method = GET)
     public void ValidateLogin(@RequestParam("action") String action, HttpServletResponse response, HttpServletRequest request) {
+        System.out.println("Inside Validation");
         PrintWriter out = null;
         try {
             out = response.getWriter();
@@ -40,7 +41,7 @@ public class ValidationController {
         switch (action){
             case "validateEmail":{
                 String userMail = request.getParameter("userMail");
-                User user = userService.findUserByuserMail(userMail);
+                User user = userService.findUserByUserMail(userMail);
 
                 if(Objects.isNull(user)){
                     out.print("Allow");
@@ -52,13 +53,26 @@ public class ValidationController {
             }
             case "validateContact":{
                 String userContact = request.getParameter("userContact");
-                User user = userService.findUserByuserContact(userContact);
+                User user = userService.findUserByUserContact(userContact);
 
                 if(Objects.isNull(user)){
                     out.print("Allow");
                 }
                 else{
                     out.print("Contact Number Already Exist");
+                }
+                break;
+            }
+            case "validateUserName":{
+                String userName = request.getParameter("userName");
+
+                User user = userService.findUserByUserName(userName);
+
+                if(Objects.isNull(user)){
+                    out.print("Allow");
+                }
+                else{
+                    out.print("UserName Already Exist");
                 }
                 break;
             }
