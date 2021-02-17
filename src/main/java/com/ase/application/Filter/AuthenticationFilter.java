@@ -14,12 +14,11 @@ import java.util.Objects;
 
 public class AuthenticationFilter implements javax.servlet.Filter{
 
-    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp", "/logout"};
+    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp", "/logout", "/validate"};
     private static final String[] RESOURCE_URL_PRFIX = new String[]{"/js/", "/css/", "/img/"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Inside DO Filter");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
