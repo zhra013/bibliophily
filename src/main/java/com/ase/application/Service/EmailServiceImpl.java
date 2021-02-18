@@ -12,16 +12,26 @@ public class EmailServiceImpl implements  EmailService{
     @Autowired
     private JavaMailSender javaMailSender;
 
-        public void SendEmailWithAttach(User user)
-        {
+        public void SendEmailForgotPassword(User user) {
 
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setTo(user.getUserMail());
 
             msg.setSubject("User password");
-            msg.setText("the password is "+user.getUserPassword());
+            msg.setText("the password is " + user.getUserPassword());
 
             javaMailSender.send(msg);
         }
+
+    public void SendEmailChangePassword(User user) {
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(user.getUserMail());
+
+        msg.setSubject("User password Changed");
+        msg.setText("the updated password is " + user.getUserPassword());
+
+        javaMailSender.send(msg);
+    }
 
 }

@@ -10,7 +10,11 @@
 <body>
     <h1 style="text-align:left;">Bibliophily Connect</h1>
 <div style="float:right;" class="profile">
- <input type="button" class="button1" value="Logout" onclick="window.location.href='#'">
+<c:url value="changePassword" var = "changePassword">
+            <c:param name="userId" value="${user.id}"/>
+        </c:url>
+ <input type="button" class="button1" value="Logout" onclick="window.location.href='/logout'">
+ <input type="button" class="button1" value="Change Password" onclick="window.location.href='${changePassword}'">
 </div>
 <section>
   <h1>User Details</h1>
@@ -45,6 +49,7 @@
     <c:url value="editProfile" var = "editProfile">
         <c:param name="userId" value="${user.id}"/>
     </c:url>
+
 </div>
 
 <div class="profile" >

@@ -1,5 +1,6 @@
 package com.ase.application.controller;
 
+import com.ase.application.Service.EmailService;
 import com.ase.application.Service.UserService;
 import com.ase.application.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String viewProfile(ModelMap modelMap, HttpSession session) {
@@ -34,9 +37,24 @@ public class UserController {
         return "editProfile";
     }
 
-    @RequestMapping(value = "editProfile", method = RequestMethod.POST)
-    public String updateUserProfile(@ModelAttribute User user,@RequestParam("userId") Long userId) {
-        userService.updateUserInformation(user,userId);
+    @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+    public String updateUserProfile(@ModelAttribute User user, @RequestParam("userId") Long userId) {
+        userService.updateUserInformation(user, userId);
+        return "redirect:http://localhost:9090/profile";
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public String viewUpdatePasswordPage(@RequestParam("userId") Long userId, ModelMap modelMap) {
+        User user = userService.findUserById(userId);
+        modelMap.put("user", user);
+        modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
+        return "changePassword";
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
+        userService.updateUserPassword(user, userId);
+        emailService.SendEmailChangePassword(user);
         return "redirect:http://localhost:9090/profile";
     }
 

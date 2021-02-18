@@ -11,4 +11,6 @@ public interface UserService {
     public User findUserByUserMail(String userMail);
     public User findUserByUserContact(String userContact);
     public User findUserByUserName(String userName);
+
+    public User updateUserPassword(User updateUser, Long userId);
 }

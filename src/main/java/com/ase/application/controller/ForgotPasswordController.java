@@ -54,7 +54,7 @@ public class ForgotPasswordController {
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "login";
         } else {
-            email.SendEmailWithAttach(user);
+            email.SendEmailForgotPassword(user);
         }
         return "redirect:http://localhost:9090/login";
     }
