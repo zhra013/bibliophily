@@ -5,69 +5,50 @@
 <html>
 <head>
     <title>Profile Information</title>
+    <link rel="stylesheet" href="/../css/Profile.css">
 </head>
 <body>
-
-<h4 class="text-center">${user.fullName}'s Information</h4>
-
-<div class="card book-share-card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-4 form-group">
-                <label>Full Name</label>
-            </div>
-            <div class="col-sm-8 form-group">
-                <c:out value="${user.fullName}"/>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4 form-group">
-                <label>Username</label>
-            </div>
-            <div class="col-sm-8 form-group">
-                <c:out value="${user.userName}"/>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4 form-group">
-                <label>Email Address</label>
-            </div>
-            <div class="col-sm-8 form-group">
-                <c:out value="${user.userMail}"/>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4 form-group">
-                <label>Phone</label>
-            </div>
-            <div class="col-sm-8 form-group">
-                <c:out value="${user.userContact}"/>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4 form-group">
-                <label>Type</label>
-            </div>
-            <div class="col-sm-8 form-group">
-                <c:out value="${user.userType}"/>
-            </div>
-        </div>
-    </div>
+    <h1 style="text-align:left;">Bibliophily Connect</h1>
+<div style="float:right;" class="profile">
+ <input type="button" class="button1" value="Logout" onclick="window.location.href='#'">
+</div>
+<section>
+  <h1>User Details</h1>
+  <div class="tbl-header">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>User Name</th>
+          <th>Email Address</th>
+          <th>Phone Number</th>
+          <th>User Type</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <tr>
+          <td> <c:out value="${user.fullName}"/></td>
+          <td><c:out value="${user.userName}"/> </td>
+          <td> <c:out value="${user.userMail}"/></td>
+          <td><c:out value="${user.userContact}"/></td>
+          <td> <c:out value="${user.userType}"/></td>
+        </tr>
+         </tbody>
+            </table>
+          </div>
+        </section>
 
     <c:url value="editProfile" var = "editProfile">
         <c:param name="userId" value="${user.id}"/>
     </c:url>
-
-
 </div>
 
-<div class="logo-div text-right" style="margin-top: 20px;">
-    <a href="${editProfile}" class="btn btn-primary">Update</a>
+<div class="profile" >
+ <input type="button"  class="button" value="Update Information" onclick="window.location.href='${editProfile}'">
 </div>
-
 </body>
 </html>
