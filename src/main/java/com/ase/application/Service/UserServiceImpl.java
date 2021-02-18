@@ -30,4 +30,19 @@ public class UserServiceImpl implements UserService {
        updateUser.setId(user.getId());
         return userRepository.save(updateUser);
     }
+
+    @Override
+    public User findUserByUserMail(String userMail) {
+        return userRepository.findByUserMail(userMail);
+    }
+
+    @Override
+    public User findUserByUserContact(String userContact) {
+        return userRepository.findByUserContact(userContact);
+    }
+
+    @Override
+    public User findUserByUserName(String userName) {
+        return userRepository.findByUserName(userName);
+    }
 }

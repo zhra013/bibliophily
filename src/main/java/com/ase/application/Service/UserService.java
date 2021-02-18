@@ -8,4 +8,7 @@ public interface UserService {
     public User login(User user);
     public User findUserById(Long userId);
     public User updateUserInformation(User updateUser,Long userId);
+    public User findUserByUserMail(String userMail);
+    public User findUserByUserContact(String userContact);
+    public User findUserByUserName(String userName);
 }
