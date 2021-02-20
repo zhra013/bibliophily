@@ -6,54 +6,67 @@
 <head>
     <title>Profile Information</title>
     <link rel="stylesheet" href="/../css/Profile.css">
+    <script src="/../js/validation.js"> </script>
+     <script src="/../js/jQuery-3.4.1.js"></script>
+
 </head>
 <body>
     <h1 style="text-align:left;">Bibliophily Connect</h1>
-<div style="float:right;" class="profile">
-<c:url value="changePassword" var = "changePassword">
-            <c:param name="userId" value="${user.id}"/>
-        </c:url>
- <input type="button" class="button1" value="Logout" onclick="window.location.href='/logout'">
- <input type="button" class="button1" value="Change Password" onclick="window.location.href='${changePassword}'">
-</div>
-<section>
-  <h1>User Details</h1>
-  <div class="tbl-header">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-          <th>Full Name</th>
-          <th>User Name</th>
-          <th>Email Address</th>
-          <th>Phone Number</th>
-          <th>User Type</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <tr>
-          <td> <c:out value="${user.fullName}"/></td>
-          <td><c:out value="${user.userName}"/> </td>
-          <td> <c:out value="${user.userMail}"/></td>
-          <td><c:out value="${user.userContact}"/></td>
-          <td> <c:out value="${user.userType}"/></td>
-        </tr>
-         </tbody>
-            </table>
-          </div>
-        </section>
+ <%@include file="bootstrapFiles.jsp"%>
+
+<%@include file="header.jsp"%>
+<h4 class="text-center">${user.fullName}'s Information</h4>
+<div class="card share-card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Full Name</label>
+            </div>
+            <div class="col-sm-8 form-group">
+                <c:out value="${user.fullName}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Username</label>
+            </div>
+            <div class="col-sm-8 form-group">
+                <c:out value="${user.userName}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Email Address</label>
+            </div>
+            <div class="col-sm-8 form-group">
+                <c:out value="${user.userMail}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Phone</label>
+            </div>
+            <div class="col-sm-8 form-group">
+                <c:out value="${user.userContact}"/>
+            </div>
+        </div>
+    </div>
 
     <c:url value="editProfile" var = "editProfile">
         <c:param name="userId" value="${user.id}"/>
     </c:url>
 
+
 </div>
 
-<div class="profile" >
+<div class="logo-div text-right" style="margin-top: 20px;" >
  <input type="button"  class="button" value="Update Information" onclick="window.location.href='${editProfile}'">
 </div>
+
+</div>
+
 </body>
 </html>

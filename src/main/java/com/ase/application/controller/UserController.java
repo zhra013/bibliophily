@@ -26,6 +26,7 @@ public class UserController {
     public String viewProfile(ModelMap modelMap, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
         modelMap.put("user", user);
+        modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
         return "profile";
     }
 
@@ -40,7 +41,7 @@ public class UserController {
     @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
     public String updateUserProfile(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         userService.updateUserInformation(user, userId);
-        return "redirect:http://localhost:9090/profile";
+        return "/profile";
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
@@ -55,7 +56,7 @@ public class UserController {
     public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         userService.updateUserPassword(user, userId);
         emailService.SendEmailChangePassword(user);
-        return "redirect:http://localhost:9090/profile";
+        return "/profile";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
