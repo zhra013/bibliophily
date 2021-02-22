@@ -27,7 +27,7 @@ public class SignUpController {
     public String signUpForm(ModelMap modelMap) {
         User user = new User();
         modelMap.put("user", user);
-        return "signUpForm";
+        return "entry";
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)

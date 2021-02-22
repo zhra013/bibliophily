@@ -31,7 +31,7 @@ public class LoginController {
         User user = new User();
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
-        return "login";
+        return "entry";
     }
 
     @RequestMapping(method = POST)
@@ -49,7 +49,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             modelMap.put("error",bindingResult);
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
-            return "login";
+            return "entry";
         } else {
             session.setAttribute("currentUser", user);
         }

@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class AuthenticationFilter implements javax.servlet.Filter{
 
-    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp", "/logout", "/forgotPassword", "/validate"};
+    private static final String[] EXCLUDED_URL_LIST = new String[]{"/login", "/signUp","/entry", "/logout", "/forgotPassword", "/validate"};
     private static final String[] RESOURCE_URL_PRFIX = new String[]{"/js/", "/css/", "/img/"};
 
     @Override
@@ -28,7 +28,7 @@ public class AuthenticationFilter implements javax.servlet.Filter{
         if (!new ArrayList<>(Arrays.asList(EXCLUDED_URL_LIST)).contains(url)
                 && new ArrayList<>(Arrays.asList(RESOURCE_URL_PRFIX)).stream().noneMatch(url::startsWith) &&
                 (Objects.isNull(session) || Objects.isNull(session.getAttribute("currentUser")))) {
-            httpResponse.sendRedirect("/login");
+            httpResponse.sendRedirect("/entry");
         } else {
             chain.doFilter(request, response);
         }
