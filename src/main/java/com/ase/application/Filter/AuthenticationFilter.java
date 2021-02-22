@@ -28,7 +28,7 @@ public class AuthenticationFilter implements javax.servlet.Filter{
         if (!new ArrayList<>(Arrays.asList(EXCLUDED_URL_LIST)).contains(url)
                 && new ArrayList<>(Arrays.asList(RESOURCE_URL_PRFIX)).stream().noneMatch(url::startsWith) &&
                 (Objects.isNull(session) || Objects.isNull(session.getAttribute("currentUser")))) {
-            httpResponse.sendRedirect("/entry");
+            httpResponse.sendRedirect("/login");
         } else {
             chain.doFilter(request, response);
         }

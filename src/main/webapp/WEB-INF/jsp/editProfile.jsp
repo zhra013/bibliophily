@@ -70,11 +70,49 @@
    </div>
 </form:form>
 <script>
-var currentEmail, currentUserContact;
+var currentEmail, currentUserContact, currentUserName;
 $(document).ready(function() {
     currentEmail = document.getElementById("userMail").value;
     currentUserContact = document.getElementById("userContact").value;
+    currentUserName = document.getElementById("userName").value;
 });
+
+function validateUserName(){
+    var userName = document.getElementById("userName").value;
+     if(typeof userName !== 'undefined' && userName !== currentUserName){
+    $.ajax({
+        type: 'get',
+        url: 'validate',
+        data: { userName: userName, action: "validateUserName" },
+        success: function (data) {
+            if(data === "UserName Already Exist"){
+                $("#userName_error").removeClass("d-none");
+                document.getElementById("userName_error").innerHTML = data;
+                document.getElementById("userName_error").style.color = "red";
+                document.getElementById("userName_error").style.display = "block";
+                $("#userName_error").addClass("is-invalid");
+                document.getElementById("submitBtn").disabled = true;
+                document.getElementById("userName_error").style.paddingBottom = "10px";
+            }
+            else if(data === "Allow"){
+                document.getElementById("submitBtn").disabled = false;
+                $("#userName_error").removeClass("is-invalid");
+                document.getElementById("userName_error").innerHTML = "";
+                document.getElementById("userName_error").style.display = "none";
+                $("#userName_error").addClass("d-none");
+                document.getElementById("userName_error").style.paddingBottom = "0px";
+            }
+        }
+    })
+    }else{
+                   document.getElementById("submitBtn").disabled = false;
+                    $("#userName_error").removeClass("is-invalid");
+                    document.getElementById("userName_error").innerHTML = "";
+                    document.getElementById("userName_error").style.display = "none";
+                    $("#userName_error").addClass("d-none");
+                    document.getElementById("userName_error").style.paddingBottom = "0px";
+    }
+}
 
 function validateEmail(){
     var userMail = document.getElementById("userMail").value;
