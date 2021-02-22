@@ -53,6 +53,6 @@ public class LoginController {
         } else {
             session.setAttribute("currentUser", user);
         }
-        return "redirect:http://localhost:9090/profile";
+        return "redirect:http://localhost:9090/home";
     }
 }
