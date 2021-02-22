@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -40,6 +41,12 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL)
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
+    private List<PostReview> postReview;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,8 +54,8 @@ public class User implements Serializable {
         User user = (User) o;
         return
                 Objects.equals(fullName, user.fullName) &&
-                Objects.equals(userName, user.userName) &&
-                Objects.equals(userPassword, user.userPassword) &&
+                        Objects.equals(userName, user.userName) &&
+                        Objects.equals(userPassword, user.userPassword) &&
                 Objects.equals(userMail, user.userMail) &&
                 Objects.equals(userContact, user.userContact) &&
                 userType == user.userType;

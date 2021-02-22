@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -64,6 +66,22 @@ public class UserController {
         session.removeAttribute("currentUser");
         session.invalidate();
         return "redirect:login";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String getUsers(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
+        List<User> users = userService.getUsers();
+        List<User> newUsers = new ArrayList<>();
+        newUsers.addAll(users.stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+        modelMap.put("usersList", newUsers);
+        return "users";
+    }
+
+    @RequestMapping(value = "/view/post", method = RequestMethod.GET)
+    public String getPosts(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
+        User user = userService.findUserById(userId);
+        modelMap.put("posts", user.getPosts());
+        return "usersPostsView";
     }
 
 }

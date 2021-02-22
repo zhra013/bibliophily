@@ -5,10 +5,13 @@ import com.ase.application.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public void userRegistration(User user) {
         userRepository.save(user);
@@ -52,5 +55,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).get();
         user.setUserPassword(updateUser.getUserPassword());
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 }

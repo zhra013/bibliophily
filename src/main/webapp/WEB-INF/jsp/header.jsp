@@ -5,20 +5,28 @@
             <a class="nav-link" href="/profile">Profile</a>
         </li>
 
-
-
                 <li class="nav-item">
                     <a class="nav-link" href="#">Latest Post</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Upload</a>
+                    <a class="nav-link" href="/post/upload">Upload Post</a>
                 </li>
 
-
+              <c:url var="postList" value="/post/list">
+                    <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                    <c:param name="excludeOwner" value="false"/>
+                </c:url>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Post</a>
+                    <a class="nav-link" href="${postList}">My Post</a>
                 </li>
+                 <li class="nav-item">
+                 <c:url value="/users" var = "users">
+                      <c:param name="userId" value="${user.id}"/>
+                  </c:url>
+                      <a class="nav-link" href="${users}">Users</a>
+                  </li>
+
             <c:url value="changePassword" var = "changePassword">
                             <c:param name="userId" value="${user.id}"/>
             </c:url>
