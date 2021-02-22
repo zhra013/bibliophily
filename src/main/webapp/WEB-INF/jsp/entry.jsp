@@ -17,8 +17,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8" />
 	<meta name="keywords" content="Triple Forms Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
-	 <script src="/../js/jQuery-3.4.1.js"> </script>
-    	  <script src="/../js/validation.js"> </script>
+	<script src="/../js/jQuery-3.4.1.js"> </script>
+    <script src="/../js/validation.js"> </script>
 	<script>
 		addEventListener("load", function () {
 			setTimeout(hideURLbar, 0);
@@ -61,11 +61,11 @@
 							<h3 class="legend">Login Here</h3>
 							<div class="input">
 								<span class="fa fa-envelope-o" aria-hidden="true"></span>
-								 <form:input  path="userName"  size="15" maxlength="15" placeholder="Username" onblur="checkUsername()" required="required"/>
+								 <form:input id="loginUserName" path="userName"  size="15" maxlength="15" placeholder="Username" onblur="checkUsername()" required="required"/>
 							</div>
 							<div class="input">
 								<span class="fa fa-key" aria-hidden="true"></span>
-								 <form:password  path="userPassword" size="15" placeholder="Password" required="required" />
+								 <form:password id="loginUserPassword" path="userPassword" size="15" placeholder="Password" required="required" />
                                         <form:errors path="userPassword"/>
 							</div>
 
@@ -81,7 +81,7 @@
 					<input type="radio" name="sections" id="option2">
 					<label for="option2" class="icon-left-w3pvt"><span class="fa fa-pencil-square" aria-hidden="true"></span>Register</label>
 					<article>
-						<form:form modelAttribute="user"  action="/signUp" method="post" enctype="multipart/form-data" autocomplete="off">
+						<form:form modelAttribute="user" action="/signUp" method="post" enctype="multipart/form-data" autocomplete="off">
 							<h3 class="legend">Register Here</h3>
 							<div class="input">
 								<span class="fa fa-user-o" aria-hidden="true"></span>
@@ -92,8 +92,8 @@
                             	<span class="fa fa-user-o" aria-hidden="true"></span>
                                 <form:input path="userName" size = "20"  maxlength="20" id="userName"  placeholder="User Name" required="required" onblur="validateUserName()"/>
                                 <form:errors path="userName" />
-                                <div id="userName_error" class="d-none invalid-feedback"></div>
                             </div>
+                            <div id="userName_error" class="d-none invalid-feedback"></div>
 
 							<div class="input">
 								<span class="fa fa-key" aria-hidden="true"></span>
@@ -103,14 +103,16 @@
 
 							<div class="input">
                                      <form:input type="email"  path="userMail" size = "35" maxlength="35"  placeholder="E-mail" required="required" onblur="validateEmail()"/>
-                                        <form:errors path="userMail" />
-                                        <div id="userMail_error" class="d-none invalid-feedback"></div>
+                                     <form:errors path="userMail" />
                             </div>
+                            <div id="userMail_error" class="d-none invalid-feedback"></div>
+
                             <div class="input">
-                             <form:input type="text" path="userContact" size = "20" maxlength="20"  placeholder="Contact Number" required="required" onblur="validateContact()"/>
-                                                   <form:errors path="userContact"/>
-                                                   <div id="userContact_error" class="d-none invalid-feedback"></div>
+                                <form:input type="text" path="userContact" size = "20" maxlength="20"  placeholder="Contact Number" required="required" onblur="validateContact()"/>
+                                <form:errors path="userContact"/>
                             </div>
+                            <div id="userContact_error" class="d-none invalid-feedback"></div>
+
 							<button type="submit" name="button" id="submitBtn" class="btn submit" >Register</button>
 						</form:form>
 					</article>
@@ -125,7 +127,7 @@
 
 							<div class="input">
 								<span class="fa fa-envelope-o" aria-hidden="true"></span>
-								<form:input type="email" path="userMail" size = "35" maxlength="35"  cssClass="email" placeholder="E-mail" required="required" onblur="validateForgotPasswordEmail()"/>
+								<form:input type="email" id="forgotUserMail" path="userMail" size = "35" maxlength="35"  cssClass="email" placeholder="E-mail" required="required" onblur="validateForgotPasswordEmail()"/>
                                                                  <form:errors path="userMail" />
 							</div>
 							<button type="submit"  class="btn submit last-btn">Reset</button>
