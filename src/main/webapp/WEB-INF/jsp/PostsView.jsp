@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
     <title>Post Feed</title>
@@ -55,19 +57,21 @@
                                                         </div>
                                                         <div class="user-info">
                                                             <b>${post.uploader.userName}</b> posted ${post.postType} <b>${post.title}</b> of Author <b>${post.author}</b> Edition ${post.edition}
+                                                            <fmt:parseDate  value="${post.date}" pattern="yyyy-MM-dd" type="date" var="parsedDate" />
+                                                            <p><fmt:formatDate type = "date" value = "${parsedDate}" /></p>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                                 <!-- /Post header -->
                                                    <c:url value="/post/review" var="review">
-                                                                                             <c:param name="postId" value="${post.id}"/>
-                                                                                       </c:url>
+                                                        <c:param name="postId" value="${post.id}"/>
+                                                   </c:url>
                                                 <!-- Post body -->
                                                 <div class="card-body">
                                                     <!-- Post body text -->
                                                     <div class="post-text">
-                                                        <p>${post.blog}
+                                                        <p>${post.blog}</p>
                                                     </div>
                                                     <!-- Featured image -->
                                                     <div class="post-image">
