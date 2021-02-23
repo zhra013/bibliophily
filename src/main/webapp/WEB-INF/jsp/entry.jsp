@@ -121,7 +121,7 @@
 					<input type="radio" name="sections" id="option3">
 					<label for="option3" class="icon-left-w3pvt"><span class="fa fa-lock" aria-hidden="true"></span>Forgot Password?</label>
 					<article>
-						<form:form modelAttribute="user" method="post" enctype="multipart/form-data">
+						<form:form modelAttribute="user" method="post" action="/forgotPassword" enctype="multipart/form-data">
 							<h3 class="legend last">Reset Password</h3>
 							<p class="para-style">Enter your email address below and we'll send you an email with instructions.</p>
 

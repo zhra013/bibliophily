@@ -52,7 +52,7 @@ public class ForgotPasswordController {
         if (bindingResult.hasErrors()) {
             modelMap.put("error",bindingResult);
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
-            return "login";
+            return "entry";
         } else {
             email.SendEmailForgotPassword(user);
         }

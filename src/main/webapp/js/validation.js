@@ -106,7 +106,7 @@ function validateContact(){
 }
 
 function validateForgotPasswordEmail(){
-    var userMail = document.getElementById("userMail").value;
+    var userMail = document.getElementById("forgotUserMail").value;
     var atposition=userMail.indexOf("@");
             var dotposition=userMail.lastIndexOf(".");
             if (atposition<1 || dotposition<atposition+2 || dotposition+2>=userMail.length){
