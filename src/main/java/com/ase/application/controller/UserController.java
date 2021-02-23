@@ -32,6 +32,11 @@ public class UserController {
         return "profile";
     }
 
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home(ModelMap modelMap, HttpSession session) {
+        return "home";
+    }
+
     @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
     public String viewEditProfilePage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
