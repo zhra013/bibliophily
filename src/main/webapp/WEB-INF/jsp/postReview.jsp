@@ -73,6 +73,7 @@
     </div>
 </div>
 
+<div id="myDIV">
 <h2 class="text-center">Review</h2>
 <form:form modelAttribute="postReview" method="post" enctype="multipart/form-data">
     <div class="card detail-page book-detail-card">
@@ -104,6 +105,8 @@
         <input type="submit" name="button" class="btn btn-lg btn-primary" value="Submit"/>
     </div>
 </form:form>
+</div>
+
 <div class=" card review-block">
     <c:forEach var="review" items="${reviewsList}">
         <div class="space">
@@ -120,4 +123,24 @@
     </c:forEach>
 </div>
 </body>
+
+<script>
+$(document).ready(function() {
+             var x = document.getElementById("myDIV");
+             $.ajax({
+                    type: 'get',
+                    url: '/validate/review',
+                    data: { userId: "${sessionScope.currentUser.id}", postId: "${post.id}" },
+                    success: function (data) {
+                        if(data === "Allow"){
+                            x.style.display = "block";
+                        }
+                        else {
+                          x.style.display = "none";
+                        }
+                    }
+                })
+
+});
+</script>
 </html>

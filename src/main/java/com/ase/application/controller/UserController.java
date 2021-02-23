@@ -2,7 +2,10 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.EmailService;
 import com.ase.application.Service.UserService;
+import com.ase.application.dto.PostDTO;
+import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
+import com.remondis.remap.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Controller
@@ -23,6 +27,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private Mapper<Post, PostDTO> postToDTOMapper;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String viewProfile(ModelMap modelMap, HttpSession session) {
@@ -48,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
     public String updateUserProfile(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         userService.updateUserInformation(user, userId);
-        return "/profile";
+        return "redirect:http://localhost:9090/profile";
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
@@ -63,7 +69,7 @@ public class UserController {
     public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         user = userService.updateUserPassword(user, userId);
         emailService.SendEmailChangePassword(user);
-        return "/profile";
+        return "redirect:http://localhost:9090/profile";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -85,8 +91,22 @@ public class UserController {
     @RequestMapping(value = "/view/post", method = RequestMethod.GET)
     public String getPosts(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
         User user = userService.findUserById(userId);
-        modelMap.put("posts", user.getPosts());
-        return "usersPostsView";
+        List<PostDTO> postDTOS = new ArrayList<>();
+        AtomicInteger rating = new AtomicInteger();
+        AtomicInteger total = new AtomicInteger();
+        user.getPosts().forEach(post -> {
+            post.getPostReview().forEach(postReview -> {
+                if (postReview.getRating() != 0) {
+                    rating.addAndGet(postReview.getRating());
+                    total.addAndGet(1);
+                }
+            });
+            PostDTO postDTO = postToDTOMapper.map(post);
+            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            postDTOS.add(postDTO);
+        });
+        modelMap.put("posts", postDTOS);
+        return "PostsView";
     }
 
 }

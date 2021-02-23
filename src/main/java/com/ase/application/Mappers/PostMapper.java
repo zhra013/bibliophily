@@ -15,6 +15,7 @@ public class PostMapper {
                 .omitInSource(Post::getCoverPhoto)
                 .omitInDestination(PostDTO::getUploadedCoverPhoto)
                 .omitInSource(Post::getPostReview)
+                .omitInDestination(PostDTO::getRating)
                 .mapper();
     }
 
@@ -24,6 +25,7 @@ public class PostMapper {
                 .omitInDestination(Post::getCoverPhoto)
                 .omitInSource(PostDTO::getUploadedCoverPhoto)
                 .omitInDestination(Post::getPostReview)
+                .omitInSource(PostDTO::getRating)
                 .mapper();
     }
 }

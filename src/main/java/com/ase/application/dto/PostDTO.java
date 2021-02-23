@@ -31,4 +31,6 @@ public class PostDTO {
     private String blog;
 
     private LocalDate date;
+
+    private int rating;
 }

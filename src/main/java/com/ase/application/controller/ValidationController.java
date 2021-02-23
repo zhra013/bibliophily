@@ -1,19 +1,19 @@
 package com.ase.application.controller;
 
+import com.ase.application.Service.PostReviewService;
+import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
+import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Objects;
@@ -26,6 +26,12 @@ public class ValidationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private PostReviewService postReviewService;
 
     @RequestMapping(method = GET)
     public void ValidateLogin(@RequestParam("action") String action, HttpServletResponse response, HttpServletRequest request) {
@@ -70,8 +76,7 @@ public class ValidationController {
 
                 if(Objects.isNull(user)){
                     out.print("Allow");
-                }
-                else{
+                } else {
                     out.print("UserName Already Exist");
                 }
                 break;
@@ -80,5 +85,22 @@ public class ValidationController {
                 break;
         }
     }
+
+    @RequestMapping(value = "/review", method = RequestMethod.GET)
+    public void ValidatePostReview(@RequestParam("postId") Long postId, HttpServletResponse response, @RequestParam("userId") Long userId) {
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Post post = postService.getPostById(postId);
+        if (post.getPostReview().stream().anyMatch(postReview -> postReview.getReviewer().getId().equals(userId))) {
+            out.print("No");
+        } else {
+            out.println("Allow");
+        }
+    }
+
 
 }

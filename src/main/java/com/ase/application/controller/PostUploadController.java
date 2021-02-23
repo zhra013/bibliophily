@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/post")
@@ -69,11 +71,32 @@ public class PostUploadController {
 
         if (userId == null || userId == 0) {
             postList.addAll(postService.getPosts());
+        }
+        if (excludeOwner && (userId != null || userId != 0)) {
+            //code to sort and remove post of user id
+            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
+                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
+
         } else {
             postList.addAll(postService.getPostsByUploaderId(userId));
         }
 
-        modelMap.put("posts", postList);
+        List<PostDTO> postDTOS = new ArrayList<>();
+        AtomicInteger rating = new AtomicInteger();
+        AtomicInteger total = new AtomicInteger();
+        postList.forEach(post -> {
+            post.getPostReview().forEach(postReview -> {
+                if (postReview.getRating() != 0) {
+                    rating.addAndGet(postReview.getRating());
+                    total.addAndGet(1);
+                }
+            });
+            PostDTO postDTO = postToDTOMapper.map(post);
+            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            postDTOS.add(postDTO);
+        });
+
+        modelMap.put("posts", postDTOS);
         return "PostsView";
     }
 

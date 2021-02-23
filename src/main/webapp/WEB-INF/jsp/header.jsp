@@ -5,6 +5,15 @@
         <c:param name="excludeOwner" value="false"/>
      </c:url>
 
+     <c:url var="allPostList" value="/post/list">
+             <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+             <c:param name="excludeOwner" value="true"/>
+        </c:url>
+
+      <c:url var="users" value="/users">
+             <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+      </c:url>
+
      <c:url value="changePassword" var = "changePassword">
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
      </c:url>
@@ -13,8 +22,12 @@
     <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="${allPostList}">Home</a>
         </li>
+
+         <li class="nav-item">
+                    <a class="nav-link" href="${users}">Users</a>
+         </li>
 
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

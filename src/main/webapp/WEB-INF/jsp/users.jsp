@@ -6,11 +6,14 @@
 <html>
 <head>
     <title>User List</title>
+
      <link rel="stylesheet" href="/../css/Profile.css">
+
         <script src="/../js/validation.js"> </script>
          <script src="/../js/jQuery-3.4.1.js"></script>
     <%@include file="bootstrapFiles.jsp" %>
 </head>
+ <link rel="stylesheet" href="/../css/table.css">
 <body>
 <h1 style="text-align:left;">Bibliophily Connect</h1>
 <%@include file="header.jsp" %>
@@ -25,8 +28,8 @@
     </c:when>
     <c:otherwise>
         <div class="table-responsive table-div">
-            <table class="table table-hover">
-                <thead class="thead-light">
+            <table id="example" style="width:100%" class="table table-hover"  style="color: purple;">
+                <thead>
                 <tr>
                     <th>Full Name</th>
                     <th>User Name</th>
@@ -60,3 +63,10 @@
 
 </body>
 </html>
+ <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+  <script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>

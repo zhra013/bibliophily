@@ -9,7 +9,7 @@
     <script src="/../js/validation.js"> </script>
     <script src="/../js/jQuery-3.4.1.js"></script>
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/../css/bulma.css">
     <link rel="stylesheet" href="/../css/app.css">
     <link rel="stylesheet" href="/../css/core.css">
@@ -72,6 +72,12 @@
                                                     <!-- Post body text -->
                                                     <div class="post-text">
                                                         <p>${post.blog}</p>
+                                                    </div>
+                                                    <div class="post-text">
+                                                     Rating
+                                                     <c:forEach begin="1" end="5" varStatus="loop">
+                                                         <span class="fa fa-star ${loop.index <= post.rating ? 'checked' : ''}"></span>
+                                                       </c:forEach>
                                                     </div>
                                                     <!-- Featured image -->
                                                     <div class="post-image">
