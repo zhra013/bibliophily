@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +30,8 @@ public class PostReview implements Serializable {
     private String comment;
 
     private int rating;
+
+    private LocalDate date;
 
     @Override
     public boolean equals(Object o) {

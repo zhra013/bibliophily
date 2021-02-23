@@ -22,8 +22,8 @@
           </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="nav-link" href="/profile">Profile</a>
-                <a class="nav-link" href="#">Upload Post</a>
-                <a class="nav-link" href="#">My Post</a>
+                <a class="nav-link" href="/post/upload">Upload Post</a>
+                <a class="nav-link" href="${postList}">My Post</a>
                 <a class="nav-link" href="${changePassword}">Change Password</a>
             </div>
         </div>

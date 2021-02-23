@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +33,8 @@ public class Post implements Serializable {
     private byte[] coverPhoto;
 
     private String blog;
+
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "uploader_id", referencedColumnName = "id")

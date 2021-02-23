@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -28,4 +29,6 @@ public class PostDTO {
     private User uploader;
 
     private String blog;
+
+    private LocalDate date;
 }

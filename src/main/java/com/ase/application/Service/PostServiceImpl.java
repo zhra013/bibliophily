@@ -6,6 +6,7 @@ import com.ase.application.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void uploadBook(Post post) {
         User uploader = userService.findUserById(post.getUploader().getId());
+        post.setDate(LocalDate.now());
         post.setUploader(uploader);
         postRepository.save(post);
     }
