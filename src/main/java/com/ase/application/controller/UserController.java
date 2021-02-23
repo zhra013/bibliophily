@@ -61,7 +61,7 @@ public class UserController {
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
-        userService.updateUserPassword(user, userId);
+        user = userService.updateUserPassword(user, userId);
         emailService.SendEmailChangePassword(user);
         return "/profile";
     }
