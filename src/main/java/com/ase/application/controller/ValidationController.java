@@ -98,7 +98,7 @@ public class ValidationController {
         if (post.getPostReview().stream().anyMatch(postReview -> postReview.getReviewer().getId().equals(userId))) {
             out.print("No");
         } else {
-            out.println("Allow");
+            out.print("Allow");
         }
     }
 

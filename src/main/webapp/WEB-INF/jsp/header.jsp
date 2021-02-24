@@ -59,23 +59,19 @@
 
 <script>
 function search(){
-                var param = $('input[name="param"]').val();
-                $('.search-menu').empty();
-                if (param) {
-                    $.get('/post/search', {searchParam: param}, function (postList) {
-                              postList.forEach(function (post, index) {
-                            $('.search-menu').append($('<a/>', {
-                                'class': 'dropdown-item search-item',
-                                href: 'post/review?postId=' + post.id
-                            }).text(post.title));
-                            }
-                            else {
-                            alert("No Record Found");
-                            }
-                        });
-                    });
-                }
-    }
- </script>
+    var param = $('input[name="param"]').val();
+    $('.search-menu').empty();
+    if (param) {
+        $.get('/post/search', {searchParam: param}, function (postList) {
+                  postList.forEach(function (post, index) {
+                $('.search-menu').append($('<a/>', {
+                    'class': 'dropdown-item search-item',
+                    href: '/post/review?postId=' + post.id
+                }).text(post.title));
+                })
+            });
+        }
+}
+</script>
 
 

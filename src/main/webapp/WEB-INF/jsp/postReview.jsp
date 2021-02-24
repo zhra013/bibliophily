@@ -132,11 +132,11 @@ $(document).ready(function() {
                     url: '/validate/review',
                     data: { userId: "${sessionScope.currentUser.id}", postId: "${post.id}" },
                     success: function (data) {
-                        if(data === "Allow"){
-                            x.style.display = "block";
+                        if(data == "Allow"){
+                            document.getElementById("myDIV").style.display = "block";
                         }
                         else {
-                          x.style.display = "none";
+                          document.getElementById("myDIV").style.display = "none";
                         }
                     }
                 })

@@ -59,7 +59,7 @@ public class PostUploadController {
         post.setCoverPhoto(org.apache.commons.io.IOUtils.toByteArray(postDTO.getUploadedCoverPhoto().getInputStream()));
         System.out.println(post.getUploader().getId());
         postService.uploadBook(post);
-        return "/post/list?userId=" + post.getUploader().getId();
+        return "redirect:/post/list?userId=" + post.getUploader().getId();
 
     }
 
