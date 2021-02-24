@@ -15,4 +15,10 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     @Query(value = "select post from Post post where post.uploader.id = :id")
     List<Post> findPostByUploaderId(Long id);
+
+    @Query(value = "select post from Post post where post.uploader.id = :id and (LOWER(post.title) like %:searchParameter% or LOWER(post.edition) like %:searchParameter% or  LOWER(post.author) like %:searchParameter%)")
+    List<Post> findPostByUploaderIdAndSearch(Long id, String searchParameter);
+
+    @Query(value = "select post from Post post where (LOWER(post.title) like %:searchParameter% or LOWER(post.edition) like %:searchParameter% or LOWER(post.author) like %:searchParameter%)")
+    List<Post> findPostBySearch(String searchParameter);
 }

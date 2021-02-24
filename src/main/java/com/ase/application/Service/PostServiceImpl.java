@@ -39,4 +39,15 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).get();
     }
+
+    @Override
+    public List<Post> getPostsBySearch(String searchParam) {
+        return postRepository.findPostBySearch(searchParam);
+    }
+
+    @Override
+    public List<Post> getPostsByUploaderIdAndSearch(Long uploaderId, String searchParam) {
+        return postRepository.findPostByUploaderIdAndSearch(uploaderId, searchParam);
+    }
+
 }

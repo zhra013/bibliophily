@@ -11,5 +11,9 @@ public interface PostService {
 
     List<Post> getPostsByUploaderId(Long uploaderId);
 
+    List<Post> getPostsBySearch(String searchParam);
+
+    List<Post> getPostsByUploaderIdAndSearch(Long uploaderId, String searchParam);
+
     Post getPostById(Long postId);
 }
