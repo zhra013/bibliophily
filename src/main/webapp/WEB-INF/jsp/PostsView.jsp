@@ -67,6 +67,12 @@
                                                    <c:url value="/post/review" var="review">
                                                         <c:param name="postId" value="${post.id}"/>
                                                    </c:url>
+
+                                                   <c:url value="/post/delete" var="delete">
+                                                       <c:param name="postId" value="${post.id}"/>
+                                                       <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                                                    </c:url>
+
                                                 <!-- Post body -->
                                                 <div class="card-body">
                                                     <!-- Post body text -->
@@ -100,11 +106,13 @@
                                                             </a>
                                                         </div>
 
+                                                     <div class="delete">
                                                         <div class="fab-wrapper is-comment">
-                                                            <a href="javascript:void(0);" class="small-fab">
-                                                                <i data-feather="message-circle"></i>
+                                                           <a href="${delete}" class="small-fab share-fab modal-trigger">
+                                                                      <i data-feather="link-2"></i>
                                                             </a>
                                                         </div>
+                                                      </div>
                                                     </div>
                                                 </div>
                                                 <!-- /Post body -->
@@ -173,4 +181,18 @@
     <script src="/../js/touch.js"></script>
     <script src="/../js/tour.js"></script>
 </body>
+
+<script>
+$(document).ready(function() {
+             var x = document.getElementsByClassName("delete");
+
+                        if(${delete} == "yes"){
+                            document.getElementsByClassName("delete").style.display = "block";
+                        }
+                        else {
+                          document.getElementsByClassName("delete").style.display = "none";
+                        }
+
+});
+</script>
 </html>

@@ -71,14 +71,16 @@ public class PostUploadController {
         List<Post> postList = new ArrayList<>();
 
         if (userId == null || userId == 0) {
+            modelMap.put("delete", "no");
             postList.addAll(postService.getPosts());
         }
         if (excludeOwner && (userId != null || userId != 0)) {
             //code to sort and remove post of user id
             postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
                     .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
-
+            modelMap.put("delete", "no");
         } else {
+            modelMap.put("delete", "yes");
             postList.addAll(postService.getPostsByUploaderId(userId));
         }
 
@@ -110,6 +112,13 @@ public class PostUploadController {
             return "userPostDetail";
         else
             return "postDetail";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String PostDelete(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam Long userId) {
+
+        postService.deletePost(postId);
+        return "redirect:/post/list?userId=" + userId;
     }
 
     @RequestMapping(value = "/coverPhoto", method = RequestMethod.GET)

@@ -16,4 +16,6 @@ public interface PostService {
     List<Post> getPostsByUploaderIdAndSearch(Long uploaderId, String searchParam);
 
     Post getPostById(Long postId);
+
+    void deletePost(Long postId);
 }
