@@ -2,8 +2,13 @@ package com.ase.application.Service;
 
 import com.ase.application.Repository.PostRepository;
 import com.ase.application.entity.Post;
+import com.ase.application.entity.QPost;
 import com.ase.application.entity.User;
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -53,6 +58,22 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPostsByUploaderIdAndSearch(Long uploaderId, String searchParam) {
         return postRepository.findPostByUploaderIdAndSearch(uploaderId, searchParam);
+    }
+
+    @Override
+    public List<Post> getFilteredPostList(Long userId, int pageNo, boolean excludeOwner) {
+
+        Pageable requestedElement = PageRequest.of(pageNo, 10,
+                Sort.Direction.DESC, "date");
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if (userId != null && userId != 0 && !excludeOwner) {
+            booleanBuilder.and(QPost.post.uploader.id.eq(userId));
+        }
+        if (excludeOwner && userId != null && userId != 0) {
+            booleanBuilder.and(QPost.post.uploader.id.ne(userId));
+        }
+        return this.postRepository.findAll(booleanBuilder.getValue(), requestedElement).getContent();
     }
 
 }

@@ -18,4 +18,6 @@ public interface PostService {
     Post getPostById(Long postId);
 
     void deletePost(Long postId);
+
+    List<Post> getFilteredPostList(Long userId, int pageNo, boolean excludeOwner);
 }

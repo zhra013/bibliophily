@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends PagingAndSortingRepository<Post, Long>, QuerydslPredicateExecutor<Post> {
+public interface PostRepository extends QuerydslPredicateExecutor<Post>, PagingAndSortingRepository<Post, Long> {
 
     @Override
     List<Post> findAll();

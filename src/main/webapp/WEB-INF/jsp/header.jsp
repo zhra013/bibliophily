@@ -5,9 +5,10 @@
         <c:param name="excludeOwner" value="false"/>
      </c:url>
 
-     <c:url var="allPostList" value="/post/list">
+     <c:url var="allPostList" value="/post/list/page">
              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
              <c:param name="excludeOwner" value="true"/>
+              <c:param name="page" value="0"/>
         </c:url>
 
       <c:url var="users" value="/users">

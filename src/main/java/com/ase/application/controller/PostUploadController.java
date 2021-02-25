@@ -174,4 +174,48 @@ public class PostUploadController {
         });
         return postDTOS;
     }
+
+    @RequestMapping(value = "/list/page", method = RequestMethod.GET)
+    public String postListPaginated(@RequestParam(required = false) Long userId,
+                                    @RequestParam(required = false) boolean excludeOwner,
+                                    @RequestParam int page,
+                                    ModelMap modelMap,
+                                    HttpSession session) {
+        List<Post> postList = new ArrayList<>();
+
+        if (userId == null || userId == 0) {
+            modelMap.put("delete", "no");
+            postList.addAll(postService.getFilteredPostList(0L, page, excludeOwner));
+//            postList.addAll(postService.getPosts());
+        }
+        if (excludeOwner && (userId != null || userId != 0)) {
+            postList.addAll(postService.getFilteredPostList(userId, page, true));
+            //code to sort and remove post of user id
+//            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
+//                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
+            modelMap.put("delete", "no");
+        } else {
+            modelMap.put("delete", "yes");
+            postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
+//            postList.addAll(postService.getPostsByUploaderId(userId));
+        }
+
+        List<PostDTO> postDTOS = new ArrayList<>();
+        AtomicInteger rating = new AtomicInteger();
+        AtomicInteger total = new AtomicInteger();
+        postList.forEach(post -> {
+            post.getPostReview().forEach(postReview -> {
+                if (postReview.getRating() != 0) {
+                    rating.addAndGet(postReview.getRating());
+                    total.addAndGet(1);
+                }
+            });
+            PostDTO postDTO = postToDTOMapper.map(post);
+            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            postDTOS.add(postDTO);
+        });
+
+        modelMap.put("posts", postDTOS);
+        return "PostsView";
+    }
 }

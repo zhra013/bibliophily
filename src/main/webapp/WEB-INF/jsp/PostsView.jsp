@@ -106,10 +106,10 @@
                                                             </a>
                                                         </div>
 
-                                                     <div class="delete">
+                                                     <div class="del">
                                                         <div class="fab-wrapper is-comment">
                                                            <a href="${delete}" class="small-fab share-fab modal-trigger">
-                                                                      <i data-feather="link-2"></i>
+                                                              <i data-feather="link-2"></i>
                                                             </a>
                                                         </div>
                                                       </div>
@@ -184,7 +184,7 @@
 
 <script>
 $(document).ready(function() {
-             var x = document.getElementsByClassName("delete");
+             var x = document.getElementsByClassName("del");
 
                         if(${delete} == "yes"){
                             document.getElementsByClassName("delete").style.display = "block";
