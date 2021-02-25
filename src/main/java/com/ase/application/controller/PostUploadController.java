@@ -71,16 +71,16 @@ public class PostUploadController {
         List<Post> postList = new ArrayList<>();
 
         if (userId == null || userId == 0) {
-            modelMap.put("delete", "no");
+            modelMap.put("isDeleted", "no");
             postList.addAll(postService.getPosts());
         }
         if (excludeOwner && (userId != null || userId != 0)) {
             //code to sort and remove post of user id
             postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
                     .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
-            modelMap.put("delete", "no");
+            modelMap.put("isDeleted", "no");
         } else {
-            modelMap.put("delete", "yes");
+            modelMap.put("isDeleted", "yes");
             postList.addAll(postService.getPostsByUploaderId(userId));
         }
 
@@ -184,7 +184,7 @@ public class PostUploadController {
         List<Post> postList = new ArrayList<>();
 
         if (userId == null || userId == 0) {
-            modelMap.put("delete", "no");
+            modelMap.put("isDeleted", "no");
             postList.addAll(postService.getFilteredPostList(0L, page, excludeOwner));
 //            postList.addAll(postService.getPosts());
         }
@@ -193,9 +193,9 @@ public class PostUploadController {
             //code to sort and remove post of user id
 //            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
 //                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
-            modelMap.put("delete", "no");
+            modelMap.put("isDeleted", "no");
         } else {
-            modelMap.put("delete", "yes");
+            modelMap.put("isDeleted", "yes");
             postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
 //            postList.addAll(postService.getPostsByUploaderId(userId));
         }

@@ -26,7 +26,7 @@ public class PostDTO {
 
     private MultipartFile uploadedCoverPhoto;
 
-    private User uploader;
+    private UserDTO uploader;
 
     private String blog;
 

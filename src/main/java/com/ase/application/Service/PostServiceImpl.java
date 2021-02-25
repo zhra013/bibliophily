@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getFilteredPostList(Long userId, int pageNo, boolean excludeOwner) {
 
-        Pageable requestedElement = PageRequest.of(pageNo, 10,
+        Pageable requestedElement = PageRequest.of(pageNo, 4,
                 Sort.Direction.DESC, "date");
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
@@ -75,5 +75,4 @@ public class PostServiceImpl implements PostService {
         }
         return this.postRepository.findAll(booleanBuilder.getValue(), requestedElement).getContent();
     }
-
 }

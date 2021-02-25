@@ -141,6 +141,15 @@
                             <!-- /Feed page main wrapper -->
                         </div>
                         <!-- /Container -->
+
+                        <div>
+                            <nav aria-label="Page navigation example">
+                              <ul class="pagination">
+                                <li class="page-item"><a class="page-link" id="previousBtn" onclick="LoadPreviousData()">Previous</a></li>
+                                <li class="page-item"><a class="page-link" id="nextBtn" onclick="LoadNewData()">Next</a></li>
+                              </ul>
+                            </nav>
+                        </div>
         </div>
     </c:otherwise>
 </c:choose>
@@ -183,16 +192,34 @@
 </body>
 
 <script>
+var count = 0;
 $(document).ready(function() {
-             var x = document.getElementsByClassName("del");
-
-                        if(${delete} == "yes"){
-                            document.getElementsByClassName("delete").style.display = "block";
-                        }
-                        else {
-                          document.getElementsByClassName("delete").style.display = "none";
-                        }
-
+    var x = document.getElementsByClassName("del");
+    console.log(x);
+    var deleted = "${isDeleted}";
+    $("#previousBtn").addClass("d-none");
+    if(deleted == "yes"){
+        document.getElementsByClassName("del").style.display = "block";
+    }
+    else {
+      document.getElementsByClassName("del").style.display = "none";
+    }
 });
+function LoadNewData(){
+    count++;
+    $.ajax({
+        type: 'get',
+        url: '/list/pagination/page',
+        data: { page : count, userId : ${sessionScope.currentUser.id}, excludeOwner: "True" },
+        success: function (data) {
+           var obj = JSON.parse(data);
+           console.log(obj);
+           if(obj.length > 0){
+                
+           }
+        }
+    })
+}
+
 </script>
 </html>

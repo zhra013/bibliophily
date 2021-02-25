@@ -3,9 +3,13 @@ package com.ase.application.controller;
 import com.ase.application.Service.PostReviewService;
 import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
+import com.ase.application.dto.PostDTO;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.remondis.remap.Mapper;
+import org.apache.catalina.filters.ExpiresFilter;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
-@RequestMapping(value = "/validate")
 public class ValidationController {
 
     @Autowired
@@ -33,9 +39,15 @@ public class ValidationController {
     @Autowired
     private PostReviewService postReviewService;
 
-    @RequestMapping(method = GET)
+    @Autowired
+    private Mapper<PostDTO, Post> dtoToPostMapper;
+
+    @Autowired
+    private Mapper<Post, PostDTO> postToDTOMapper;
+
+
+    @RequestMapping(value = "/validate",method = GET)
     public void ValidateLogin(@RequestParam("action") String action, HttpServletResponse response, HttpServletRequest request) {
-        System.out.println("Inside Validation");
         PrintWriter out = null;
         try {
             out = response.getWriter();
@@ -86,7 +98,7 @@ public class ValidationController {
         }
     }
 
-    @RequestMapping(value = "/review", method = RequestMethod.GET)
+    @RequestMapping(value = "/validate/review", method = RequestMethod.GET)
     public void ValidatePostReview(@RequestParam("postId") Long postId, HttpServletResponse response, @RequestParam("userId") Long userId) {
         PrintWriter out = null;
         try {
@@ -102,5 +114,50 @@ public class ValidationController {
         }
     }
 
+    @RequestMapping(value = "/list/pagination/page", method = RequestMethod.GET)
+    public void postListPaginated(@RequestParam(required = false) Long userId,
+                                  @RequestParam(required = false) boolean excludeOwner,
+                                  @RequestParam int page,
+                                  HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        List<Post> postList = new ArrayList<>();
+        PrintWriter out = response.getWriter();
+        ObjectMapper obj = new ObjectMapper();
+        if (userId == null || userId == 0) {
+            //modelMap.put("isDeleted", "no");
+            postList.addAll(postService.getFilteredPostList(0L, page, excludeOwner));
+//            postList.addAll(postService.getPosts());
+        }
+        if (excludeOwner && (userId != null || userId != 0)) {
+            postList.addAll(postService.getFilteredPostList(userId, page, true));
+            //code to sort and remove post of user id
+//            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
+//                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
+            //modelMap.put("isDeleted", "no");
+        } else {
+            //modelMap.put("isDeleted", "yes");
+            postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
+//            postList.addAll(postService.getPostsByUploaderId(userId));
+        }
+
+        List<PostDTO> postDTOS = new ArrayList<>();
+        AtomicInteger rating = new AtomicInteger();
+        AtomicInteger total = new AtomicInteger();
+        postList.forEach(post -> {
+            post.getPostReview().forEach(postReview -> {
+                if (postReview.getRating() != 0) {
+                    rating.addAndGet(postReview.getRating());
+                    total.addAndGet(1);
+                }
+            });
+            PostDTO postDTO = postToDTOMapper.map(post);
+            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            postDTOS.add(postDTO);
+        });
+
+        JSONArray arr = new JSONArray(postDTOS);
+       //String posts = obj.writeValueAsString(postDTOS);
+        out.print(arr);
+    }
 
 }
