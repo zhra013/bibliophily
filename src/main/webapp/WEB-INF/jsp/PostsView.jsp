@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="/../css/bulma.css">
     <link rel="stylesheet" href="/../css/app.css">
     <link rel="stylesheet" href="/../css/core.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
     <link rel="stylesheet" href="/../css/Profile.css">
     <%@include file="bootstrapFiles.jsp" %>
 </head>
@@ -92,24 +94,24 @@
                                                         </a>
                                                         <!-- Action buttons -->
                                                         <!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-                                                        <div class="like-wrapper">
+                                                        <!-- <div class="like-wrapper">
                                                             <a href="javascript:void(0);" class="like-button">
                                                                 <i class="mdi mdi-heart not-liked bouncy"></i>
                                                                 <i class="mdi mdi-heart is-liked bouncy"></i>
                                                                 <span class="like-overlay"></span>
                                                             </a>
-                                                        </div>
+                                                        </div> -->
 
                                                         <div class="fab-wrapper is-share">
-                                                            <a href="${review}" class="small-fab share-fab modal-trigger">
-                                                                <i data-feather="link-2"></i>
+                                                            <a href="${review}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
+                                                                <i class="fas fa-comments"></i>
                                                             </a>
                                                         </div>
 
                                                      <div class="del">
                                                         <div class="fab-wrapper is-comment">
-                                                           <a href="${delete}" class="small-fab share-fab modal-trigger">
-                                                              <i data-feather="link-2"></i>
+                                                           <a onclick="deletePost(${post.id})" class="small-fab share-fab modal-trigger">
+                                                              <i class="fas fa-trash"></i>
                                                             </a>
                                                         </div>
                                                       </div>
@@ -205,6 +207,12 @@ $(document).ready(function() {
       document.getElementsByClassName("del").style.display = "none";
     }
 });
+function deletePost(id){
+    var userid = ${sessionScope.currentUser.id};
+    if(confirm("Delete this post?")){
+        window.location.href = "/post/delete?postId="+id + "&userId="+userid;
+    }
+}
 function LoadNewData(){
     var userid = ${sessionScope.currentUser.id};
     $.ajax({
@@ -222,7 +230,6 @@ function LoadNewData(){
                 if (list.hasChildNodes()) {
                   list.removeChild(list.childNodes[0]);
                 }
-
                   var str = "";
                   for(var i = 0; i < obj.length; i++){
                     var date = new Date(obj[i].date);
@@ -250,11 +257,10 @@ function LoadNewData(){
                     + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
                     + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
-                  console.log(str);
-                    document.getElementById("post_area").innerHTML = str;
-                    if(count > 0){
-                        $("#previousBtn").removeClass("d-none");
-                    }
+                  document.getElementById("post_area").innerHTML = str;
+                }
+                if(count > 0){
+                    $("#previousBtn").removeClass("d-none");
                 }
                 else{
                     $("#nextBtn").addClass("d-none");
@@ -272,7 +278,7 @@ function LoadPreviousData(){
         data: { page : count, userId : userid, excludeOwner: "True" },
         success: function (data) {
            var obj = JSON.parse(data);
-
+            console.log(obj);
            if(obj.length > 0){
                 count--;
                 var list = document.getElementById("post_area");
@@ -295,6 +301,7 @@ function LoadPreviousData(){
                     if (mm < 10) {
                         mm = '0' + mm;
                     }
+
                     str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
                     + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
                     + obj[i].id
@@ -309,11 +316,10 @@ function LoadPreviousData(){
                     + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
                     + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
-                  console.log(str);
-                    document.getElementById("post_area").innerHTML = str;
-                    if(count > 0){
-                        $("#nextBtn").removeClass("d-none");
-                    }
+                  document.getElementById("post_area").innerHTML = str;
+                }
+                if(count > 0){
+                    $("#nextBtn").removeClass("d-none");
                 }
                 else{
                     $("#previousBtn").addClass("d-none");
