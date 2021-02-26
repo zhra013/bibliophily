@@ -23,7 +23,7 @@
 <h1 style="text-align:left;">Bibliophily Connect</h1>
 <%@include file="header.jsp" %>
 
-<div class="view-wrapper">
+<div class="view-wrapper" id="main-div">
 <c:choose>
     <c:when test="${empty posts}">
         <div class="alert alert-info table-div text-center">
@@ -43,7 +43,7 @@
                                     <!-- /Left side column -->
 
                                     <!-- Middle column -->
-                                    <div class="column is-6">
+                                    <div class="column is-6" id="post_area">
                                         <c:forEach var="post" items="${posts}">
                                         <div id="feed-post-1" class="card is-post">
                                             <!-- Main wrap -->
@@ -192,7 +192,7 @@
 </body>
 
 <script>
-var count = 0;
+var count = 1;
 $(document).ready(function() {
     var x = document.getElementsByClassName("del");
     console.log(x);
@@ -206,20 +206,120 @@ $(document).ready(function() {
     }
 });
 function LoadNewData(){
-    count++;
+    var userid = ${sessionScope.currentUser.id};
     $.ajax({
         type: 'get',
         url: '/list/pagination/page',
-        data: { page : count, userId : ${sessionScope.currentUser.id}, excludeOwner: "True" },
+        data: { page : count, userId : userid, excludeOwner: "True" },
         success: function (data) {
            var obj = JSON.parse(data);
-           console.log(obj);
+
            if(obj.length > 0){
-                
+                count++;
+                var list = document.getElementById("post_area");
+                debugger
+                // If the <ul> element has any child nodes, remove its first child node
+                if (list.hasChildNodes()) {
+                  list.removeChild(list.childNodes[0]);
+                }
+
+                  var str = "";
+                  for(var i = 0; i < obj.length; i++){
+                    var date = new Date(obj[i].date);
+                    var dd = date.getDate();
+                    var mm = date.getMonth() + 1;
+                    var yyyy = date.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd;
+                    }
+
+                    if (mm < 10) {
+                        mm = '0' + mm;
+                    }
+                    str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
+                    + obj[i].id
+                    + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                    + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
+                    + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                    + obj[i].blog + '</p></div><div class="post-text">Rating<span class="fa fa-star'
+                    + obj[i].rating +'"></span></div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a><div class="like-wrapper"><a href="javascript:void(0);" class="like-button">'
+                    + '<i class="mdi mdi-heart not-liked bouncy"></i><i class="mdi mdi-heart is-liked bouncy"></i><span class="like-overlay"></span></a></div>'
+                    + '<div class="fab-wrapper is-share"><a href="${review}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i></a></div>'
+                    + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
+                    + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                  }
+                  console.log(str);
+                    document.getElementById("post_area").innerHTML = str;
+                    if(count > 0){
+                        $("#previousBtn").removeClass("d-none");
+                    }
+                }
+                else{
+                    $("#nextBtn").addClass("d-none");
+                }
            }
-        }
-    })
+        });
 }
 
+function LoadPreviousData(){
+    var userid = ${sessionScope.currentUser.id};
+
+    $.ajax({
+        type: 'get',
+        url: '/list/pagination/page',
+        data: { page : count, userId : userid, excludeOwner: "True" },
+        success: function (data) {
+           var obj = JSON.parse(data);
+
+           if(obj.length > 0){
+                count--;
+                var list = document.getElementById("post_area");
+                debugger
+                // If the <ul> element has any child nodes, remove its first child node
+                if (list.hasChildNodes()) {
+                  list.removeChild(list.childNodes[0]);
+                }
+
+                  var str = "";
+                  for(var i = 0; i < obj.length; i++){
+                    var date = new Date(obj[i].date);
+                    var dd = date.getDate();
+                    var mm = date.getMonth() + 1;
+                    var yyyy = date.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd;
+                    }
+
+                    if (mm < 10) {
+                        mm = '0' + mm;
+                    }
+                    str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
+                    + obj[i].id
+                    + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                    + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
+                    + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                    + obj[i].blog + '</p></div><div class="post-text">Rating<span class="fa fa-star'
+                    + obj[i].rating +'"></span></div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a><div class="like-wrapper"><a href="javascript:void(0);" class="like-button">'
+                    + '<i class="mdi mdi-heart not-liked bouncy"></i><i class="mdi mdi-heart is-liked bouncy"></i><span class="like-overlay"></span></a></div>'
+                    + '<div class="fab-wrapper is-share"><a href="${review}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i></a></div>'
+                    + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
+                    + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                  }
+                  console.log(str);
+                    document.getElementById("post_area").innerHTML = str;
+                    if(count > 0){
+                        $("#nextBtn").removeClass("d-none");
+                    }
+                }
+                else{
+                    $("#previousBtn").addClass("d-none");
+                }
+           }
+        });
+}
 </script>
 </html>
