@@ -141,9 +141,10 @@ public class ValidationController {
         }
 
         List<PostDTO> postDTOS = new ArrayList<>();
-        AtomicInteger rating = new AtomicInteger();
-        AtomicInteger total = new AtomicInteger();
+
         postList.forEach(post -> {
+            AtomicInteger rating = new AtomicInteger();
+            AtomicInteger total = new AtomicInteger();
             post.getPostReview().forEach(postReview -> {
                 if (postReview.getRating() != 0) {
                     rating.addAndGet(postReview.getRating());
@@ -153,6 +154,7 @@ public class ValidationController {
             PostDTO postDTO = postToDTOMapper.map(post);
             postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
             postDTOS.add(postDTO);
+
         });
 
         JSONArray arr = new JSONArray(postDTOS);

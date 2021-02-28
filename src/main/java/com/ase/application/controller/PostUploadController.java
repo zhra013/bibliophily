@@ -59,8 +59,8 @@ public class PostUploadController {
         post.setCoverPhoto(org.apache.commons.io.IOUtils.toByteArray(postDTO.getUploadedCoverPhoto().getInputStream()));
         System.out.println(post.getUploader().getId());
         postService.uploadBook(post);
-        return "redirect:/post/list?userId=" + post.getUploader().getId();
 
+        return "redirect:/post/list/page?userId="+post.getUploader().getId()+"&excludeOwner=false&page=0";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -118,7 +118,7 @@ public class PostUploadController {
     public String PostDelete(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam Long userId) {
 
         postService.deletePost(postId);
-        return "redirect:/post/list?userId=" + userId;
+        return "redirect:/post/list/page?userId="+userId+"&excludeOwner=false&page=0";
     }
 
     @RequestMapping(value = "/coverPhoto", method = RequestMethod.GET)
@@ -201,9 +201,9 @@ public class PostUploadController {
         }
 
         List<PostDTO> postDTOS = new ArrayList<>();
-        AtomicInteger rating = new AtomicInteger();
-        AtomicInteger total = new AtomicInteger();
         postList.forEach(post -> {
+            AtomicInteger rating = new AtomicInteger();
+            AtomicInteger total = new AtomicInteger();
             post.getPostReview().forEach(postReview -> {
                 if (postReview.getRating() != 0) {
                     rating.addAndGet(postReview.getRating());

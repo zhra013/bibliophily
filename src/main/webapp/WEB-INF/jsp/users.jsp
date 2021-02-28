@@ -46,8 +46,10 @@
                         <td>${user.userMail}</td>
                         <td>${user.userContact}</td>
                         <td>
-                            <c:url value="/view/post" var = "view">
+                            <c:url value="/post/list/page" var = "view">
                                 <c:param name="userId" value="${user.id}"/>
+                                <c:param name="page" value="0"/>
+
                             </c:url>
                             <div class="btn-group">
                                 <a href="${view}" class="btn btn-outline-primary">View Posts</a>

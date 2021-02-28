@@ -91,7 +91,7 @@
                     <label>Review</label>
                 </div>
                 <div class="col-sm-10 form-group">
-                    <form:textarea path="comment" type="text" cssClass="form-control" placeholder="Write a comment. . ." rows="6"/>
+                    <form:textarea path="comment" maxlength="200" type="text" cssClass="form-control" placeholder="Write a comment. . ." rows="6"/>
                 </div>
             </div>
 

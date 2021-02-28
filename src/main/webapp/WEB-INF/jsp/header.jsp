@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-sm bg-light">
 
-     <c:url var="postList" value="/post/list">
+     <c:url var="postList" value="/post/list/page">
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
         <c:param name="excludeOwner" value="false"/>
+        <c:param name="page" value="0"/>
      </c:url>
 
      <c:url var="allPostList" value="/post/list/page">

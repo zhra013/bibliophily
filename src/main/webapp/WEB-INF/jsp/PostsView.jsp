@@ -60,7 +60,7 @@
                                                         <div class="user-info">
                                                             <b>${post.uploader.userName}</b> posted ${post.postType} <b>${post.title}</b> of Author <b>${post.author}</b> Edition ${post.edition}
                                                             <fmt:parseDate  value="${post.date}" pattern="yyyy-MM-dd" type="date" var="parsedDate" />
-                                                            <p><fmt:formatDate type = "date" value = "${parsedDate}" /></p>
+                                                            <p><fmt:formatDate type = "date" value = "${parsedDate}" pattern="dd/MM/yyyy" /></p>
                                                         </div>
                                                     </div>
 
@@ -194,10 +194,9 @@
 </body>
 
 <script>
-var count = 1;
+var count = 0;
 $(document).ready(function() {
     var x = document.getElementsByClassName("del");
-    console.log(x);
     var deleted = "${isDeleted}";
     $("#previousBtn").addClass("d-none");
     if(deleted == "yes"){
@@ -215,15 +214,16 @@ function deletePost(id){
 }
 function LoadNewData(){
     var userid = ${sessionScope.currentUser.id};
+    var excludeOwner = "${param.excludeOwner}";
+    count++;
     $.ajax({
         type: 'get',
         url: '/list/pagination/page',
-        data: { page : count, userId : userid, excludeOwner: "True" },
+        data: { page : count, userId : userid, excludeOwner: excludeOwner },
         success: function (data) {
            var obj = JSON.parse(data);
-
+           console.log(obj);
            if(obj.length > 0){
-                count++;
                 var list = document.getElementById("post_area");
                 debugger
                 // If the <ul> element has any child nodes, remove its first child node
@@ -232,6 +232,16 @@ function LoadNewData(){
                 }
                   var str = "";
                   for(var i = 0; i < obj.length; i++){
+                    var stars = "";
+
+                    for(var j = 1; j <= 5; j++){
+                        if(j <= obj[i].rating){
+                            stars += '<span class="fa fa-star checked"></span>';
+                        }
+                        else{
+                            stars += '<span class="fa fa-star"></span>';
+                        }
+                    }
                     var date = new Date(obj[i].date);
                     var dd = date.getDate();
                     var mm = date.getMonth() + 1;
@@ -249,15 +259,16 @@ function LoadNewData(){
                     + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
                     + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
                     + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
-                    + obj[i].blog + '</p></div><div class="post-text">Rating<span class="fa fa-star'
-                    + obj[i].rating +'"></span></div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a><div class="like-wrapper"><a href="javascript:void(0);" class="like-button">'
-                    + '<i class="mdi mdi-heart not-liked bouncy"></i><i class="mdi mdi-heart is-liked bouncy"></i><span class="like-overlay"></span></a></div>'
-                    + '<div class="fab-wrapper is-share"><a href="${review}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i></a></div>'
-                    + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
+                    + obj[i].blog + '</p></div><div class="post-text">Rating'
+                    + stars
+                    + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                    + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                    + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                     + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
                   document.getElementById("post_area").innerHTML = str;
+                  stars = null;
                 }
                 if(count > 0){
                     $("#previousBtn").removeClass("d-none");
@@ -271,16 +282,16 @@ function LoadNewData(){
 
 function LoadPreviousData(){
     var userid = ${sessionScope.currentUser.id};
-
+    var excludeOwner = "${param.excludeOwner}";
+    count--;
     $.ajax({
         type: 'get',
         url: '/list/pagination/page',
-        data: { page : count, userId : userid, excludeOwner: "True" },
+        data: { page : count, userId : userid, excludeOwner: excludeOwner },
         success: function (data) {
            var obj = JSON.parse(data);
             console.log(obj);
            if(obj.length > 0){
-                count--;
                 var list = document.getElementById("post_area");
                 debugger
                 // If the <ul> element has any child nodes, remove its first child node
@@ -290,6 +301,15 @@ function LoadPreviousData(){
 
                   var str = "";
                   for(var i = 0; i < obj.length; i++){
+                  var stars = "";
+                    for(var j = 1; j <= 5; j++){
+                          if(j <= obj[i].rating){
+                              stars += '<span class="fa fa-star checked"></span>';
+                          }
+                          else{
+                              stars += '<span class="fa fa-star"></span>';
+                          }
+                      }
                     var date = new Date(obj[i].date);
                     var dd = date.getDate();
                     var mm = date.getMonth() + 1;
@@ -303,18 +323,18 @@ function LoadPreviousData(){
                     }
 
                     str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
-                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
-                    + obj[i].id
-                    + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
-                    + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
-                    + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
-                    + obj[i].blog + '</p></div><div class="post-text">Rating<span class="fa fa-star'
-                    + obj[i].rating +'"></span></div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a><div class="like-wrapper"><a href="javascript:void(0);" class="like-button">'
-                    + '<i class="mdi mdi-heart not-liked bouncy"></i><i class="mdi mdi-heart is-liked bouncy"></i><span class="like-overlay"></span></a></div>'
-                    + '<div class="fab-wrapper is-share"><a href="${review}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i></a></div>'
-                    + '<div class="del"> <div class="fab-wrapper is-comment"><a href="${delete}" class="small-fab share-fab modal-trigger"><i data-feather="link-2"></i>'
-                    + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                        + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
+                        + obj[i].id
+                        + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                        + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
+                        + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                        + obj[i].blog + '</p></div><div class="post-text">Rating'
+                        + stars
+                        + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                        + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                        + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                        + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                        + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
                   document.getElementById("post_area").innerHTML = str;
                 }

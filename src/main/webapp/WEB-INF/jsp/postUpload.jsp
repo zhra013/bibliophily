@@ -66,7 +66,7 @@
                     <form:label path="blog">Write Something</form:label>
                 </div>
                 <div class="col-sm-8 form-group">
-                    <form:input path="blog" size="20" maxlength="20" cssClass="form-control" placeholder="Write Something" required="required"/>
+                    <form:input path="blog" size="20" maxlength="100" cssClass="form-control" placeholder="Write Something"  required="required"/>
                     <form:errors path="blog"/>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     <form:label path="uploadedCoverPhoto" for="coverPhotoOfBook">Cover Photo</form:label>
                 </div>
                 <div class="col-sm-8 form-group">
-                    <input id="coverPhotoOfBook" name="uploadedCoverPhoto" type="file" cssClass="form-control" placeholder="Cover Photo of Post"/>
+                    <input onchange="imgval(this)" id="coverPhotoOfBook" name="uploadedCoverPhoto" type="file" cssClass="form-control" placeholder="Cover Photo of Post"/>
                 </div>
             </div>
 
@@ -89,8 +89,30 @@
     </div>
 
     <div class="upload-page text-right" style="margin-top: 20px;">
-        <input type="submit" name="button" class="btn btn-lg btn-primary" value="Upload"/>
+        <input type="submit" id="submitbtn" name="button" class="btn btn-lg btn-primary" value="Upload"/>
     </div>
 </form:form>
+<script>
+function imgval(value){
+	var selectedFile = value.files[0];
+	var idxDot = selectedFile.name.lastIndexOf(".") + 1;
+	var n =0;
+	var extFile = selectedFile.name.substr(idxDot, selectedFile.name.length).toLowerCase();
+	if ((extFile == "jpg" || extFile == "jpeg" || extFile == "png") && selectedFile.size < 500000) {
+		document.getElementById('submitbtn').disabled = false;
+	}
+	else {
+		if(selectedFile.size > 500000 ){
+			alert("Please Select File Less than 500KB");
+		}
+		else{
+			alert("Only jpg/jpeg and png files are allowed!");
+		}
+		document.getElementById('submitbtn').disabled = true;
+
+	}
+}
+</script>
+</script>
 </body>
 </html>
