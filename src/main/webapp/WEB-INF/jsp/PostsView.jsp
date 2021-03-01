@@ -213,7 +213,7 @@ function deletePost(id){
     }
 }
 function LoadNewData(){
-    var userid = ${sessionScope.currentUser.id};
+    var userid = "${param.userId}";
     var excludeOwner = "${param.excludeOwner}";
     count++;
     $.ajax({
@@ -281,7 +281,7 @@ function LoadNewData(){
 }
 
 function LoadPreviousData(){
-    var userid = ${sessionScope.currentUser.id};
+     var userid = "${param.userId}";
     var excludeOwner = "${param.excludeOwner}";
     count--;
     $.ajax({

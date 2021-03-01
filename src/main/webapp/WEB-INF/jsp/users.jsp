@@ -49,7 +49,7 @@
                             <c:url value="/post/list/page" var = "view">
                                 <c:param name="userId" value="${user.id}"/>
                                 <c:param name="page" value="0"/>
-
+                                <c:param name="excludeOwner" value="false"/>
                             </c:url>
                             <div class="btn-group">
                                 <a href="${view}" class="btn btn-outline-primary">View Posts</a>
