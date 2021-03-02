@@ -194,7 +194,12 @@ public class PostUploadController {
 //            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
 //                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
             modelMap.put("isDeleted", "no");
-        } else {
+        }
+        else if(!excludeOwner && (userId != null || userId != 0)){
+            modelMap.put("isDeleted", "no");
+            postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
+        }
+        else {
             modelMap.put("isDeleted", "yes");
             postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
 //            postList.addAll(postService.getPostsByUploaderId(userId));
