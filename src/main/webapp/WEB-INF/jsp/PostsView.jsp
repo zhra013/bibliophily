@@ -55,7 +55,7 @@
                                                     <!-- User meta -->
                                                     <div class="user-block">
                                                         <div class="image">
-                                                            <img src="/post/coverPhoto?postId=${post.id}" data-user-popover="1" alt="">
+                                                            <img src="/img/profile.png" data-user-popover="1" alt="">
                                                         </div>
                                                         <div class="user-info">
                                                             <b>${post.uploader.userName}</b> posted ${post.postType} <b>${post.title}</b> of Author <b>${post.author}</b> Edition ${post.edition}
@@ -195,17 +195,27 @@
 
 <script>
 var count = 0;
+var deleted = "";
 $(document).ready(function() {
     var x = document.getElementsByClassName("del");
-    var deleted = "${isDeleted}";
+    deleted = "${isDeleted}";
+    console.log(deleted);
     $("#previousBtn").addClass("d-none");
-    if(deleted == "yes"){
-        document.getElementsByClassName("del").style.display = "block";
+    deletebtn(x, deleted);
+});
+function deletebtn(obj, result){
+    if(result == "yes"){
+        for(var i = 0; i < obj.length; i++){
+                document.getElementsByClassName("del")[i].style.display = "block";
+        }
     }
     else {
-      document.getElementsByClassName("del").style.display = "none";
+        for(var i = 0; i < obj.length; i++){
+            document.getElementsByClassName("del")[i].style.display = "none";
+        }
     }
-});
+}
+
 function deletePost(id){
     var userid = ${sessionScope.currentUser.id};
     if(confirm("Delete this post?")){
@@ -254,9 +264,7 @@ function LoadNewData(){
                         mm = '0' + mm;
                     }
                     str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
-                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
-                    + obj[i].id
-                    + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
                     + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
                     + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
                     + obj[i].blog + '</p></div><div class="post-text">Rating'
@@ -268,7 +276,9 @@ function LoadNewData(){
                     + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
                   document.getElementById("post_area").innerHTML = str;
-                  stars = null;
+                  var x = document.getElementsByClassName("del");
+                  deletebtn(x, deleted);
+
                 }
                 if(count > 0){
                     $("#previousBtn").removeClass("d-none");
@@ -323,9 +333,7 @@ function LoadPreviousData(){
                     }
 
                     str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
-                        + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/post/coverPhoto?postId='
-                        + obj[i].id
-                        + '" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                        + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
                         + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
                         + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
                         + obj[i].blog + '</p></div><div class="post-text">Rating'
@@ -337,6 +345,8 @@ function LoadPreviousData(){
                         + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                   }
                   document.getElementById("post_area").innerHTML = str;
+                  var x = document.getElementsByClassName("del");
+                  deletebtn(x, deleted);
                 }
                 if(count > 0){
                     $("#nextBtn").removeClass("d-none");
