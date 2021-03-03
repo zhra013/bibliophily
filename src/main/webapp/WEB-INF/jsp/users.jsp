@@ -50,6 +50,7 @@
                                 <c:param name="userId" value="${user.id}"/>
                                 <c:param name="page" value="0"/>
                                 <c:param name="excludeOwner" value="false"/>
+                                <c:param name="users" value="true"/>
                             </c:url>
                             <div class="btn-group">
                                 <a href="${view}" class="btn btn-outline-primary">View Posts</a>

@@ -178,6 +178,7 @@ public class PostUploadController {
     @RequestMapping(value = "/list/page", method = RequestMethod.GET)
     public String postListPaginated(@RequestParam(required = false) Long userId,
                                     @RequestParam(required = false) boolean excludeOwner,
+                                    @RequestParam(required = false) boolean users,
                                     @RequestParam int page,
                                     ModelMap modelMap,
                                     HttpSession session) {
@@ -194,12 +195,10 @@ public class PostUploadController {
 //            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
 //                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
             modelMap.put("isDeleted", "no");
-        }
-        else if(!excludeOwner && (userId != null || userId != 0)){
+        } else if (users && excludeOwner == false && (userId != null || userId != 0)) {
             modelMap.put("isDeleted", "no");
             postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
-        }
-        else {
+        } else {
             modelMap.put("isDeleted", "yes");
             postList.addAll(postService.getFilteredPostList(userId, page, excludeOwner));
 //            postList.addAll(postService.getPostsByUploaderId(userId));
