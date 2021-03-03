@@ -90,7 +90,7 @@
                                                     <!-- Featured image -->
                                                     <div class="post-image">
                                                         <a data-fancybox="post1" data-lightbox-type="comments">
-                                                            <img src="/post/coverPhoto?postId=${post.id}" alt="">
+                                                            <img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=${post.id}" alt="">
                                                         </a>
                                                         <!-- Action buttons -->
                                                         <!-- /partials/pages/feed/buttons/feed-post-actions.html -->
@@ -148,7 +148,9 @@
                             <nav aria-label="Page navigation example">
                               <ul class="pagination">
                                 <li class="page-item"><a class="page-link" id="previousBtn" onclick="LoadPreviousData()">Previous</a></li>
-                                <li class="page-item"><a class="page-link" id="nextBtn" onclick="LoadNewData()">Next</a></li>
+                                <c:if test="${posts.size() == 4}">
+                                    <li class="page-item"><a class="page-link" id="nextBtn" onclick="LoadNewData()">Next</a></li>
+                                </c:if>
                               </ul>
                             </nav>
                         </div>
@@ -270,7 +272,7 @@ function LoadNewData(){
                     + obj[i].blog + '</p></div><div class="post-text">Rating'
                     + stars
                     + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                    + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                    + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
                     + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
                     + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                     + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
@@ -278,7 +280,12 @@ function LoadNewData(){
                   document.getElementById("post_area").innerHTML = str;
                   var x = document.getElementsByClassName("del");
                   deletebtn(x, deleted);
-
+                   if(obj.length < 4){
+                        $("#nextBtn").addClass("d-none");
+                   }
+                   else{
+                        $("#nextBtn").removeClass("d-none");
+                   }
                 }
                 if(count > 0){
                     $("#previousBtn").removeClass("d-none");
@@ -339,7 +346,7 @@ function LoadPreviousData(){
                         + obj[i].blog + '</p></div><div class="post-text">Rating'
                         + stars
                         + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                        + '<img src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                        + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
                         + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
                         + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                         + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
