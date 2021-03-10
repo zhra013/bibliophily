@@ -2,14 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-
-
-
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE HTML>
-<html lang="zxx">
+<html lang="en">
 
 <head>
 	<title>Bibliophily Connect Entry</title>
@@ -19,6 +15,14 @@
 	<meta name="keywords" content="Triple Forms Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
 	<script src="/../js/jQuery-3.4.1.js"> </script>
     <script src="/../js/validation.js"> </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="/../js/crypto-js/core-min.js"> </script>
+<script src="/../js/crypto-js/enc-utf16-min.js"> </script>
+<script src="/../js/crypto-js/enc-base64-min.js"> </script>
+<script src="/../js/crypto-js/aes.js"> </script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>
 		addEventListener("load", function () {
 			setTimeout(hideURLbar, 0);
@@ -72,7 +76,7 @@
 							     <form:select cssClass="input" path="userType" items="${userType}"/>
 
 
-						   <button type="submit" class="btn submit">Login</button>
+						   <button type="submit" id="submit" class="btn submit">Login</button>
 
 						</form:form>
 					</article>
@@ -141,5 +145,36 @@
 	</div>
 
 </body>
+
+
+
+
+<script>
+$("#submit").click(function(){
+
+var key = CryptoJS.lib.WordArray.random(16);
+
+        var iv= CryptoJS.lib.WordArray.random(16);
+var email=$("#loginUserName").val();
+var password=$("#loginUserPassword").val();
+
+
+var pass = CryptoJS.AES.encrypt(password, key, { iv: iv });
+var encrypted =CryptoJS.AES.encrypt(email, key, { iv: iv });
+encrypted=encrypted.ciphertext.toString();
+       encrypted = CryptoJS.AES.encrypt( encrypted, key, { iv: iv });
+        var cipherData = iv.toString(CryptoJS.enc.Base64)+":"+encrypted.ciphertext.toString()+":"+key.toString(CryptoJS.enc.Base64);
+
+   pass=pass.ciphertext.toString();
+       pass = CryptoJS.AES.encrypt( pass, key, { iv: iv });
+        var cipherDatapass = iv.toString(CryptoJS.enc.Base64)+":"+pass.ciphertext.toString()+":"+key.toString(CryptoJS.enc.Base64);
+
+alert(cipherData);
+alert(cipherDatapass);
+$("#loginUserName").val(cipherData);
+$("#loginUserPassword").val(cipherDatapass);
+$("#key").val(key);
+});
+</script>
 
 </html>

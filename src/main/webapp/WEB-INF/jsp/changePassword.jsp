@@ -30,6 +30,8 @@
                                            <form:errors path="userPassword"/>
                               <input type="hidden" name="userType" value="${user.userType}">
                                           <input type="hidden" name="userId" value="${user.id}">
+                    </br>
+                    <input type="checkbox" id="showpass" onclick="showPassword()"> Show Password
                 </div>
             </div>
 
@@ -43,5 +45,15 @@
    </div>
 
 </form:form>
+<script>
+function showPassword(){
+  var x = document.getElementById("userPassword");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
 </body>
 </html>
