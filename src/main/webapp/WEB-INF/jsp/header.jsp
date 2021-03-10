@@ -16,7 +16,7 @@
              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
       </c:url>
 
-     <c:url value="changePassword" var = "changePassword">
+     <c:url value="/changePassword" var = "changePassword">
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
      </c:url>
 

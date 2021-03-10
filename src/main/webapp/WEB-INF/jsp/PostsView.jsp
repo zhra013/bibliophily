@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/../css/bulma.css">
     <link rel="stylesheet" href="/../css/app.css">
     <link rel="stylesheet" href="/../css/core.css">
+    <link rel="stylesheet" href="/../css/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -107,17 +108,16 @@
                                                             </a>
                                                         </div> -->
 
-                                                        <div class="fab-wrapper is-share">
+                                                        <div class="fab-wrapper is-comment">
                                                             <a href="${review}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
                                                                 <i class="fas fa-comments"></i>
                                                             </a>
                                                         </div>
                                                         <div class="fab-wrapper is-share">
-                                                            <a href="${share}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
-                                                                <i class="fas fa-comments"></i>
+                                                            <a data-toggle="modal" onclick="setUrl('${share}')" data-target="#addSection"  class="small-fab share-fab modal-trigger" style="text-decoration:none;">
+                                                                <i class="fas fa-share"></i>
                                                             </a>
                                                         </div>
-
                                                      <div class="del">
                                                         <div class="fab-wrapper is-comment">
                                                            <a onclick="deletePost(${post.id})" class="small-fab share-fab modal-trigger">
@@ -169,7 +169,36 @@
 </c:choose>
 
     </div>
+    <div class="modal fade section-body" id="addSection" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" id="putModalData">
 
+                   <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="modalHeader">Share Post</h5>
+                    <div class="d-flex header-icon card-header-btn">
+                        <button type="button" class="align-self-center" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal-body h-auto pt-0" >
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="card-element">
+                                    <div class="pb-2"><label for="username">Write Something</label>
+                                </div>
+                                    <input type="text" id="post_caption">
+                                </div>
+                                </div>
+                                <input type="hidden" name="shareUrl" id="shareUrl">
+                                <div class="col-md-2 mt-3 text-center d-flex justify-content-center">
+                                <button type="button" onclick="SharePost()" class="Submit-btn align-self-center py-1">Submit </button>
+                    </div>
+                    </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
 
     <script src="https://js.stripe.com/v3/"></script>
 
@@ -234,6 +263,11 @@ function deletePost(id){
         window.location.href = "/post/delete?postId="+id + "&userId="+userid;
     }
 }
+function setUrl(str){
+    document.getElementById("shareUrl").value = str;
+    document.getElementById("post_caption").value = "";
+
+}
 function LoadNewData(){
     var userid = "${param.userId}";
     var excludeOwner = "${param.excludeOwner}";
@@ -247,7 +281,7 @@ function LoadNewData(){
            console.log(obj);
            if(obj.length > 0){
                 var list = document.getElementById("post_area");
-                debugger
+
                 // If the <ul> element has any child nodes, remove its first child node
                 if (list.hasChildNodes()) {
                   list.removeChild(list.childNodes[0]);
@@ -307,8 +341,21 @@ function LoadNewData(){
         });
 }
 
+function SharePost(){
+ var caption = document.getElementById("post_caption").value;
+ var url = document.getElementById("shareUrl").value;
+ $.ajax({
+     type: 'get',
+     url: url,
+     data: { comment : caption},
+     success: function (data) {
+            location.reload();
+        }
+     });
+}
+
 function LoadPreviousData(){
-     var userid = "${param.userId}";
+    var userid = "${param.userId}";
     var excludeOwner = "${param.excludeOwner}";
     count--;
     $.ajax({
@@ -320,7 +367,7 @@ function LoadPreviousData(){
             console.log(obj);
            if(obj.length > 0){
                 var list = document.getElementById("post_area");
-                debugger
+
                 // If the <ul> element has any child nodes, remove its first child node
                 if (list.hasChildNodes()) {
                   list.removeChild(list.childNodes[0]);
@@ -328,38 +375,76 @@ function LoadPreviousData(){
 
                   var str = "";
                   for(var i = 0; i < obj.length; i++){
-                  var stars = "";
-                    for(var j = 1; j <= 5; j++){
-                          if(j <= obj[i].rating){
-                              stars += '<span class="fa fa-star checked"></span>';
+
+
+                    if(obj[i].isShared){
+                        var stars = "";
+                        for(var j = 1; j <= 5; j++){
+
+                              if(j <= obj[i].postShared.rating){
+                                  stars += '<span class="fa fa-star checked"></span>';
+                              }
+                              else{
+                                  stars += '<span class="fa fa-star"></span>';
+                              }
                           }
-                          else{
-                              stars += '<span class="fa fa-star"></span>';
-                          }
+                        var date = new Date(obj[i].date);
+                        var dd = date.getDate();
+                        var mm = date.getMonth() + 1;
+                        var yyyy = date.getFullYear();
+                        if (dd < 10) {
+                            dd = '0' + dd;
+                        }
+
+                        if (mm < 10) {
+                            mm = '0' + mm;
+                        }
+                           str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                               + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                               + obj[i].uploader.userName + '</b> shared <b>' + obj[i].postShared.uploader.userName + '</b> post ' + obj[i].postShared.postType + ' <b> ' + obj[i].postShared.title + '</b> of Author <b> ' + obj[i].postShared.author + '</b> Edition '
+                               + obj[i].postShared.edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                               + obj[i].postShared.blog + '</p></div><div class="post-text">Rating'
+                               + stars
+                               + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                               + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].postShared.id + '" alt=""></a>'
+                               + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].postShared.id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                               + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                               + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                       }
-                    var date = new Date(obj[i].date);
-                    var dd = date.getDate();
-                    var mm = date.getMonth() + 1;
-                    var yyyy = date.getFullYear();
-                    if (dd < 10) {
-                        dd = '0' + dd;
-                    }
+                      else{
+                          var stars = "";
+                          for(var j = 1; j <= 5; j++){
 
-                    if (mm < 10) {
-                        mm = '0' + mm;
-                    }
+                                if(j <= obj[i].rating){
+                                    stars += '<span class="fa fa-star checked"></span>';
+                                }
+                                else{
+                                    stars += '<span class="fa fa-star"></span>';
+                                }
+                            }
+                          var date = new Date(obj[i].date);
+                          var dd = date.getDate();
+                          var mm = date.getMonth() + 1;
+                          var yyyy = date.getFullYear();
+                          if (dd < 10) {
+                              dd = '0' + dd;
+                          }
 
-                    str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
-                        + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
-                        + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
-                        + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
-                        + obj[i].blog + '</p></div><div class="post-text">Rating'
-                        + stars
-                        + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                        + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
-                        + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                        + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
-                        + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                          if (mm < 10) {
+                              mm = '0' + mm;
+                          }
+                        str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                            + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                            + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
+                            + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                            + obj[i].blog + '</p></div><div class="post-text">Rating'
+                            + stars
+                            + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                            + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                            + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                            + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                            + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                      }
                   }
                   document.getElementById("post_area").innerHTML = str;
                   var x = document.getElementsByClassName("del");
