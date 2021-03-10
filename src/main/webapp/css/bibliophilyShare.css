@@ -25,30 +25,30 @@ label {
     color: orange;
 }
 
-.book-upload-page {
+.upload-page {
     max-width: 550px;
     margin: 0 auto;
 }
-.book-upload-card {
+.upload-card {
     padding: 15px;
 }
 
-.book-detail-page {
+.detail-page {
     max-width: 800px;
     margin: 0 auto;
 }
 
-.book-detail-page-hr {
+.detail-page-hr {
     max-width: 700px;
     margin: 1rem auto;
 }
 
-.book-upload-card {
+.upload-card {
     padding: 15px;
 }
 
-.book-share-card {
-    max-width: 450px;
+.share-card {
+    max-width: 700px;
     padding: 15px;
     margin: 0 auto;
 }

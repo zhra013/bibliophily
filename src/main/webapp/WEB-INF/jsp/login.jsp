@@ -3,55 +3,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<!doctype html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Log-In</title>
-</head>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>LOGIN PAGE</title>
+    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="/../css/Style.css">
+  </head>
+  <body>
+    <div class="login">
+      <h2>Login Bibliophily Connect</h2>
+       <form:form modelAttribute="user" method="post" enctype="multipart/form-data">
+      <div class="textbook">
+          <i class="fas fa-user"></i>
+        <form:input cssClass="input" path="userName" size="15" maxlength="15" placeholder="Username" onblur="checkUsername()" required="required"/>
+      </div>
+      <div class="textbook">
+        <i class="fas fa-lock"></i>
+         <form:password cssClass="password" path="userPassword" size="15" placeholder="Password" required="required" />
+        <form:errors path="userPassword"/>
+      </div>
+   <div class="textbook">
+    <i class="fas fa-user"></i>
+    <form:select cssClass="dropbtn" path="userType" items="${userType}"/>
 
-<body class="container" style="padding-top: 10%">
+   </div>
+      <input type="submit" class="submit" value="Sign In">
+           <input type="button" class="button" value="Sign Up" onclick="window.location.href='/signUp'"/>
+           <a href="/forgotPassword"> forgot password</a>
+     </div>
+   </form:form>
 
-<div class="card book-share-card">
-    <div class="card-body text-center">
-        
-        <%--@elvariable id="user" type="org"--%>
-        <form:form modelAttribute="user" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-sm-4 form-group">
-                    <form:label path="userName">Username</form:label>
-                </div>
-                <div class="col-sm-8 form-group">
-                    <form:input cssClass="form-control" path="userName" size="15" maxlength="15" placeholder="Username" required="required"/>
-                    <form:errors path="userName"/>
-                </div>
-            </div>
+   <script src="/../js/jQuery-3.4.1.js"> </script>
 
-            <div class="row">
-                <div class="col-sm-4 form-group">
-                    <form:label path="userPassword">Password</form:label>
-                </div>
-                <div class="col-sm-8 form-group">
-                    <form:password cssClass="form-control" path="userPassword" size="15" placeholder="Password" required="required" />
-                    <form:errors path="userPassword"/>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4 form-group">
-                    <form:label path="userType">User Type</form:label>
-                </div>
-                <div class="col-sm-8 form-group">
-                    <form:select cssClass="form-control" path="userType" items="${userType}"/>
-                </div>
-            </div>
-
-            <input type="submit" name="button" class="btn btn-lg btn-primary btn-block" value="Log in"/>
-            <div style="margin-top: 10px;">
-                <a href="/signUp" >Sign Up</a>
-            </div>
-        </form:form>
-    </div>
-</div>
-</body>
+  </body>
 </html>
+
