@@ -1,6 +1,7 @@
 package com.ase.application.Mappers;
 
 import com.ase.application.dto.PostDTO;
+import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.dto.UserDTO;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
@@ -23,7 +24,7 @@ public class PostMapper {
         = Mapping.from(UserDTO.class).to(User.class)
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
-                .mapper();
+            .mapper();
 
     @Bean
     Mapper<Post, PostDTO> postToDTOMapper() {
@@ -33,6 +34,18 @@ public class PostMapper {
                 .omitInDestination(PostDTO::getUploadedCoverPhoto)
                 .omitInSource(Post::getPostReview)
                 .omitInDestination(PostDTO::getRating)
+                .omitInDestination(PostDTO::getPostShared)
+                .mapper();
+    }
+
+    @Bean
+    Mapper<Post, SharedPostDTO> postToSharePostDTOMapper() {
+        return Mapping.from(Post.class).to(SharedPostDTO.class)
+                .useMapper(userToDTOMapper)
+                .omitInSource(Post::getCoverPhoto)
+                .omitInDestination(SharedPostDTO::getUploadedCoverPhoto)
+                .omitInSource(Post::getPostReview)
+                .omitInDestination(SharedPostDTO::getRating)
                 .mapper();
     }
 
@@ -44,6 +57,7 @@ public class PostMapper {
                 .omitInSource(PostDTO::getUploadedCoverPhoto)
                 .omitInDestination(Post::getPostReview)
                 .omitInSource(PostDTO::getRating)
+                .omitInSource(PostDTO::getPostShared)
                 .mapper();
     }
 

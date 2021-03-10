@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.PostService;
 import com.ase.application.dto.PostDTO;
+import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
 import com.remondis.remap.Mapper;
 import org.apache.commons.io.IOUtils;
@@ -39,6 +40,9 @@ public class PostUploadController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private Mapper<Post, SharedPostDTO> postToSharePostDTOMapper;
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String viewPostUploadPage(ModelMap modelMap) {
@@ -206,20 +210,48 @@ public class PostUploadController {
 
         List<PostDTO> postDTOS = new ArrayList<>();
         postList.forEach(post -> {
-            AtomicInteger rating = new AtomicInteger();
-            AtomicInteger total = new AtomicInteger();
-            post.getPostReview().forEach(postReview -> {
-                if (postReview.getRating() != 0) {
-                    rating.addAndGet(postReview.getRating());
-                    total.addAndGet(1);
-                }
-            });
+
             PostDTO postDTO = postToDTOMapper.map(post);
-            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+
+            if (postDTO.getIsShared() != null && postDTO.getIsShared().equals(Boolean.TRUE)) {
+                Post sharedPost = postService.getPostById(postDTO.getSharedPostId());
+                SharedPostDTO sharePostDTO = postToSharePostDTOMapper.map(sharedPost);
+                AtomicInteger rating = new AtomicInteger();
+                AtomicInteger total = new AtomicInteger();
+                sharedPost.getPostReview().forEach(postReview -> {
+                    if (postReview.getRating() != 0) {
+                        rating.addAndGet(postReview.getRating());
+                        total.addAndGet(1);
+                    }
+                });
+                sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                postDTO.setPostShared(sharePostDTO);
+            } else {
+                AtomicInteger rating = new AtomicInteger();
+                AtomicInteger total = new AtomicInteger();
+                post.getPostReview().forEach(postReview -> {
+                    if (postReview.getRating() != 0) {
+                        rating.addAndGet(postReview.getRating());
+                        total.addAndGet(1);
+                    }
+                });
+                postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            }
             postDTOS.add(postDTO);
+
         });
 
         modelMap.put("posts", postDTOS);
         return "PostsView";
+    }
+
+    @RequestMapping(value = "/share", method = RequestMethod.GET)
+    public String sharePost(@RequestParam(required = false) Long userId,
+                            @RequestParam(required = false) Long postId,
+                            @RequestParam String comment) throws IOException {
+
+        postService.sharePost(userId, postId, comment);
+
+        return "redirect:/post/list/page?userId=" + userId + "&excludeOwner=false&page=0";
     }
 }

@@ -4,11 +4,11 @@ import com.ase.application.Service.PostReviewService;
 import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
 import com.ase.application.dto.PostDTO;
+import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.remondis.remap.Mapper;
-import org.apache.catalina.filters.ExpiresFilter;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,8 +45,11 @@ public class ValidationController {
     @Autowired
     private Mapper<Post, PostDTO> postToDTOMapper;
 
+    @Autowired
+    private Mapper<Post, SharedPostDTO> postToSharePostDTOMapper;
 
-    @RequestMapping(value = "/validate",method = GET)
+
+    @RequestMapping(value = "/validate", method = GET)
     public void ValidateLogin(@RequestParam("action") String action, HttpServletResponse response, HttpServletRequest request) {
         PrintWriter out = null;
         try {
@@ -143,16 +146,33 @@ public class ValidationController {
         List<PostDTO> postDTOS = new ArrayList<>();
 
         postList.forEach(post -> {
-            AtomicInteger rating = new AtomicInteger();
-            AtomicInteger total = new AtomicInteger();
-            post.getPostReview().forEach(postReview -> {
-                if (postReview.getRating() != 0) {
-                    rating.addAndGet(postReview.getRating());
-                    total.addAndGet(1);
-                }
-            });
+
             PostDTO postDTO = postToDTOMapper.map(post);
-            postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+
+            if (postDTO.getIsShared() != null && postDTO.getIsShared().equals(Boolean.TRUE)) {
+                Post sharedPost = postService.getPostById(postDTO.getSharedPostId());
+                SharedPostDTO sharePostDTO = postToSharePostDTOMapper.map(sharedPost);
+                AtomicInteger rating = new AtomicInteger();
+                AtomicInteger total = new AtomicInteger();
+                sharedPost.getPostReview().forEach(postReview -> {
+                    if (postReview.getRating() != 0) {
+                        rating.addAndGet(postReview.getRating());
+                        total.addAndGet(1);
+                    }
+                });
+                sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                postDTO.setPostShared(sharePostDTO);
+            } else {
+                AtomicInteger rating = new AtomicInteger();
+                AtomicInteger total = new AtomicInteger();
+                post.getPostReview().forEach(postReview -> {
+                    if (postReview.getRating() != 0) {
+                        rating.addAndGet(postReview.getRating());
+                        total.addAndGet(1);
+                    }
+                });
+                postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            }
             postDTOS.add(postDTO);
 
         });

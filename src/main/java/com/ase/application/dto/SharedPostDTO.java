@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-public class PostDTO {
+public class SharedPostDTO {
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -36,6 +36,4 @@ public class PostDTO {
     private Boolean isShared;
 
     private long sharedPostId;
-
-    private SharedPostDTO postShared;
 }

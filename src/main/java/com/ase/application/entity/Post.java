@@ -43,6 +43,11 @@ public class Post implements Serializable {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostReview> postReview;
 
+    private Boolean isShared;
+
+    private long sharedPostId;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -20,4 +20,6 @@ public interface PostService {
     void deletePost(Long postId);
 
     List<Post> getFilteredPostList(Long userId, int pageNo, boolean excludeOwner);
+
+    void sharePost(Long userId, Long postId, String comment);
 }

@@ -75,4 +75,17 @@ public class PostServiceImpl implements PostService {
         }
         return this.postRepository.findAll(booleanBuilder.getValue(), requestedElement).getContent();
     }
+
+    @Override
+    public void sharePost(Long userId, Long postId, String comment) {
+        User user = userService.findUserById(userId);
+        Post post = postRepository.findById(postId).get();
+        Post sharePost = new Post();
+        sharePost.setUploader(user);
+        sharePost.setDate(LocalDate.now());
+        sharePost.setIsShared(true);
+        sharePost.setBlog(comment);
+        sharePost.setSharedPostId(post.getId());
+        postRepository.save(sharePost);
+    }
 }

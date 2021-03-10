@@ -75,6 +75,11 @@
                                                        <c:param name="userId" value="${sessionScope.currentUser.id}"/>
                                                     </c:url>
 
+                                                    <c:url value="/post/share" var="share">
+                                                         <c:param name="postId" value="${post.id}"/>
+                                                         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                                                     </c:url>
+
                                                 <!-- Post body -->
                                                 <div class="card-body">
                                                     <!-- Post body text -->
@@ -104,6 +109,11 @@
 
                                                         <div class="fab-wrapper is-share">
                                                             <a href="${review}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
+                                                                <i class="fas fa-comments"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="fab-wrapper is-share">
+                                                            <a href="${share}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
                                                                 <i class="fas fa-comments"></i>
                                                             </a>
                                                         </div>
