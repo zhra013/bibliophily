@@ -26,6 +26,7 @@ public class PostServiceImpl implements PostService {
     public void uploadBook(Post post) {
         User uploader = userService.findUserById(post.getUploader().getId());
         post.setDate(LocalDate.now());
+        post.setShareCounter(1);
         post.setUploader(uploader);
         postRepository.save(post);
     }
@@ -47,7 +48,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
-        postRepository.delete(postRepository.findById(postId).get());
+        Post post = postRepository.findById(postId).get();
+        if (post.getIsShared() != null && post.getIsShared().equals(Boolean.TRUE)) {
+            List<Post> sharedPost = postRepository.findPostBySharedPostId(post.getSharedPostId());
+            postRepository.deleteAll(sharedPost);
+        }
+        postRepository.delete(post);
     }
 
     @Override
@@ -80,6 +86,7 @@ public class PostServiceImpl implements PostService {
     public void sharePost(Long userId, Long postId, String comment) {
         User user = userService.findUserById(userId);
         Post post = postRepository.findById(postId).get();
+        post.setShareCounter(post.getShareCounter() + 1);
         Post sharePost = new Post();
         sharePost.setUploader(user);
         sharePost.setDate(LocalDate.now());
@@ -87,5 +94,6 @@ public class PostServiceImpl implements PostService {
         sharePost.setBlog(comment);
         sharePost.setSharedPostId(post.getId());
         postRepository.save(sharePost);
+        postRepository.save(post);
     }
 }

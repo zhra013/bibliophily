@@ -22,4 +22,6 @@ public interface PostRepository extends QuerydslPredicateExecutor<Post>, PagingA
 
     @Query(value = "select post from Post post where (LOWER(post.title) like %:searchParameter% or LOWER(post.edition) like %:searchParameter% or LOWER(post.author) like %:searchParameter%)")
     List<Post> findPostBySearch(String searchParameter);
+
+    List<Post> findPostBySharedPostId(Long sharedPostId);
 }

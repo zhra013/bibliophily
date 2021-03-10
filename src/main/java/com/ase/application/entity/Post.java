@@ -47,6 +47,8 @@ public class Post implements Serializable {
 
     private long sharedPostId;
 
+    private long shareCounter;
+
 
     @Override
     public boolean equals(Object o) {

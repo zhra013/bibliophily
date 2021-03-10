@@ -36,4 +36,6 @@ public class SharedPostDTO {
     private Boolean isShared;
 
     private long sharedPostId;
+
+    private long shareCounter;
 }

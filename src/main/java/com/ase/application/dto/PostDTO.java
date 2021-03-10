@@ -38,4 +38,6 @@ public class PostDTO {
     private long sharedPostId;
 
     private SharedPostDTO postShared;
+
+    private long shareCounter;
 }
