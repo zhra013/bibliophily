@@ -58,28 +58,52 @@
                                                         <div class="image">
                                                             <img src="/img/profile.png" data-user-popover="1" alt="">
                                                         </div>
+                                                        <c:choose>
+                                                            <c:when test="${post.isShared == 'true'}">
+                                                                <div class="user-info">
+                                                                    <b>${post.uploader.userName}</b> shared <b>${post.postShared.uploader.userName}</b> post ${post.postShared.postType} <b>${post.postShared.title}</b> of Author <b>${post.postShared.author}</b> Edition ${post.postShared.edition}
+                                                                    <fmt:parseDate  value="${post.date}" pattern="yyyy-MM-dd" type="date" var="parsedDate" />
+                                                                    <p><fmt:formatDate type = "date" value = "${parsedDate}" pattern="dd/MM/yyyy" /></p>
+                                                                </div>
+                                                            </c:when>
+                                                            <c:otherwise>
                                                         <div class="user-info">
                                                             <b>${post.uploader.userName}</b> posted ${post.postType} <b>${post.title}</b> of Author <b>${post.author}</b> Edition ${post.edition}
                                                             <fmt:parseDate  value="${post.date}" pattern="yyyy-MM-dd" type="date" var="parsedDate" />
                                                             <p><fmt:formatDate type = "date" value = "${parsedDate}" pattern="dd/MM/yyyy" /></p>
                                                         </div>
+                                                        </c:otherwise>
+                                                        </c:choose>
                                                     </div>
 
                                                 </div>
                                                 <!-- /Post header -->
-                                                   <c:url value="/post/review" var="review">
-                                                        <c:param name="postId" value="${post.id}"/>
-                                                   </c:url>
+                                                <c:choose>
+                                                    <c:when test="${post.isShared == 'true'}">
+                                                        <c:url value="/post/review" var="review">
+                                                            <c:param name="postId" value="${post.postShared.id}"/>
+                                                       </c:url>
 
+                                                        <c:url value="/post/share" var="share">
+                                                             <c:param name="postId" value="${post.postShared.id}"/>
+                                                             <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                                                         </c:url>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:url value="/post/review" var="review">
+                                                            <c:param name="postId" value="${post.id}"/>
+                                                       </c:url>
+
+                                                        <c:url value="/post/share" var="share">
+                                                             <c:param name="postId" value="${post.id}"/>
+                                                             <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                                                         </c:url>
+                                                    </c:otherwise>
+                                                </c:choose>
                                                    <c:url value="/post/delete" var="delete">
-                                                       <c:param name="postId" value="${post.id}"/>
-                                                       <c:param name="userId" value="${sessionScope.currentUser.id}"/>
-                                                    </c:url>
-
-                                                    <c:url value="/post/share" var="share">
-                                                         <c:param name="postId" value="${post.id}"/>
-                                                         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
-                                                     </c:url>
+                                                      <c:param name="postId" value="${post.id}"/>
+                                                      <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+                                                   </c:url>
 
                                                 <!-- Post body -->
                                                 <div class="card-body">
@@ -90,13 +114,28 @@
                                                     <div class="post-text">
                                                      Rating
                                                      <c:forEach begin="1" end="5" varStatus="loop">
-                                                         <span class="fa fa-star ${loop.index <= post.rating ? 'checked' : ''}"></span>
+                                                        <c:choose>
+                                                                <c:when test="${post.isShared == 'true'}">
+                                                                    <span class="fa fa-star ${loop.index <= post.postShared.rating ? 'checked' : ''}"></span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="fa fa-star ${loop.index <= post.rating ? 'checked' : ''}"></span>
+                                                                </c:otherwise>
+                                                        </c:choose>
                                                        </c:forEach>
                                                     </div>
                                                     <!-- Featured image -->
                                                     <div class="post-image">
+
                                                         <a data-fancybox="post1" data-lightbox-type="comments">
-                                                            <img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=${post.id}" alt="">
+                                                        <c:choose>
+                                                            <c:when test="${post.isShared == 'true'}">
+                                                                <img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=${post.postShared.id}" alt="">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=${post.id}" alt="">
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                         </a>
                                                         <!-- Action buttons -->
                                                         <!-- /partials/pages/feed/buttons/feed-post-actions.html -->
@@ -107,24 +146,24 @@
                                                                 <span class="like-overlay"></span>
                                                             </a>
                                                         </div> -->
-
-                                                        <div class="fab-wrapper is-comment">
+                                                        <div class="del">
+                                                            <div class="fab-wrapper is-comment">
+                                                               <a onclick="deletePost(${post.id})" class="small-fab share-fab modal-trigger">
+                                                                  <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                          </div>
+                                                        <div class="fab-wrapper is-share">
                                                             <a href="${review}" class="small-fab share-fab modal-trigger" style="text-decoration:none;">
                                                                 <i class="fas fa-comments"></i>
                                                             </a>
                                                         </div>
-                                                        <div class="fab-wrapper is-share">
-                                                            <a data-toggle="modal" onclick="setUrl('${share}')" data-target="#addSection"  class="small-fab share-fab modal-trigger" style="text-decoration:none;">
+                                                        <div class="like-wrapper">
+                                                            <a data-toggle="modal" onclick="setUrl('${share}')" data-target="#addSection"  class="like-button" style="text-decoration:none;">
                                                                 <i class="fas fa-share"></i>
                                                             </a>
                                                         </div>
-                                                     <div class="del">
-                                                        <div class="fab-wrapper is-comment">
-                                                           <a onclick="deletePost(${post.id})" class="small-fab share-fab modal-trigger">
-                                                              <i class="fas fa-trash"></i>
-                                                            </a>
-                                                        </div>
-                                                      </div>
+
                                                     </div>
                                                 </div>
                                                 <!-- /Post body -->
@@ -287,40 +326,80 @@ function LoadNewData(){
                   list.removeChild(list.childNodes[0]);
                 }
                   var str = "";
-                  for(var i = 0; i < obj.length; i++){
-                    var stars = "";
+                for(var i = 0; i < obj.length; i++){
 
-                    for(var j = 1; j <= 5; j++){
-                        if(j <= obj[i].rating){
-                            stars += '<span class="fa fa-star checked"></span>';
-                        }
-                        else{
-                            stars += '<span class="fa fa-star"></span>';
-                        }
-                    }
-                    var date = new Date(obj[i].date);
-                    var dd = date.getDate();
-                    var mm = date.getMonth() + 1;
-                    var yyyy = date.getFullYear();
-                    if (dd < 10) {
-                        dd = '0' + dd;
-                    }
 
-                    if (mm < 10) {
-                        mm = '0' + mm;
+                  if(obj[i].isShared){
+                      var stars = "";
+                      for(var j = 1; j <= 5; j++){
+
+                            if(j <= obj[i].postShared.rating){
+                                stars += '<span class="fa fa-star checked"></span>';
+                            }
+                            else{
+                                stars += '<span class="fa fa-star"></span>';
+                            }
+                        }
+                      var date = new Date(obj[i].date);
+                      var dd = date.getDate();
+                      var mm = date.getMonth() + 1;
+                      var yyyy = date.getFullYear();
+                      if (dd < 10) {
+                          dd = '0' + dd;
+                      }
+
+                      if (mm < 10) {
+                          mm = '0' + mm;
+                      }
+                         str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                             + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                             + obj[i].uploader.userName + '</b> shared <b>' + obj[i].postShared.uploader.userName + '</b> post ' + obj[i].postShared.postType + ' <b> ' + obj[i].postShared.title + '</b> of Author <b> ' + obj[i].postShared.author + '</b> Edition '
+                             + obj[i].postShared.edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                             + obj[i].postShared.blog + '</p></div><div class="post-text">Rating'
+                             + stars
+                             + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                             + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].postShared.id + '" alt=""></a>'
+                             + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].postShared.id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                             + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                             + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                             + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                     }
-                    str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
-                    + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
-                    + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
-                    + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
-                    + obj[i].blog + '</p></div><div class="post-text">Rating'
-                    + stars
-                    + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
-                    + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
-                    + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                    + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
-                    + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
-                  }
+                    else{
+                        var stars = "";
+                        for(var j = 1; j <= 5; j++){
+
+                              if(j <= obj[i].rating){
+                                  stars += '<span class="fa fa-star checked"></span>';
+                              }
+                              else{
+                                  stars += '<span class="fa fa-star"></span>';
+                              }
+                          }
+                        var date = new Date(obj[i].date);
+                        var dd = date.getDate();
+                        var mm = date.getMonth() + 1;
+                        var yyyy = date.getFullYear();
+                        if (dd < 10) {
+                            dd = '0' + dd;
+                        }
+
+                        if (mm < 10) {
+                            mm = '0' + mm;
+                        }
+                      str += '<div id="feed-post-1" class="card is-post"><div class="content-wrap">'
+                          + '<div class="card-heading"><div class="user-block"><div class="image"><img src="/img/profile.png" data-user-popover="1" alt=""></div><div class="user-info"><b>'
+                          + obj[i].uploader.userName + '</b> posted ' + obj[i].postType + ' <b> ' + obj[i].title + '</b> of Author <b> ' + obj[i].author + '</b> Edition '
+                          + obj[i].edition + '<p>' + dd + '/' + mm + '/' + yyyy + '</p></div></div></div><div class="card-body"><div class="post-text"><p>'
+                          + obj[i].blog + '</p></div><div class="post-text">Rating'
+                          + stars
+                          + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
+                          + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
+                          + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
+                          + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                          + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                          + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
+                    }
+                }
                   document.getElementById("post_area").innerHTML = str;
                   var x = document.getElementsByClassName("del");
                   deletebtn(x, deleted);
@@ -408,7 +487,8 @@ function LoadPreviousData(){
                                + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                                + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].postShared.id + '" alt=""></a>'
                                + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].postShared.id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                               + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                               + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                               + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                                + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                       }
                       else{
@@ -442,7 +522,8 @@ function LoadPreviousData(){
                             + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                             + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
                             + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                            + '<div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
+                            + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                            + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                             + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                       }
                   }
@@ -461,3 +542,4 @@ function LoadPreviousData(){
 }
 </script>
 </html>
+

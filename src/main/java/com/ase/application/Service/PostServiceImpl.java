@@ -90,7 +90,7 @@ public class PostServiceImpl implements PostService {
         Post sharePost = new Post();
         sharePost.setUploader(user);
         sharePost.setDate(LocalDate.now());
-        sharePost.setIsShared(true);
+        sharePost.setIsShared(Boolean.TRUE);
         sharePost.setBlog(comment);
         sharePost.setSharedPostId(post.getId());
         postRepository.save(sharePost);
