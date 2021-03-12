@@ -49,9 +49,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId).get();
+        List<Post> sharedPosts = postRepository.findPostBySharedPostId(post.getId());
+        postRepository.deleteAll(sharedPosts);
         if (post.getIsShared() != null && post.getIsShared().equals(Boolean.TRUE)) {
-            List<Post> sharedPost = postRepository.findPostBySharedPostId(post.getSharedPostId());
-            postRepository.deleteAll(sharedPost);
+            Post postShared = postRepository.findById(post.getSharedPostId()).get();
+            postShared.setShareCounter(postShared.getShareCounter()-1);
         }
         postRepository.delete(post);
     }
