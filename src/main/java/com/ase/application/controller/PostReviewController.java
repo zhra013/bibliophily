@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.PostReviewService;
 import com.ase.application.Service.PostService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.PostReview;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class PostReviewController {
 
         modelMap.put("rating", total.get() == 0 ? 0 : rating.get() / total.get());
         modelMap.put("postReview", new PostReview());
+        UserServiceImpl.decryptUser(post.getUploader());
         modelMap.put("post", post);
 
         Map<Integer, String> ratings = new LinkedHashMap<>();

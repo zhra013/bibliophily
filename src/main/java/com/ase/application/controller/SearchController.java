@@ -1,6 +1,7 @@
 package com.ase.application.controller;
 
 import com.ase.application.Service.PostService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.entity.Post;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,6 +70,7 @@ public class SearchController {
             postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
             postDTOS.add(postDTO);
         });
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         return postDTOS;
     }
 
