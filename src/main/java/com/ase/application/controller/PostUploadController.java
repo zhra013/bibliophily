@@ -229,6 +229,7 @@ public class PostUploadController {
                     }
                 });
                 sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                UserServiceImpl.decryptUserDTO(sharePostDTO.getUploader());
                 postDTO.setPostShared(sharePostDTO);
             } else {
                 AtomicInteger rating = new AtomicInteger();

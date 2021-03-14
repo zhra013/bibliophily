@@ -3,6 +3,7 @@ package com.ase.application.controller;
 import com.ase.application.Service.PostReviewService;
 import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
@@ -159,6 +160,7 @@ public class ValidationController {
                     }
                 });
                 sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                UserServiceImpl.decryptUserDTO(sharePostDTO.getUploader());
                 postDTO.setPostShared(sharePostDTO);
             } else {
                 AtomicInteger rating = new AtomicInteger();
@@ -174,7 +176,7 @@ public class ValidationController {
             postDTOS.add(postDTO);
 
         });
-
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         JSONArray arr = new JSONArray(postDTOS);
        //String posts = obj.writeValueAsString(postDTOS);
         out.print(arr);
