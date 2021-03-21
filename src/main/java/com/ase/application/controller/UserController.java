@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.EmailService;
 import com.ase.application.Service.UserService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
@@ -33,6 +34,8 @@ public class UserController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String viewProfile(ModelMap modelMap, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
+        user= userService.findUserById(user.getId());
+        UserServiceImpl.decryptUser(user);
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
         return "profile";
@@ -46,6 +49,7 @@ public class UserController {
     @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
     public String viewEditProfilePage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
+        UserServiceImpl.decryptUser(user);
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
         return "editProfile";
@@ -60,6 +64,7 @@ public class UserController {
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
     public String viewUpdatePasswordPage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
+        UserServiceImpl.decryptUser(user);
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
         return "changePassword";
@@ -68,6 +73,7 @@ public class UserController {
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         user = userService.updateUserPassword(user, userId);
+        UserServiceImpl.decryptUser(user);
         emailService.SendEmailChangePassword(user);
         return "redirect:http://localhost:9090/profile";
     }
@@ -84,6 +90,7 @@ public class UserController {
         List<User> users = userService.getUsers();
         List<User> newUsers = new ArrayList<>();
         newUsers.addAll(users.stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+        newUsers.forEach(UserServiceImpl::decryptUser);
         modelMap.put("usersList", newUsers);
         return "users";
     }
@@ -105,6 +112,7 @@ public class UserController {
             postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
             postDTOS.add(postDTO);
         });
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         modelMap.put("posts", postDTOS);
         return "PostsView";
     }

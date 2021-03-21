@@ -3,6 +3,7 @@ package com.ase.application.controller;
 import com.ase.application.Service.PostReviewService;
 import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
@@ -20,9 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -89,7 +88,7 @@ public class ValidationController {
 
                 User user = userService.findUserByUserName(userName);
 
-                if(Objects.isNull(user)){
+                if(user==null){
                     out.print("Allow");
                 } else {
                     out.print("UserName Already Exist");
@@ -161,6 +160,7 @@ public class ValidationController {
                     }
                 });
                 sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                UserServiceImpl.decryptUserDTO(sharePostDTO.getUploader());
                 postDTO.setPostShared(sharePostDTO);
             } else {
                 AtomicInteger rating = new AtomicInteger();
@@ -176,7 +176,7 @@ public class ValidationController {
             postDTOS.add(postDTO);
 
         });
-
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         JSONArray arr = new JSONArray(postDTOS);
        //String posts = obj.writeValueAsString(postDTOS);
         out.print(arr);

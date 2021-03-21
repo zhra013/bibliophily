@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -52,9 +53,9 @@ public class LoginController {
                        HttpSession session) {
         user.setUserPassword(decText(user.getUserPassword()));
         user.setUserName(decText(user.getUserName()));
-        user = userService.login(user);
+        User userOptional = userService.login(user);
 
-        if (Objects.isNull(user)) {
+        if (Objects.isNull(userOptional)) {
             ObjectError objectError = new ObjectError("username", "User name or password is invalid");
             bindingResult.addError(objectError);
         }
@@ -64,7 +65,7 @@ public class LoginController {
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "entry";
         } else {
-            session.setAttribute("currentUser", user);
+            session.setAttribute("currentUser", userOptional);
         }
         return "redirect:http://localhost:9090/home";
     }
