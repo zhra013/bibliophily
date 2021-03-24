@@ -27,6 +27,8 @@
         </div>
     </c:when>
     <c:otherwise>
+
+
         <div class="table-responsive table-div">
             <table id="example" style="width:100%" class="table table-hover"  style="color: purple;">
                 <thead>

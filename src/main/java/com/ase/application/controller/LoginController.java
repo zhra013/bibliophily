@@ -67,7 +67,7 @@ public class LoginController {
             return "entry";
         }else if(userOptional.getUserType().equals(UserType.ADMIN)){
             session.setAttribute("currentUser", userOptional);
-            return "redirect:http://localhost:9090/admin/page";
+            return "redirect:http://localhost:9090/admin/report";
         } else {
             session.setAttribute("currentUser", userOptional);
             return "redirect:http://localhost:9090/home";

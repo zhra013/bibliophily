@@ -5,7 +5,9 @@
 <html>
 <head>
     <title>Report</title>
+    <script src="/../js/jQuery-3.4.1.js"></script>
     <%@include file="bootstrapFiles.jsp"%>
+    <link rel="stylesheet" href="/../css/table.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-light">
@@ -34,32 +36,116 @@
 
 
     </ul>
-
-    <div class="form-inline search-div dropdown">
-        <input type="search" name="param" class="form-control mr-sm-2" placeholder="Search">
-        <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown">Search</button>
-        <div class="dropdown-menu search-menu w-100">
-        </div>
-    </div>
 </nav>
 <div class="card book-share-card">
     <div class="card-body">
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <div class="logo-div text-right" style="margin-top: 20px;">
-                    <a href="/admin/topUsers" class="btn btn-primary btn-block">Top Contributors of the System</a>
+        <c:choose>
+            <c:when test="${empty topContributor}">
+                <div class="alert alert-info table-div text-center">
+                    Currently, no user is available in this system.
                 </div>
-            </div>
-        </div>
+            </c:when>
+            <c:otherwise>
 
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <div class="logo-div text-right" style="margin-top: 20px;">
-                    <a href="/admin/topSharedBooks" class="btn btn-primary btn-block">Top Shared Books</a>
+                <div class="logo-div text-right" style="margin-top: 20px;" >
+                   <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block"  onclick="showTopContributors()" value="Top Contributor"/>
                 </div>
-            </div>
-        </div>
+                <div class="logo-div text-right" style="margin-top: 20px;" ></div>
+
+                <div class="table-responsive table-div" id="TopContributor" style="display:none;">
+                    <table id="topContributor" style="width:100%" class="table table-hover"  style="color: purple;">
+                        <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Mail</th>
+                            <th>No. of Post</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="user" items="${topContributor}">
+                            <tr>
+                                <td>${user.userName}</td>
+                                <td>${user.userMail}</td>
+                                <td>${user.totalPost}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
+
+        <c:choose>
+            <c:when test="${empty postContributionList}">
+                <div class="alert alert-info table-div text-center">
+                    Currently, no user is available in this system.
+                </div>
+            </c:when>
+            <c:otherwise>
+
+                <div class="logo-div text-right" style="margin-top: 20px;" >
+                   <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block" onclick="showTopSharedPost()"  value="Top Shared Post"/>
+                </div>
+                <div class="logo-div text-right" style="margin-top: 20px;" ></div>
+                <div class="table-responsive table-div" id="TopSharedPost" style="display:none;">
+                    <table id="postContributionList" style="width:100%" class="table table-hover"  style="color: purple;">
+                        <thead>
+                        <tr>
+                            <th>Uploader User Name</th>
+                            <th>Post Type</th>
+                            <th>Post Title</th>
+                            <th>Post Author</th>
+                            <th>No. of times Shared</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="post" items="${postContributionList}">
+                            <tr>
+                                <td>${post.uploader.userName}</td>
+                                <td>${post.postType}</td>
+                                <td>${post.author}</td>
+                                <td>${post.title}</td>
+                                <td>${post.shareCounter}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
+
+
    </div>
 </div>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+  <script>
+$(document).ready(function() {
+    $('#topContributor').DataTable();
+    $('#postContributionList').DataTable();
+} );
+function showTopContributors(){
+    var style = document.getElementById("TopContributor").style.display;
+    if(style == "none"){
+        document.getElementById("TopContributor").style.display = "block";
+    }
+    else if(style == "block"){
+        document.getElementById("TopContributor").style.display = "none";
+    }
+
+}
+
+function showTopSharedPost(){
+    var style = document.getElementById("TopSharedPost").style.display;
+        if(style == "none"){
+            document.getElementById("TopSharedPost").style.display = "block";
+        }
+        else if(style == "block"){
+            document.getElementById("TopSharedPost").style.display = "none";
+        }
+}
+</script>
 </body>
 </html>
