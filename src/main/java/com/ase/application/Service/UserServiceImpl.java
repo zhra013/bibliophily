@@ -16,12 +16,19 @@ import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.hibernate.transform.ResultTransformer;
+
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public void userRegistration(User user) {
@@ -34,7 +41,8 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         List<User> users= userRepository.findAll();
       return  users.stream().filter(user1 -> user.getUserName().equals(UserServiceImpl.decrypt(user1.getUserName()))
-        && user.getUserPassword().equals(UserServiceImpl.decrypt(user1.getUserPassword()))).findAny().orElse(null);
+        && user.getUserPassword().equals(UserServiceImpl.decrypt(user1.getUserPassword()))
+              && user1.getUserType().equals(user.getUserType())).findAny().orElse(null);
     }
 
     @Override
@@ -77,6 +85,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getTopContributor() {
+        return userRepository.findTopContributor();
     }
 
     private static final String SECRET_KEY = "my_super_secret_key_ha_ha_ha";

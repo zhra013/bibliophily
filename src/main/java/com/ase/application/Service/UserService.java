@@ -24,4 +24,6 @@ public interface UserService {
     public User updateUserPassword(User updateUser, Long userId);
 
     public List<User> getUsers();
+
+    public List<User> getTopContributor();
 }

@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.UserService;
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,10 +65,14 @@ public class LoginController {
             modelMap.put("error", bindingResult);
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "entry";
+        }else if(userOptional.getUserType().equals(UserType.ADMIN)){
+            session.setAttribute("currentUser", userOptional);
+            return "redirect:http://localhost:9090/admin/page";
         } else {
             session.setAttribute("currentUser", userOptional);
+            return "redirect:http://localhost:9090/home";
         }
-        return "redirect:http://localhost:9090/home";
+
     }
 
     public static final String decrypt(final String encrypted, final Key key, final IvParameterSpec iv) throws InvalidKeyException,
