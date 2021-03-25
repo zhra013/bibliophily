@@ -3,6 +3,7 @@ package com.ase.application.Service;
 import com.ase.application.Repository.UserRepository;
 import com.ase.application.dto.UserDTO;
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +91,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getTopContributor() {
         return userRepository.findTopContributor();
+    }
+
+    @Override
+    public User findByUserType(UserType userType) {
+        return userRepository.findByUserType(userType);
     }
 
     private static final String SECRET_KEY = "my_super_secret_key_ha_ha_ha";

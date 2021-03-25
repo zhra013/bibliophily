@@ -9,7 +9,7 @@ import javax.validation.constraints.Email;
 @Setter
 @Getter
 @NoArgsConstructor
-public class TopContributorDTO {
+public class TopActiveUserDTO {
 
     private String userName;
 

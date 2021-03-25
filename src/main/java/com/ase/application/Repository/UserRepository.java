@@ -25,4 +25,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     @Query(value = "SELECT user FROM User user JOIN Post post ON (user.id = post.uploader.id) GROUP BY post.uploader.id ORDER BY COUNT(post.uploader.id)")
     List<User> findTopContributor();
 
+    User findByUserType(UserType userType);
+
 }

@@ -41,6 +41,17 @@ public class LoginController {
 
     @RequestMapping(method = GET)
     public String view(ModelMap modelMap) {
+        User verifyUser=userService.findByUserType(UserType.ADMIN);
+        if(verifyUser==null){
+            User admin=new User();
+            admin.setUserName("admin123");
+            admin.setUserPassword("admin123");
+            admin.setUserMail("admin@gmail.com");
+            admin.setUserType(UserType.ADMIN);
+            admin.setFullName("admin");
+            admin.setUserContact("1234567890");
+            userService.userRegistration(admin);
+        }
         User user = new User();
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));

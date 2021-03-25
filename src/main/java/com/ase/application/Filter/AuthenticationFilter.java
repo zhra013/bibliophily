@@ -1,5 +1,12 @@
 package com.ase.application.Filter;
 
+import com.ase.application.Repository.UserRepository;
+import com.ase.application.Service.UserService;
+import com.ase.application.Service.UserServiceImpl;
+import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;

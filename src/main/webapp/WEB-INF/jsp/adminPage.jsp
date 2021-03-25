@@ -48,7 +48,7 @@
             <c:otherwise>
 
                 <div class="logo-div text-right" style="margin-top: 20px;" >
-                   <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block"  onclick="showTopContributors()" value="Top Contributor"/>
+                   <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block"  onclick="showTopContributors()" value="Top Active User"/>
                 </div>
                 <div class="logo-div text-right" style="margin-top: 20px;" ></div>
 
