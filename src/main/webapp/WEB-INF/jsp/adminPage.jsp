@@ -116,6 +116,45 @@
         </c:choose>
 
 
+<c:choose>
+            <c:when test="${empty postRatingList}">
+                <div class="alert alert-info table-div text-center">
+                    Currently, no user is available in this system.
+                </div>
+            </c:when>
+            <c:otherwise>
+
+                <div class="logo-div text-right" style="margin-top: 20px;" >
+                   <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block" onclick="showTopRatedPost()"  value="Top Rated Post"/>
+                </div>
+                <div class="logo-div text-right" style="margin-top: 20px;" ></div>
+                <div class="table-responsive table-div" id="TopRatedPost" style="display:none;">
+                    <table id="postContributionList" style="width:100%" class="table table-hover"  style="color: purple;">
+                        <thead>
+                        <tr>
+                            <th>Uploader User Name</th>
+                            <th>Post Type</th>
+                            <th>Post Title</th>
+                            <th>Post Author</th>
+                            <th>Rating</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="post" items="${postRatingList}">
+                            <tr>
+                                <td>${post.uploader.userName}</td>
+                                <td>${post.postType}</td>
+                                <td>${post.author}</td>
+                                <td>${post.title}</td>
+                                <td>${post.rating}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
 
    </div>
 </div>
@@ -144,6 +183,16 @@ function showTopSharedPost(){
         }
         else if(style == "block"){
             document.getElementById("TopSharedPost").style.display = "none";
+        }
+}
+
+function showTopRatedPost(){
+    var style = document.getElementById("TopRatedPost").style.display;
+        if(style == "none"){
+            document.getElementById("TopRatedPost").style.display = "block";
+        }
+        else if(style == "block"){
+            document.getElementById("TopRatedPost").style.display = "none";
         }
 }
 </script>

@@ -39,6 +39,7 @@ public class AdminController {
 
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String topContributors(ModelMap modelMap) {
+
         List<User> topContributor = userService.getTopContributor();
         List<TopActiveUserDTO> topActiveUserDTOS =new ArrayList<>();
         topContributor.forEach(user -> {
@@ -49,6 +50,7 @@ public class AdminController {
 
         });
         modelMap.put("topContributor", topActiveUserDTOS.stream().limit(10).collect(Collectors.toList()));
+
         List<Post> topSharedPost =  postService.getPosts();
         List<PostDTO> sharedPostDTO = postToDTOMapper.map(topSharedPost);
         List<PostDTO> sharedPostDTO1 = sharedPostDTO.stream().filter(postDTO -> postDTO.getIsShared().equals(Boolean.FALSE)).collect(Collectors.toList());
