@@ -110,6 +110,15 @@
                                                     <!-- Post body text -->
                                                     <div class="post-text">
                                                         <p>${post.blog}</p>
+                                                    <!-- <c:choose>
+                                                        <c:when test="${post.isShared == 'true'}">
+                                                            <p>${post.postShared.rating}</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+
+                                                        </c:otherwise>
+                                                    </c:choose>-->
+
                                                     </div>
                                                     <div class="post-text">
                                                      Rating

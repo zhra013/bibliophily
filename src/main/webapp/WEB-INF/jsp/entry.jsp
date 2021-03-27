@@ -153,8 +153,7 @@
 $("#submit").click(function(){
 
 var key = CryptoJS.lib.WordArray.random(16);
-
-        var iv= CryptoJS.lib.WordArray.random(16);
+var iv= CryptoJS.lib.WordArray.random(16);
 var email=$("#loginUserName").val();
 var password=$("#loginUserPassword").val();
 
@@ -169,8 +168,6 @@ encrypted=encrypted.ciphertext.toString();
        pass = CryptoJS.AES.encrypt( pass, key, { iv: iv });
         var cipherDatapass = iv.toString(CryptoJS.enc.Base64)+":"+pass.ciphertext.toString()+":"+key.toString(CryptoJS.enc.Base64);
 
-alert(cipherData);
-alert(cipherDatapass);
 $("#loginUserName").val(cipherData);
 $("#loginUserPassword").val(cipherDatapass);
 $("#key").val(key);

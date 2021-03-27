@@ -1,6 +1,7 @@
 package com.ase.application.controller;
 
 import com.ase.application.Service.PostService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
@@ -62,7 +63,7 @@ public class PostUploadController {
         Post post = dtoToPostMapper.map(postDTO);
         post.setCoverPhoto(org.apache.commons.io.IOUtils.toByteArray(postDTO.getUploadedCoverPhoto().getInputStream()));
         System.out.println(post.getUploader().getId());
-        postService.uploadBook(post);
+        postService.uploadPost(post);
 
         return "redirect:/post/list/page?userId="+post.getUploader().getId()+"&excludeOwner=false&page=0";
     }
@@ -103,6 +104,7 @@ public class PostUploadController {
             postDTOS.add(postDTO);
         });
 
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         modelMap.put("posts", postDTOS);
         return "PostsView";
     }
@@ -111,6 +113,7 @@ public class PostUploadController {
     public String PostDetails(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam(required = false) Long users) {
 
         Post post = postService.getPostById(postId);
+        UserServiceImpl.decryptUser(post.getUploader());
         modelMap.put("post", post);
         if (users != null)
             return "userPostDetail";
@@ -176,6 +179,7 @@ public class PostUploadController {
             postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
             postDTOS.add(postDTO);
         });
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         return postDTOS;
     }
 
@@ -225,6 +229,7 @@ public class PostUploadController {
                     }
                 });
                 sharePostDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                UserServiceImpl.decryptUserDTO(sharePostDTO.getUploader());
                 postDTO.setPostShared(sharePostDTO);
             } else {
                 AtomicInteger rating = new AtomicInteger();
@@ -240,7 +245,7 @@ public class PostUploadController {
             postDTOS.add(postDTO);
 
         });
-
+        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         modelMap.put("posts", postDTOS);
         return "PostsView";
     }

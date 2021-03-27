@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.EmailServiceImpl;
 import com.ase.application.Service.UserService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,7 @@ public class ForgotPasswordController {
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "entry";
         } else {
+            UserServiceImpl.decryptUser(user);
             email.SendEmailForgotPassword(user);
         }
         return "redirect:http://localhost:9090/login";
