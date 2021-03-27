@@ -18,6 +18,7 @@ public class PostMapper {
             .omitInSource(User::getPosts)
             .omitInSource(User::getPostReview)
             .omitInSource(User::getFriends)
+            .omitInSource(User::getFriendStatus)
             .mapper();
 
 
@@ -26,6 +27,7 @@ public class PostMapper {
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
             .omitInDestination(User::getFriends)
+            .omitInDestination(User::getFriendStatus)
             .mapper();
 
     @Bean

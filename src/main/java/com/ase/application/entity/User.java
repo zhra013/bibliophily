@@ -49,6 +49,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friend> friends;
 
+    private String friendStatus;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,11 +1,14 @@
 package com.ase.application.controller;
 
 import com.ase.application.Service.EmailService;
+import com.ase.application.Service.FriendService;
 import com.ase.application.Service.UserService;
 import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
+import com.ase.application.entity.Friend;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 import com.remondis.remap.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -30,6 +34,8 @@ public class UserController {
     private EmailService emailService;
     @Autowired
     private Mapper<Post, PostDTO> postToDTOMapper;
+    @Autowired
+    private FriendService friendService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String viewProfile(ModelMap modelMap, HttpSession session) {
@@ -88,9 +94,21 @@ public class UserController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
         List<User> users = userService.getUsers();
+        users=users.stream().filter(user -> user.getUserType().equals(UserType.USER)).collect(Collectors.toList());
         List<User> newUsers = new ArrayList<>();
         newUsers.addAll(users.stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
         newUsers.forEach(UserServiceImpl::decryptUser);
+        newUsers.forEach(user -> {
+            Friend friend = friendService.validateFriend(userId,user.getId());
+            if(Objects.isNull(friend)){
+                user.setFriendStatus("Allow");
+            }else if(friend.isAcceptance()){
+                user.setFriendStatus("Friends");
+            }else {
+                user.setFriendStatus("Requests");
+            }
+        });
+
         modelMap.put("usersList", newUsers);
         return "users";
     }

@@ -17,6 +17,7 @@ public class UserMapper {
                 .omitInSource(User::getPosts)
                 .omitInSource(User::getPostReview)
                 .omitInSource(User::getFriends)
+                .omitInSource(User::getFriendStatus)
                 .mapper();
     }
 
@@ -26,6 +27,7 @@ public class UserMapper {
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
                 .omitInDestination(User::getFriends)
+                .omitInDestination(User::getFriendStatus)
                 .mapper();
     }
 
@@ -37,6 +39,7 @@ public class UserMapper {
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
                 .omitInDestination(User::getFriends)
+                .omitInDestination(User::getFriendStatus)
                 .mapper();
     }
 
@@ -52,6 +55,7 @@ public class UserMapper {
                 .omitInSource(User::getUserContact)
                 .omitInDestination(TopActiveUserDTO::getTotalPost)
                 .omitInSource(User::getFriends)
+                .omitInSource(User::getFriendStatus)
                 .mapper();
     }
 }
