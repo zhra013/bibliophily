@@ -20,13 +20,25 @@
 <h1 style="text-align:left;">Bibliophily Connect</h1>
 <%@include file="header.jsp" %>
 
+<c:if test="${friend == 'no'}">
 <h4 class="text-center">Users</h4>
+ </c:if>
 
+ <c:if test="${friend == 'yes'}">
+ <h4 class="text-center">Friends</h4>
+  </c:if>
 <c:choose>
     <c:when test="${empty usersList}">
+     <c:if test="${friend == 'no'}">
         <div class="alert alert-info table-div text-center">
             Currently, no user is available in this system.
         </div>
+      </c:if>
+       <c:if test="${friend == 'yes'}">
+              <div class="alert alert-info table-div text-center">
+                  Currently, no friends found, make friends.
+              </div>
+            </c:if>
     </c:when>
     <c:otherwise>
 

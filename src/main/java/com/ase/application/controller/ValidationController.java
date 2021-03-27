@@ -214,6 +214,10 @@ public class ValidationController {
             e.printStackTrace();
         }
         List<Friend> friendRequests = friendService.getFriendRequests(userId);
+        friendRequests.forEach(friend -> {
+            UserServiceImpl.decryptUser(friend.getUser());
+            UserServiceImpl.decryptUser(friend.getFriend());
+        });
         JSONArray arr = new JSONArray(friendToDTOMapper.map(friendRequests));
         out.print(arr);
     }

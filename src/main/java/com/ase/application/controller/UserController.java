@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String getUsers(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
+    public String getUsers(@RequestParam("userId") Long userId, ModelMap modelMap) {
         List<User> users = userService.getUsers();
         users=users.stream().filter(user -> user.getUserType().equals(UserType.USER)).collect(Collectors.toList());
         List<User> newUsers = new ArrayList<>();
@@ -110,6 +110,7 @@ public class UserController {
         });
 
         modelMap.put("usersList", newUsers);
+        modelMap.put("friend","no");
         return "users";
     }
 

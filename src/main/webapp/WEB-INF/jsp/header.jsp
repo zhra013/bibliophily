@@ -17,6 +17,10 @@
              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
       </c:url>
 
+        <c:url var="friends" value="/friend/${sessionScope.currentUser.id}/getFriends">
+                   <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+            </c:url>
+
      <c:url value="/changePassword" var = "changePassword">
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
      </c:url>
@@ -31,6 +35,10 @@
          <li class="nav-item">
                     <a class="nav-link" href="${users}">Users</a>
          </li>
+
+          <li class="nav-item">
+                    <a class="nav-link" href="${friends}">Friends</a>
+           </li>
 
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

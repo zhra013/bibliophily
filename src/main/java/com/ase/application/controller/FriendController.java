@@ -1,16 +1,22 @@
 package com.ase.application.controller;
 
 import com.ase.application.Service.FriendService;
+import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.entity.Friend;
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/friend/")
@@ -35,9 +41,25 @@ public class FriendController {
     }
 
     @RequestMapping(value = "{userId}/getFriends", method = RequestMethod.GET)
-    public String getFriends(@PathVariable(value = "userId") long userId) {
+    public String getFriends(@PathVariable(value = "userId") long userId, ModelMap modelMap) {
         List<User> friends =friendService.getFriends(userId);
-        return "null";
+        friends=friends.stream().filter(user -> user.getUserType().equals(UserType.USER)).collect(Collectors.toList());
+        List<User> newUsers = new ArrayList<>();
+        newUsers.addAll(friends.stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
+        newUsers.forEach(UserServiceImpl::decryptUser);
+        newUsers.forEach(user -> {
+            Friend friend = friendService.validateFriend(userId,user.getId());
+            if(Objects.isNull(friend)){
+                user.setFriendStatus("Allow");
+            }else if(friend.isAcceptance()){
+                user.setFriendStatus("Friends");
+            }else {
+                user.setFriendStatus("Requested");
+            }
+        });
+        modelMap.put("usersList", newUsers);
+        modelMap.put("friend","yes");
+        return "users";
     }
 
     @RequestMapping(value = "{userId}/declineRequest/{friendRequestId}", method = RequestMethod.GET)
