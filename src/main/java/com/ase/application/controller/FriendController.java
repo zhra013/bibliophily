@@ -26,17 +26,12 @@ public class FriendController {
         return "redirect:/users?userId="+userId;
     }
 
-    @RequestMapping(value = "{userId}/getRequest", method = RequestMethod.GET)
-    public String getFriendRequest(@PathVariable(value = "userId") long userId) {
-        List<Friend> friendRequests = friendService.getFriendRequests(userId);
-        return "null";
-    }
 
     @RequestMapping(value = "{userId}/acceptRequest/{friendRequestId}", method = RequestMethod.GET)
     public String acceptFriendRequest(@PathVariable(value = "userId") long userId,
                                       @PathVariable(value = "friendRequestId") long friendRequestId) {
         friendService.acceptFriendRequest(userId,friendRequestId);
-        return "null";
+        return "friends";
     }
 
     @RequestMapping(value = "{userId}/getFriends/", method = RequestMethod.GET)

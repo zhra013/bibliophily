@@ -11,6 +11,7 @@ import com.remondis.remap.Mapper;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -199,5 +200,19 @@ public class ValidationController {
         }else{
             out.print("request");
         }
+    }
+
+    @RequestMapping(value = "/friend/{userId}/getRequest", method = RequestMethod.GET)
+    public void getFriendRequest(@PathVariable(value = "userId") long userId, HttpServletResponse response) {
+        PrintWriter out = null;
+        System.out.println("Inside Get Request");
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Friend> friendRequests = friendService.getFriendRequests(userId);
+        JSONArray arr = new JSONArray(friendRequests);
+        out.print(arr);
     }
 }

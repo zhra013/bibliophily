@@ -159,6 +159,20 @@ function search(){
             });
         }
 }
+
+$(document).ready(function() {
+    var userid = ${sessionScope.currentUser.id};
+    console.log(userid);
+    console.log("Inside ready function");
+    $.ajax({
+        type: 'get',
+        url: '/friend/'+userid+'/getRequest',
+        data: { },
+        success: function (data) {
+            console.log(data);
+        }
+    });
+})
 </script>
 
 
