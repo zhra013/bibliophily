@@ -1,11 +1,9 @@
 package com.ase.application.controller;
 
-import com.ase.application.Service.PostReviewService;
-import com.ase.application.Service.PostService;
-import com.ase.application.Service.UserService;
-import com.ase.application.Service.UserServiceImpl;
+import com.ase.application.Service.*;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
+import com.ase.application.entity.Friend;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +44,9 @@ public class ValidationController {
 
     @Autowired
     private Mapper<Post, SharedPostDTO> postToSharePostDTOMapper;
+
+    @Autowired
+    private FriendService friendService;
 
 
     @RequestMapping(value = "/validate", method = GET)
@@ -182,4 +183,21 @@ public class ValidationController {
         out.print(arr);
     }
 
+    @RequestMapping(value = "/validate/friend", method = RequestMethod.GET)
+    public void ValidateFriend(@RequestParam("friendId") Long friendId, HttpServletResponse response, @RequestParam("userId") Long userId) {
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Friend friend = friendService.validateFriend(userId,friendId);
+        if(Objects.isNull(friend)){
+            out.print("Allow");
+        }else if(friend.isAcceptance()){
+            out.print("friends");
+        }else{
+            out.print("request");
+        }
+    }
 }

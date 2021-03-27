@@ -16,6 +16,7 @@ public class UserMapper {
         return Mapping.from(User.class).to(UserDTO.class)
                 .omitInSource(User::getPosts)
                 .omitInSource(User::getPostReview)
+                .omitInSource(User::getFriends)
                 .mapper();
     }
 
@@ -24,6 +25,7 @@ public class UserMapper {
         return Mapping.from(UserDTO.class).to(User.class)
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
+                .omitInDestination(User::getFriends)
                 .mapper();
     }
 
@@ -34,6 +36,7 @@ public class UserMapper {
                 .omitInDestination(User::getUserType)
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
+                .omitInDestination(User::getFriends)
                 .mapper();
     }
 
@@ -48,6 +51,7 @@ public class UserMapper {
                 .omitInSource(User::getFullName)
                 .omitInSource(User::getUserContact)
                 .omitInDestination(TopActiveUserDTO::getTotalPost)
+                .omitInSource(User::getFriends)
                 .mapper();
     }
 }

@@ -116,7 +116,7 @@
         </c:choose>
 
 
-<c:choose>
+         <c:choose>
             <c:when test="${empty postRatingList}">
                 <div class="alert alert-info table-div text-center">
                     Currently, no user is available in this system.

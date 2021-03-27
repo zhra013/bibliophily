@@ -26,7 +26,6 @@ public class User implements Serializable {
     private String fullName;
 
     @NotNull
-//    @Pattern(regexp = "^[a-zA-Z0-9] + $", message = "Username must be alphanumeric with no space")
     private String userName;
 
     @NotEmpty
@@ -46,6 +45,9 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
     private List<PostReview> postReview;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Friend> friends;
 
     @Override
     public boolean equals(Object o) {
