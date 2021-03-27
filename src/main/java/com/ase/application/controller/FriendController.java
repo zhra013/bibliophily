@@ -45,4 +45,11 @@ public class FriendController {
         return "null";
     }
 
+    @RequestMapping(value = "{userId}/declineRequest/{friendRequestId}", method = RequestMethod.GET)
+    public String declineFriendRequest(@PathVariable(value = "userId") long userId,
+                                      @PathVariable(value = "friendRequestId") long friendRequestId) {
+        friendService.declineFriendRequest(userId,friendRequestId);
+        return "null";
+    }
+
 }
