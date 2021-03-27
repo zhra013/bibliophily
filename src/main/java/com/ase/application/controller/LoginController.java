@@ -2,6 +2,7 @@ package com.ase.application.controller;
 
 import com.ase.application.Service.UserService;
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,17 @@ public class LoginController {
 
     @RequestMapping(method = GET)
     public String view(ModelMap modelMap) {
+        User verifyUser=userService.findByUserType(UserType.ADMIN);
+        if(verifyUser==null){
+            User admin=new User();
+            admin.setUserName("admin123");
+            admin.setUserPassword("admin123");
+            admin.setUserMail("admin@gmail.com");
+            admin.setUserType(UserType.ADMIN);
+            admin.setFullName("admin");
+            admin.setUserContact("1234567890");
+            userService.userRegistration(admin);
+        }
         User user = new User();
         modelMap.put("user", user);
         modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
@@ -64,10 +76,14 @@ public class LoginController {
             modelMap.put("error", bindingResult);
             modelMap.put("userType", new ArrayList<>(Arrays.asList("ADMIN", "USER")));
             return "entry";
+        }else if(userOptional.getUserType().equals(UserType.ADMIN)){
+            session.setAttribute("currentUser", userOptional);
+            return "redirect:http://localhost:9090/admin/report";
         } else {
             session.setAttribute("currentUser", userOptional);
+            return "redirect:http://localhost:9090/home";
         }
-        return "redirect:http://localhost:9090/home";
+
     }
 
     public static final String decrypt(final String encrypted, final Key key, final IvParameterSpec iv) throws InvalidKeyException,

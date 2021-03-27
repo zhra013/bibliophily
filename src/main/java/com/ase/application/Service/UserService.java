@@ -1,6 +1,7 @@
 package com.ase.application.Service;
 
 import com.ase.application.entity.User;
+import com.ase.application.entity.UserType;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +25,8 @@ public interface UserService {
     public User updateUserPassword(User updateUser, Long userId);
 
     public List<User> getUsers();
+
+    public List<User> getTopContributor();
+
+    public User findByUserType(UserType userType);
 }

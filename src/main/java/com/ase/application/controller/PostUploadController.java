@@ -63,7 +63,7 @@ public class PostUploadController {
         Post post = dtoToPostMapper.map(postDTO);
         post.setCoverPhoto(org.apache.commons.io.IOUtils.toByteArray(postDTO.getUploadedCoverPhoto().getInputStream()));
         System.out.println(post.getUploader().getId());
-        postService.uploadBook(post);
+        postService.uploadPost(post);
 
         return "redirect:/post/list/page?userId="+post.getUploader().getId()+"&excludeOwner=false&page=0";
     }

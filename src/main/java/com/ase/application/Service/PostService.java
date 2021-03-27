@@ -5,7 +5,7 @@ import com.ase.application.entity.Post;
 import java.util.List;
 
 public interface PostService {
-    void uploadBook(Post post);
+    void uploadPost(Post post);
 
     List<Post> getPosts();
 

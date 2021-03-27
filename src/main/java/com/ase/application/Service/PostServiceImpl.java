@@ -23,11 +23,12 @@ public class PostServiceImpl implements PostService {
     private UserService userService;
 
     @Override
-    public void uploadBook(Post post) {
+    public void uploadPost(Post post) {
         User uploader = userService.findUserById(post.getUploader().getId());
         post.setDate(LocalDate.now());
-        post.setShareCounter(1);
+        post.setShareCounter(0);
         post.setUploader(uploader);
+        post.setIsShared(Boolean.FALSE);
         postRepository.save(post);
     }
 

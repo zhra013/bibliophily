@@ -1,6 +1,7 @@
 package com.ase.application.Mappers;
 
 import com.ase.application.dto.SignUpDTO;
+import com.ase.application.dto.TopActiveUserDTO;
 import com.ase.application.dto.UserDTO;
 import com.ase.application.entity.User;
 import com.remondis.remap.Mapper;
@@ -33,6 +34,20 @@ public class UserMapper {
                 .omitInDestination(User::getUserType)
                 .omitInDestination(User::getPosts)
                 .omitInDestination(User::getPostReview)
+                .mapper();
+    }
+
+    @Bean
+    Mapper<User, TopActiveUserDTO> userToToContributorDTOMapper() {
+        return Mapping.from(User.class).to(TopActiveUserDTO.class)
+                .omitInSource(User::getPosts)
+                .omitInSource(User::getPostReview)
+                .omitInSource(User::getId)
+                .omitInSource(User::getUserPassword)
+                .omitInSource(User::getUserType)
+                .omitInSource(User::getFullName)
+                .omitInSource(User::getUserContact)
+                .omitInDestination(TopActiveUserDTO::getTotalPost)
                 .mapper();
     }
 }
