@@ -39,7 +39,7 @@ public class FriendController {
         return "null";
     }
 
-    @RequestMapping(value = "{userId}/getFriends/", method = RequestMethod.GET)
+    @RequestMapping(value = "{userId}/getFriends", method = RequestMethod.GET)
     public String getFriends(@PathVariable(value = "userId") long userId) {
         List<User> friends =friendService.getFriends(userId);
         return "null";
