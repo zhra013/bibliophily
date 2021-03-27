@@ -46,12 +46,10 @@ public class FriendServiceImpl implements FriendService {
             friends.forEach(friend -> {
 
                 if(friend.getUser().getId()==userId){
-
-                    users.add(friend.getUser());
+                    users.add(friend.getFriend());
                 }
                 if(friend.getFriend().getId()==userId){
-                    users.add(friend.getFriend());
-
+                    users.add(friend.getUser());
                 }
             });
 

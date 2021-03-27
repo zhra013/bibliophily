@@ -1,17 +1,22 @@
 package com.ase.application.Service;
 
+import com.ase.application.Repository.FriendRepository;
 import com.ase.application.Repository.PostRepository;
+import com.ase.application.entity.Friend;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.QPost;
 import com.ase.application.entity.User;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.CollectionExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +26,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FriendRepository friendRepository;
 
     @Override
     public void uploadPost(Post post) {
@@ -80,7 +88,24 @@ public class PostServiceImpl implements PostService {
             booleanBuilder.and(QPost.post.uploader.id.eq(userId));
         }
         if (excludeOwner && userId != null && userId != 0) {
-            booleanBuilder.and(QPost.post.uploader.id.ne(userId));
+            List<Friend> friends= friendRepository.getFriends(userId,true);
+            List<Long> usersId = new ArrayList<>();
+            if(friends.size()!=0){
+                friends.forEach(friend -> {
+
+                    if(friend.getUser().getId()==userId){
+                        usersId.add(friend.getFriend().getId());
+                    }
+                    if(friend.getFriend().getId()==userId){
+                        usersId.add(friend.getUser().getId());
+                    }
+                });
+            }
+            if(!CollectionUtils.isEmpty(usersId)) {
+                booleanBuilder.and(QPost.post.uploader.id.in(usersId));
+            }else{
+                booleanBuilder.and(QPost.post.uploader.id.ne(userId));
+            }
         }
         return this.postRepository.findAll(booleanBuilder.getValue(), requestedElement).getContent();
     }
