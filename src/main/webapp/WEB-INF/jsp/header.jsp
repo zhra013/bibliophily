@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <nav class="navbar navbar-expand-sm bg-light">
 
      <c:url var="postList" value="/post/list/page">
@@ -52,6 +53,90 @@
     </ul>
 
     <div class="form-inline search-div dropdown">
+        <div class="btn-group dropdown notification-dropdown align-self-center dropleft">
+                                                    <div class="header-icon card-header-btn position-relative mx-2 d-flex justify-content-center"
+                                                        role="button" id="notification" data-toggle="dropdown"
+                                                        aria-expanded="false" title="Notification">
+                                                        <i class="fas fa-bell align-self-center"></i>
+                                                       <div class="notify-sign bg-primary-color"></div>
+
+
+                                                    </div>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="notification">
+
+                                                        <div
+                                                            class="px-4 pb-2 d-flex align-items-center justify-content-between">
+                                                            <div class="secondary-color font-weight-normal">
+                                                                <span style="padding: 2px 10px;"
+                                                                        class="bg-gray-background-color rounded-lg mr-1">5</span>
+                                                                    New Notifications
+
+                                                            </div>
+                                                            <c:if test="${notification.size() > 5 }">
+                                                                <div class="secondary-color align-self-center"
+                                                                    data-toggle="modal" data-target="#notificationModal">
+                                                                    <i class="fas fa-eye h5 cursor-pointer mt-1 mb-0"></i>
+                                                                </div>
+                                                            </c:if>
+                                                        </div>
+                                                        <div class="notification-section">
+                                                                        <li class="mb-3">
+                                                                            <div class="container-fluid">
+                                                                                <div class="row">
+                                                                                    <div
+                                                                                        class="d-flex align-items-center w-100">
+
+                                                                                        <div
+                                                                                            class="notification-profile align-self-baseline">
+                                                                                            <img src="/img/profile.png"
+                                                                                                alt="User profile">
+                                                                                        </div>
+
+                                                                                        <div>
+                                                                                            <div>
+                                                                                                <span
+                                                                                                    class="text-nowrap notify-username">Neel Shah</span>
+
+                                                                                                <p class="mb-0 text-nowrap notify-amount">
+                                                                                                        Wants to be your Friend<span
+                                                                                                            class="ml-2"><i
+                                                                                                                class="mr-1"></i>
+                                                                                                        </span>
+                                                                                                    </p>
+                                                                                            </div>
+
+                                                                                            <div
+                                                                                                    class="d-flex mt-2 notification-status">
+                                                                                                    <div onclick="acceptRequest(${r.transaction_id})"
+                                                                                                        class="pr-2">
+                                                                                                        <span
+                                                                                                            style="font-size: 10px !important;"
+                                                                                                            class="list-credit-amount py-1 nowrap"><i
+                                                                                                                class="fas fa-check mr-2"></i>Accept</span>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        onclick="rejectRequest(${r.transaction_id})">
+                                                                                                        <span
+                                                                                                            style="font-size: 10px !important;"
+                                                                                                            class="list-debit-amount py-1"><i
+                                                                                                                class="fas fa-times mr-2"></i>Reject</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </li>
+                                                        </div>
+                                                    </ul>
+
+                                                </div>
+
+
+
+
         <input type="search" name="param" class="form-control mr-sm-2" placeholder="Search">
         <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown">Search</button>
         <div class="dropdown-menu search-menu w-100">
