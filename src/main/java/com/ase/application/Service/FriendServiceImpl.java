@@ -63,4 +63,10 @@ public class FriendServiceImpl implements FriendService {
     public Friend validateFriend(long userId, long friendId) {
         return friendRepository.getFriendShip(userId,friendId);
     }
+
+    @Override
+    public void declineFriendRequest(long userId, long friendRequestId) {
+        Friend friend = friendRepository.getFriendRequestById(userId,friendRequestId);
+        friendRepository.delete(friend);
+    }
 }

@@ -11,4 +11,5 @@ public interface FriendService {
     public void acceptFriendRequest(long userId,long friendRequestId);
     public List<User> getFriends(long userId);
     public Friend validateFriend(long userId, long friendId);
+    public void declineFriendRequest(long userId,long friendRequestId);
 }
