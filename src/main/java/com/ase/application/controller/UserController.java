@@ -105,7 +105,7 @@ public class UserController {
             }else if(friend.isAcceptance()){
                 user.setFriendStatus("Friends");
             }else {
-                user.setFriendStatus("Requests");
+                user.setFriendStatus("Requested");
             }
         });
 

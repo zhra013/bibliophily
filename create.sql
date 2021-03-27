@@ -16,3 +16,4 @@ alter table friends add constraint FKlh21lfp7th1y1tn9g63ihkda9 foreign key (user
 create table friends (id integer not null auto_increment, acceptance bit not null, friend_id bigint, user_id bigint, primary key (id)) engine=InnoDB
 alter table friends add constraint FKc42eihjtiryeriy8axlkpejo7 foreign key (friend_id) references users (id)
 alter table friends add constraint FKlh21lfp7th1y1tn9g63ihkda9 foreign key (user_id) references users (id)
+alter table users add column friend_status varchar(255)

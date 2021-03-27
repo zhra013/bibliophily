@@ -23,7 +23,7 @@ public class FriendController {
     public String sendFriendRequest(@PathVariable(value = "friendId") long friendId,
                                     @PathVariable(value = "userId") long userId) {
         friendService.sendFriendRequest(userId,friendId);
-        return "null";
+        return "redirect:/users?userId="+userId;
     }
 
     @RequestMapping(value = "{userId}/getRequest", method = RequestMethod.GET)
