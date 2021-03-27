@@ -32,7 +32,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public void acceptFriendRequest(long userId, long friendRequestId) {
+    public void acceptFriendRequest(Long userId, Long friendRequestId) {
        Friend friend = friendRepository.getFriendRequestById(userId,friendRequestId);
        friend.setAcceptance(true);
        friendRepository.save(friend);

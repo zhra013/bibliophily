@@ -14,7 +14,7 @@ public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

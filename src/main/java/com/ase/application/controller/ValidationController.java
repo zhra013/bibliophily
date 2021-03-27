@@ -221,4 +221,31 @@ public class ValidationController {
         JSONArray arr = new JSONArray(friendToDTOMapper.map(friendRequests));
         out.print(arr);
     }
+
+
+    @RequestMapping(value = "/friend/{userId}/declineRequest/{friendRequestId}", method = RequestMethod.GET)
+    public void declineFriendRequest(@PathVariable(value = "userId") long userId,
+                                     @PathVariable(value = "friendRequestId") long friendRequestId, HttpServletResponse response) {
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        friendService.declineFriendRequest(userId,friendRequestId);
+        out.print("rejected");
+    }
+
+    @RequestMapping(value = "/friend/{userId}/acceptRequest/{friendRequestId}", method = RequestMethod.GET)
+    public void acceptFriendRequest(@PathVariable(value = "userId") long userId,
+                                    @PathVariable(value = "friendRequestId") long friendRequestId, HttpServletResponse response) {
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        friendService.acceptFriendRequest(userId,friendRequestId);
+        out.print("accepted");
+    }
 }

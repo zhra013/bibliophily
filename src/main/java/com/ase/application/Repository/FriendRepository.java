@@ -14,8 +14,8 @@ public interface FriendRepository  extends QuerydslPredicateExecutor<Friend>, Pa
     @Query(value = "select friends FROM Friend friends WHERE friends.friend.id = :userId AND friends.acceptance = :accept")
     List<Friend> getFriendRequests(long userId,boolean accept);
 
-    @Query(value = "select friends FROM Friend friends WHERE friends.friend.id = :userId AND friends.acceptance = :accept And friends.id = :friendRequestId")
-    Friend getFriendRequestById(long userId,long friendRequestId);
+    @Query(value = "select friends FROM Friend friends WHERE friends.friend.id = :userId AND friends.id = :friendRequestId")
+    Friend getFriendRequestById(Long userId,Long friendRequestId);
 
     @Query(value = "select friends FROM Friend friends WHERE friends.acceptance = :accept AND (friends.user.id = :userId OR friends.friend.id = :userId)")
     List<Friend> getFriends(long userId,boolean accept);

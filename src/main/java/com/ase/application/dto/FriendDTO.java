@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 public class FriendDTO {
 
-    private int id;
+    private long id;
 
     private UserDTO user;
 

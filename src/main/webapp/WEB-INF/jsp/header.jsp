@@ -66,65 +66,12 @@
                                                         role="button" id="notification" data-toggle="dropdown"
                                                         aria-expanded="false" title="Notification">
                                                         <i class="fas fa-bell align-self-center"></i>
-                                                       <div class="notify-sign bg-primary-color"></div>
+                                                       <div class="bg-primary-color" id="notification_sign"></div>
 
 
                                                     </div>
 
-                                                    <ul class="dropdown-menu" aria-labelledby="notification">
-                                                             <div class="notification-section">
-                                                                        <li class="mb-3">
-                                                                            <div class="container-fluid">
-                                                                                <div class="row">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center w-100">
-
-                                                                                        <div
-                                                                                            class="notification-profile align-self-baseline">
-                                                                                            <img src="/img/profile.png"
-                                                                                                alt="User profile">
-                                                                                        </div>
-
-                                                                                        <div>
-                                                                                            <div>
-                                                                                                <span
-                                                                                                    class="text-nowrap notify-username">Neel Shah</span>
-
-                                                                                                <p class="mb-0 text-nowrap notify-amount">
-                                                                                                        Wants to be your Friend<span
-                                                                                                            class="ml-2"><i
-                                                                                                                class="mr-1"></i>
-                                                                                                        </span>
-                                                                                                    </p>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                    class="d-flex mt-2 notification-status">
-                                                                                                    <div onclick="acceptRequest(${r.transaction_id})"
-                                                                                                        class="pr-2">
-                                                                                                        <span
-                                                                                                            style="font-size: 10px !important;"
-                                                                                                            class="list-credit-amount py-1 nowrap"><i
-                                                                                                                class="fas fa-check mr-2"></i>Accept</span>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        onclick="rejectRequest(${r.transaction_id})">
-                                                                                                        <span
-                                                                                                            style="font-size: 10px !important;"
-                                                                                                            class="list-debit-amount py-1"><i
-                                                                                                                class="fas fa-times mr-2"></i>Reject</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </li>
-                                                        </div>
-
-
-
+                                                    <ul class="dropdown-menu" aria-labelledby="notification" id="notifications">
 
                                                     </ul>
 
@@ -164,10 +111,50 @@ $(document).ready(function() {
         data: { },
         success: function (data) {
             var obj = JSON.parse(data);
-            console.log(obj);
+            if(obj.length > 0){
+                var str = "";
+                for(var i = 0; i < obj.length; i++){
+                    str += '<div class="notification-section"><li class="mb-3"><div class="container-fluid"><div class="row"><div class="d-flex align-items-center w-100"><div'
+                        + ' class="notification-profile align-self-baseline"><img src="/img/profile.png"alt="User profile"></div><div><div><span class="text-nowrap notify-username">'
+                        + obj[i].user.userName + '</span><p class="mb-0 text-nowrap notify-amount">Wants to be your Friend<span class="ml-2"><i class="mr-1"></i></span></p></div><div class="d-flex mt-2 notification-status">'
+                        + '<div onclick="acceptRequest('+obj[i].id+')"class="pr-2"><span style="font-size: 10px !important;" class="list-credit-amount py-1 nowrap"><i class="fas fa-check mr-2"></i>Accept</span>'
+                        + '</div><div onclick="rejectRequest('+obj[i].id+')"><span style="font-size: 10px !important;" class="list-debit-amount py-1"><i class="fas fa-times mr-2"></i>Reject</span>'
+                        + '</div></div></div></div></div></div></li></div>';
+                }
+
+                document.getElementById("notifications").innerHTML = str;
+                document.getElementById("notification_sign").classList.add("notify-sign");
+            }
+            else{
+                    var str = '<div class="alert alert-info table-div text-center">No Friend Request Found.</div>';
+                   document.getElementById("notifications").innerHTML = str;
+            }
+
         }
     });
 })
+function acceptRequest(friendId){
+    $.ajax({
+        type: 'get',
+        url: '/friend/'+${sessionScope.currentUser.id}+'/acceptRequest/'+friendId,
+        data: { },
+        success: function (data) {
+            window.location.reload();
+        }
+    });
+}
+
+function rejectRequest(friendId){
+    $.ajax({
+        type: 'get',
+        url: '/friend/'+${sessionScope.currentUser.id}+'/declineRequest/'+friendId,
+        data: { },
+        success: function (data) {
+            window.location.reload();
+        }
+    });
+}
+
 </script>
 
 
