@@ -1,6 +1,7 @@
 package com.ase.application.controller;
 
 import com.ase.application.Service.*;
+import com.ase.application.dto.FriendDTO;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Friend;
@@ -49,6 +50,8 @@ public class ValidationController {
     @Autowired
     private FriendService friendService;
 
+    @Autowired
+    private Mapper<Friend, FriendDTO> friendToDTOMapper;
 
     @RequestMapping(value = "/validate", method = GET)
     public void ValidateLogin(@RequestParam("action") String action, HttpServletResponse response, HttpServletRequest request) {
@@ -205,14 +208,13 @@ public class ValidationController {
     @RequestMapping(value = "/friend/{userId}/getRequest", method = RequestMethod.GET)
     public void getFriendRequest(@PathVariable(value = "userId") long userId, HttpServletResponse response) {
         PrintWriter out = null;
-        System.out.println("Inside Get Request");
         try {
             out = response.getWriter();
         } catch (IOException e) {
             e.printStackTrace();
         }
         List<Friend> friendRequests = friendService.getFriendRequests(userId);
-        JSONArray arr = new JSONArray(friendRequests);
+        JSONArray arr = new JSONArray(friendToDTOMapper.map(friendRequests));
         out.print(arr);
     }
 }

@@ -64,23 +64,7 @@
                                                     </div>
 
                                                     <ul class="dropdown-menu" aria-labelledby="notification">
-
-                                                        <div
-                                                            class="px-4 pb-2 d-flex align-items-center justify-content-between">
-                                                            <div class="secondary-color font-weight-normal">
-                                                                <span style="padding: 2px 10px;"
-                                                                        class="bg-gray-background-color rounded-lg mr-1">5</span>
-                                                                    New Notifications
-
-                                                            </div>
-                                                            <c:if test="${notification.size() > 5 }">
-                                                                <div class="secondary-color align-self-center"
-                                                                    data-toggle="modal" data-target="#notificationModal">
-                                                                    <i class="fas fa-eye h5 cursor-pointer mt-1 mb-0"></i>
-                                                                </div>
-                                                            </c:if>
-                                                        </div>
-                                                        <div class="notification-section">
+                                                             <div class="notification-section">
                                                                         <li class="mb-3">
                                                                             <div class="container-fluid">
                                                                                 <div class="row">
@@ -130,6 +114,10 @@
                                                                             </div>
                                                                         </li>
                                                         </div>
+
+
+
+
                                                     </ul>
 
                                                 </div>
@@ -162,14 +150,13 @@ function search(){
 
 $(document).ready(function() {
     var userid = ${sessionScope.currentUser.id};
-    console.log(userid);
-    console.log("Inside ready function");
     $.ajax({
         type: 'get',
         url: '/friend/'+userid+'/getRequest',
         data: { },
         success: function (data) {
-            console.log(data);
+            var obj = JSON.parse(data);
+            console.log(obj);
         }
     });
 })
