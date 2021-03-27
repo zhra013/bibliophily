@@ -9,6 +9,8 @@
 
      <link rel="stylesheet" href="/../css/Profile.css">
 
+       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
         <script src="/../js/validation.js"> </script>
          <script src="/../js/jQuery-3.4.1.js"></script>
     <%@include file="bootstrapFiles.jsp" %>
@@ -57,6 +59,14 @@
                             <div class="btn-group">
                                 <a href="${view}" class="btn btn-outline-primary">View Posts</a>
                             </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-primary" title="Add Friend"><i class="fas fa-user-plus"></i></button>
+                                <c:if>
+
+                                </c:if>
+                                <button type="button" class="btn btn-outline-primary" title="Friends" disabled><i class="fas fa-user-friends"></i></button>
+                                <button type="button" class="btn btn-outline-primary" title="Request Pending" disabled><i class="far fa-user-clock"></i></button>
+                            </div>
                         </td>
                     </tr>
                 </c:forEach>
@@ -75,3 +85,4 @@ $(document).ready(function() {
     $('#example').DataTable();
 } );
 </script>
+

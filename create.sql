@@ -10,3 +10,9 @@ create table users (id bigint not null auto_increment, full_name varchar(255), u
 alter table post_review add constraint FK8p4mj2wpkdxwlpu5nhip2fvp4 foreign key (post_id) references posts (id)
 alter table post_review add constraint FK4g4gkh532wcgqublvneqxv8bp foreign key (reviewer_id) references users (id)
 alter table posts add constraint FKhqh2biylg4c8x16beuwso3873 foreign key (uploader_id) references users (id)
+create table friends (id integer not null auto_increment, acceptance bit not null, friend_id bigint, user_id bigint, primary key (id)) engine=InnoDB
+alter table friends add constraint FKc42eihjtiryeriy8axlkpejo7 foreign key (friend_id) references users (id)
+alter table friends add constraint FKlh21lfp7th1y1tn9g63ihkda9 foreign key (user_id) references users (id)
+create table friends (id integer not null auto_increment, acceptance bit not null, friend_id bigint, user_id bigint, primary key (id)) engine=InnoDB
+alter table friends add constraint FKc42eihjtiryeriy8axlkpejo7 foreign key (friend_id) references users (id)
+alter table friends add constraint FKlh21lfp7th1y1tn9g63ihkda9 foreign key (user_id) references users (id)
