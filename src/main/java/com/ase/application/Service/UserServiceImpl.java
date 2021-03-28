@@ -6,6 +6,7 @@ import com.ase.application.entity.User;
 import com.ase.application.entity.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -19,8 +20,6 @@ import java.util.Base64;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import org.hibernate.transform.ResultTransformer;
 
 
 @Service
@@ -41,6 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(User user) {
         List<User> users= userRepository.findAll();
+        if(CollectionUtils.isEmpty(users)){
+            return null;
+        }
       return  users.stream().filter(user1 -> user.getUserName().equals(UserServiceImpl.decrypt(user1.getUserName()))
         && user.getUserPassword().equals(UserServiceImpl.decrypt(user1.getUserPassword()))
               && user1.getUserType().equals(user.getUserType())).findAny().orElse(null);
@@ -53,11 +55,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserInformation(User updateUser, Long userId) {
-       User user= userRepository.findById(userId).get();
+       User user= this.userRepository.findById(userId).get();
        updateUser.setUserName(encrypt(updateUser.getUserName()));
        updateUser.setUserPassword(user.getUserPassword());
         updateUser.setId(user.getId());
-        return userRepository.save(updateUser);
+        return this.userRepository.save(updateUser);
     }
 
     @Override
@@ -73,6 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String userName) {
         List<User> users= userRepository.findAll();
+        if(CollectionUtils.isEmpty(users)){
+            return null;
+        }
         return  users.stream().filter(user1 -> userName.equals(UserServiceImpl.decrypt(user1.getUserName()))).findAny().orElse(null);
     }
 
