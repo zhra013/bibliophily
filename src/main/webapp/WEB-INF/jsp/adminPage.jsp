@@ -8,9 +8,22 @@
     <script src="/../js/jQuery-3.4.1.js"></script>
     <%@include file="bootstrapFiles.jsp"%>
     <link rel="stylesheet" href="/../css/table.css">
+    <style>
+    h1{
+      text-transform: uppercase;
+      font-weight: 300;
+      margin-bottom: 15px;
+      font-size: 2.5rem;
+      text-align:left;
+    }
+    </style>
 </head>
 <body>
+<h1>Bibliophily Connect</h1>
 <nav class="navbar navbar-expand-sm bg-light">
+
+     <c:url var="adminReport" value="/admin/report">
+     </c:url>
 
      <c:url value="/changePassword" var = "changePassword">
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
@@ -19,6 +32,9 @@
 
     <ul class="navbar-nav mr-auto">
 
+        <li class="nav-item">
+            <a class="nav-link" href="${adminReport}">Analysis</a>
+        </li>
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             My Profile
@@ -129,7 +145,7 @@
                 </div>
                 <div class="logo-div text-right" style="margin-top: 20px;" ></div>
                 <div class="table-responsive table-div" id="TopRatedPost" style="display:none;">
-                    <table id="postContributionList" style="width:100%" class="table table-hover"  style="color: purple;">
+                    <table id="postRatingList" style="width:100%" class="table table-hover"  style="color: purple;">
                         <thead>
                         <tr>
                             <th>Uploader User Name</th>
@@ -164,6 +180,8 @@
 $(document).ready(function() {
     $('#topContributor').DataTable();
     $('#postContributionList').DataTable();
+    $('#postRatingList').DataTable();
+
 } );
 function showTopContributors(){
     var style = document.getElementById("TopContributor").style.display;

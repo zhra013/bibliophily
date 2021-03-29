@@ -7,14 +7,17 @@
         <c:param name="page" value="0"/>
      </c:url>
 
+    <c:url var="adminReport" value="/admin/report">
+    </c:url>
+
      <c:url var="allPostList" value="/post/list/page">
              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
              <c:param name="excludeOwner" value="true"/>
               <c:param name="page" value="0"/>
-        </c:url>
+     </c:url>
 
       <c:url var="users" value="/users">
-             <c:param name="userId" value="${sessionScope.currentUser.id}"/>
+            <c:param name="userId" value="${sessionScope.currentUser.id}"/>
       </c:url>
 
         <c:url var="friends" value="/friend/${sessionScope.currentUser.id}/getFriends">
@@ -25,7 +28,7 @@
         <c:param name="userId" value="${sessionScope.currentUser.id}"/>
      </c:url>
 
-
+    <c:if test="${sessionScope.currentUser.userType == 'USER'}">
     <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
@@ -42,7 +45,7 @@
 
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            My Profile
+            ${sessionScope.currentUser.fullName}'s Profile
           </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="nav-link" href="/profile">Profile</a>
@@ -61,30 +64,57 @@
     </ul>
 
     <div class="form-inline search-div dropdown">
-        <div class="btn-group dropdown notification-dropdown align-self-center dropleft">
-                                                    <div class="header-icon card-header-btn position-relative mx-2 d-flex justify-content-center"
-                                                        role="button" id="notification" data-toggle="dropdown"
-                                                        aria-expanded="false" title="Notification">
-                                                        <i class="fas fa-bell align-self-center"></i>
-                                                       <div class="bg-primary-color" id="notification_sign"></div>
+            <div class="btn-group dropdown notification-dropdown align-self-center dropleft">
+                                                        <div class="header-icon card-header-btn position-relative mx-2 d-flex justify-content-center"
+                                                            role="button" id="notification" data-toggle="dropdown"
+                                                            aria-expanded="false" title="Notification">
+                                                            <i class="fas fa-bell align-self-center"></i>
+                                                           <div class="bg-primary-color" id="notification_sign"></div>
 
+
+                                                        </div>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="notification" id="notifications">
+
+                                                        </ul>
 
                                                     </div>
 
-                                                    <ul class="dropdown-menu" aria-labelledby="notification" id="notifications">
-
-                                                    </ul>
-
-                                                </div>
 
 
 
-
-        <input type="search" name="param" class="form-control mr-sm-2" placeholder="Search">
-        <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown">Search</button>
-        <div class="dropdown-menu search-menu w-100">
+            <input type="search" name="param" class="form-control mr-sm-2" placeholder="Search">
+            <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown">Search</button>
+            <div class="dropdown-menu search-menu w-100">
+            </div>
         </div>
-    </div>
+
+    </c:if>
+
+    <c:if test="${sessionScope.currentUser.userType == 'ADMIN'}">
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="${adminReport}">Analysis</a>
+                </li>
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Profile
+                  </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="nav-link" href="/profile">Profile</a>
+                        <a class="nav-link" href="${changePassword}">Change Password</a>
+                    </div>
+                </div>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+
+
+            </ul>
+    </c:if>
+
 </nav>
 
 <script>
@@ -156,5 +186,3 @@ function rejectRequest(friendId){
 }
 
 </script>
-
-

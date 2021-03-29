@@ -104,7 +104,7 @@ function validateForgotPasswordEmail(){
     var atposition=userMail.indexOf("@");
             var dotposition=userMail.lastIndexOf(".");
             if (atposition<1 || dotposition<atposition+2 || dotposition+2>=userMail.length){
-              alert("Please enter a valid e-mail address");
+//              alert("Please enter a valid e-mail address");
               $("#userMail").val("");
               return null;
               }

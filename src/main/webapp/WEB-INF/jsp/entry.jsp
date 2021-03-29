@@ -16,6 +16,7 @@
 	<script src="/../js/jQuery-3.4.1.js"> </script>
     <script src="/../js/validation.js"> </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="/../js/crypto-js/core-min.js"> </script>
 <script src="/../js/crypto-js/enc-utf16-min.js"> </script>
@@ -59,7 +60,7 @@
 			<div class="vertical-tab">
 				<div id="section1" class="section-w3ls">
 					<input type="radio" name="sections" id="option1" checked>
-					<label for="option1" class="icon-left-w3pvt"><span class="fa fa-user-circle" aria-hidden="true"></span>Login</label>
+					<label for="option1" class="icon-left-w3pvt"><span class="fa fa-user" aria-hidden="true"></span>Login</label>
 					<article>
 						<form:form modelAttribute="user" method="post" enctype="multipart/form-data">
 							<h3 class="legend">Login Here</h3>
@@ -68,9 +69,10 @@
 								 <form:input id="loginUserName" path="userName"  size="15" maxlength="15" placeholder="Username" onblur="checkUsername()" required="required"/>
 							</div>
 							<div class="input">
-								<span class="fa fa-key" aria-hidden="true"></span>
+								<!-- <span class="fa fa-key" aria-hidden="true"></span> -->
 								 <form:password id="loginUserPassword" path="userPassword" size="15" placeholder="Password" required="required" />
                                         <form:errors path="userPassword"/>
+                                        <span toggle="#loginUserPassword" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 							</div>
 
 							     <form:select cssClass="input" path="userType" items="${userType}"/>
@@ -83,7 +85,7 @@
 				</div>
 				<div id="section2" class="section-w3ls">
 					<input type="radio" name="sections" id="option2">
-					<label for="option2" class="icon-left-w3pvt"><span class="fa fa-pencil-square" aria-hidden="true"></span>Register</label>
+					<label for="option2" class="icon-left-w3pvt"><span class="fa fa-user-plus" aria-hidden="true"></span>Register</label>
 					<article>
 						<form:form modelAttribute="user" action="/signUp" method="post" enctype="multipart/form-data" autocomplete="off">
 							<h3 class="legend">Register Here</h3>
@@ -100,9 +102,10 @@
                             <div id="userName_error" class="d-none invalid-feedback"></div>
 
 							<div class="input">
-								<span class="fa fa-key" aria-hidden="true"></span>
+								<!-- <span class="fa fa-key" aria-hidden="true"></span> -->
 								<form:password path="userPassword" size = "20" maxlength="20"  placeholder="Password" required="required"/>
-                                                <form:errors path="userPassword" />
+                                <form:errors path="userPassword" />
+                                <span toggle="#userPassword" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 							</div>
 
 							<div class="input">
@@ -146,10 +149,16 @@
 
 </body>
 
-
-
-
 <script>
+$(".toggle-password").click(function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $($(this).attr("toggle"));
+  if (input.attr("type") == "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+});
 $("#submit").click(function(){
 
 var key = CryptoJS.lib.WordArray.random(16);

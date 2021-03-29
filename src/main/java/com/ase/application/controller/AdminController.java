@@ -74,8 +74,8 @@ public class AdminController {
                             }
                         });
                         postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+                        postDTOS.add(postDTO);
                     }
-            postDTOS.add(postDTO);
                 });
         postDTOS.sort(Comparator.comparingLong(PostDTO::getRating).reversed());
         modelMap.put("postRatingList",  postDTOS.stream().limit(10).collect(Collectors.toList()));

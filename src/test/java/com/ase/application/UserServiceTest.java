@@ -34,8 +34,6 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
-
-
     @Test
     void userRegistration() {
         doReturn(this.saveUser()).when(this.userRepository).save(this.saveUser());
