@@ -63,14 +63,11 @@ public class SearchController {
                     total.addAndGet(1);
                 }
             });
-            PostDTO postDTO = new PostDTO();
-            postDTO.setId(post.getId());
-            postDTO.setAuthor(post.getAuthor());
-            postDTO.setTitle(post.getTitle());
+            PostDTO postDTO = postToDTOMapper.map(post);
             postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
+            UserServiceImpl.decryptUserDTO(postDTO.getUploader());
             postDTOS.add(postDTO);
         });
-        postDTOS.forEach(postDTO -> UserServiceImpl.decryptUserDTO(postDTO.getUploader()));
         return postDTOS;
     }
 

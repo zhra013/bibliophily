@@ -7,7 +7,6 @@ import com.ase.application.entity.Post;
 import com.ase.application.entity.QPost;
 import com.ase.application.entity.User;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.CollectionExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -100,11 +99,14 @@ public class PostServiceImpl implements PostService {
                         usersId.add(friend.getUser().getId());
                     }
                 });
-            }
-            if(!CollectionUtils.isEmpty(usersId)) {
-                booleanBuilder.and(QPost.post.uploader.id.in(usersId));
+
+                if(!CollectionUtils.isEmpty(usersId)) {
+                   booleanBuilder.and(QPost.post.uploader.id.in(usersId));
+               }else{
+                    booleanBuilder.and(QPost.post.uploader.id.ne(userId));
+                }
             }else{
-                booleanBuilder.and(QPost.post.uploader.id.ne(userId));
+                booleanBuilder.and(QPost.post.uploader.id.eq(0L));
             }
         }
         return this.postRepository.findAll(booleanBuilder.getValue(), requestedElement).getContent();
