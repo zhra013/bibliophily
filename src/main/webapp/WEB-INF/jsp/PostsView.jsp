@@ -86,6 +86,7 @@
 
                                                         <c:url value="/post/share" var="share">
                                                              <c:param name="postId" value="${post.postShared.id}"/>
+                                                             <c:param name="influencerId" value="${post.uploader.id}"/>
                                                              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
                                                          </c:url>
                                                     </c:when>
@@ -96,6 +97,7 @@
 
                                                         <c:url value="/post/share" var="share">
                                                              <c:param name="postId" value="${post.id}"/>
+                                                             <c:param name="influencerId" value="${post.uploader.id}"/>
                                                              <c:param name="userId" value="${sessionScope.currentUser.id}"/>
                                                          </c:url>
                                                     </c:otherwise>
@@ -432,6 +434,7 @@ function LoadNewData(){
 function SharePost(){
  var caption = document.getElementById("post_caption").value;
  var url = document.getElementById("shareUrl").value;
+ alert(url);
  $.ajax({
      type: 'get',
      url: url,

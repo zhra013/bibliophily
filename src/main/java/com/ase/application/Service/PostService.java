@@ -21,5 +21,7 @@ public interface PostService {
 
     List<Post> getFilteredPostList(Long userId, int pageNo, boolean excludeOwner);
 
-    void sharePost(Long userId, Long postId, String comment);
+    void sharePost(Long userId, Long postId, String comment, Long influencerId);
+
+    List<Post> getInfluencedPost(Long userId);
 }

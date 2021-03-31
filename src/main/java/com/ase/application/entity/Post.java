@@ -49,6 +49,8 @@ public class Post implements Serializable {
 
     private long shareCounter;
 
+    private long influencerId;
+
 
     @Override
     public boolean equals(Object o) {

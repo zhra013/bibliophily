@@ -5,13 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class FriendDTO {
-
-    private long id;
+public class InfluencerDTO {
 
     private UserDTO user;
 
-    private UserDTO friend;
-
-    private boolean acceptance;
+    private long influenced;
 }

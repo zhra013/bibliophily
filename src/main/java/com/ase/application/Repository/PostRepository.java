@@ -24,4 +24,6 @@ public interface PostRepository extends QuerydslPredicateExecutor<Post>, PagingA
     List<Post> findPostBySearch(String searchParameter);
 
     List<Post> findPostBySharedPostId(Long sharedPostId);
+
+    List<Post> findPostByInfluencerId(Long influencerId);
 }

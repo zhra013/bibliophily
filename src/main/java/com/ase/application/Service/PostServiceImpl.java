@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -113,8 +114,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void sharePost(Long userId, Long postId, String comment) {
+    public void sharePost(Long userId, Long postId, String comment,Long influencerId) {
         User user = userService.findUserById(userId);
+
         Post post = postRepository.findById(postId).get();
         post.setShareCounter(post.getShareCounter() + 1);
         Post sharePost = new Post();
@@ -123,7 +125,16 @@ public class PostServiceImpl implements PostService {
         sharePost.setIsShared(Boolean.TRUE);
         sharePost.setBlog(comment);
         sharePost.setSharedPostId(post.getId());
+        if(influencerId!= 0L) {
+            User influencer = userService.findUserById(influencerId);
+            sharePost.setInfluencerId(influencer.getId());
+        }
         postRepository.save(sharePost);
         postRepository.save(post);
+    }
+
+    @Override
+    public List<Post> getInfluencedPost(Long userId) {
+        return postRepository.findPostByInfluencerId(userId);
     }
 }

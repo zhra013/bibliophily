@@ -39,6 +39,7 @@ public class PostMapper {
                 .omitInSource(Post::getPostReview)
                 .omitInDestination(PostDTO::getRating)
                 .omitInDestination(PostDTO::getPostShared)
+                .omitInSource(Post::getInfluencerId)
                 .mapper();
     }
 
@@ -47,6 +48,7 @@ public class PostMapper {
         return Mapping.from(Post.class).to(SharedPostDTO.class)
                 .useMapper(userToDTOMapper)
                 .omitInSource(Post::getCoverPhoto)
+                .omitInSource(Post::getInfluencerId)
                 .omitInDestination(SharedPostDTO::getUploadedCoverPhoto)
                 .omitInSource(Post::getPostReview)
                 .omitInDestination(SharedPostDTO::getRating)
@@ -61,6 +63,7 @@ public class PostMapper {
                 .omitInSource(PostDTO::getUploadedCoverPhoto)
                 .omitInDestination(Post::getPostReview)
                 .omitInSource(PostDTO::getRating)
+                .omitInDestination(Post::getInfluencerId)
                 .omitInSource(PostDTO::getPostShared)
                 .mapper();
     }

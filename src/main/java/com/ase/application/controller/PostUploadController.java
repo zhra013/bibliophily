@@ -5,6 +5,7 @@ import com.ase.application.Service.UserServiceImpl;
 import com.ase.application.dto.PostDTO;
 import com.ase.application.dto.SharedPostDTO;
 import com.ase.application.entity.Post;
+import com.ase.application.entity.User;
 import com.remondis.remap.Mapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +66,13 @@ public class PostUploadController {
         System.out.println(post.getUploader().getId());
         postService.uploadPost(post);
 
-        return "redirect:/post/list/page?userId="+post.getUploader().getId()+"&excludeOwner=false&page=0";
+        return "redirect:/post/list/page?userId=" + post.getUploader().getId() + "&excludeOwner=false&page=0";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String postList(@RequestParam(required = false) Long userId,
                            @RequestParam(required = false) boolean excludeOwner,
-                           ModelMap modelMap,
-                           HttpSession session) {
+                           ModelMap modelMap) {
         List<Post> postList = new ArrayList<>();
 
         if (userId == null || userId == 0) {
@@ -125,7 +125,7 @@ public class PostUploadController {
     public String PostDelete(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam Long userId) {
 
         postService.deletePost(postId);
-        return "redirect:/post/list/page?userId="+userId+"&excludeOwner=false&page=0";
+        return "redirect:/post/list/page?userId=" + userId + "&excludeOwner=false&page=0";
     }
 
     @RequestMapping(value = "/coverPhoto", method = RequestMethod.GET)
@@ -188,8 +188,7 @@ public class PostUploadController {
                                     @RequestParam(required = false) boolean excludeOwner,
                                     @RequestParam(required = false) boolean users,
                                     @RequestParam int page,
-                                    ModelMap modelMap,
-                                    HttpSession session) {
+                                    ModelMap modelMap) {
         List<Post> postList = new ArrayList<>();
 
         if (userId == null || userId == 0) {
@@ -199,7 +198,6 @@ public class PostUploadController {
         }
         if (excludeOwner && (userId != null || userId != 0)) {
             postList.addAll(postService.getFilteredPostList(userId, page, true));
-            //code to sort and remove post of user id
 //            postList.addAll(postService.getPosts().stream().filter(post -> !post.getUploader().getId().equals(userId)).collect(Collectors.toList())
 //                    .stream().sorted((post, t1) -> post.getDate().compareTo(t1.getDate())).collect(Collectors.toList()));
             modelMap.put("isDeleted", "no");
@@ -253,9 +251,16 @@ public class PostUploadController {
     @RequestMapping(value = "/share", method = RequestMethod.GET)
     public String sharePost(@RequestParam(required = false) Long userId,
                             @RequestParam(required = false) Long postId,
+                            @RequestParam(required = false) Long influencerId,
+                            HttpSession session,
                             @RequestParam String comment) throws IOException {
 
-        postService.sharePost(userId, postId, comment);
+       User user = (User)session.getAttribute("currentUser");
+
+       if(user.getId().equals(influencerId))
+           influencerId=0L;
+
+        postService.sharePost(userId, postId, comment,influencerId);
 
         return "redirect:/post/list/page?userId=" + userId + "&excludeOwner=false&page=0";
     }

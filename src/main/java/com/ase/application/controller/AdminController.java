@@ -3,9 +3,7 @@ package com.ase.application.controller;
 import com.ase.application.Service.PostService;
 import com.ase.application.Service.UserService;
 import com.ase.application.Service.UserServiceImpl;
-import com.ase.application.dto.PostDTO;
-import com.ase.application.dto.SharedPostDTO;
-import com.ase.application.dto.TopActiveUserDTO;
+import com.ase.application.dto.*;
 import com.ase.application.entity.Post;
 import com.ase.application.entity.User;
 import com.remondis.remap.Mapper;
@@ -33,6 +31,9 @@ public class AdminController {
 
     @Autowired
     private Mapper<User, TopActiveUserDTO> userToTopContributorDTOMapper;
+
+    @Autowired
+    private Mapper<User, UserDTO> userToDTOMapper;
 
     @Autowired
     private Mapper<Post, PostDTO> postToDTOMapper;
@@ -79,6 +80,20 @@ public class AdminController {
                 });
         postDTOS.sort(Comparator.comparingLong(PostDTO::getRating).reversed());
         modelMap.put("postRatingList",  postDTOS.stream().limit(10).collect(Collectors.toList()));
+
+
+        List<InfluencerDTO> influencerDTOList= new ArrayList<>();
+        List<User> users = userService.getUsers();
+        users.forEach(user -> {
+           int total = postService.getInfluencedPost(user.getId()).size();
+                    if(total>0){
+                        InfluencerDTO influencerDTO =new InfluencerDTO();
+                        influencerDTO.setUser(userToDTOMapper.map(user));
+                        influencerDTO.setInfluenced(total);
+                        influencerDTOList.add(influencerDTO);
+                    }
+
+        });
         return "adminPage";
     }
 
