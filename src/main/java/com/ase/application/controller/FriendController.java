@@ -61,8 +61,7 @@ public class FriendController {
     public String declineFriendRequest(@PathVariable(value = "userId") long userId,
                                      @PathVariable(value = "friendId") long friendId, HttpServletResponse response) {
         friendService.deleteFriend(userId,friendId);
-        return "/friend/"+userId+"/getFriends";
+        return "redirect:/friend/"+userId+"/getFriends";
     }
-
 
 }
