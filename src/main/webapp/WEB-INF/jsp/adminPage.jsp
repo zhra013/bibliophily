@@ -171,6 +171,41 @@
             </c:otherwise>
         </c:choose>
 
+        <c:choose>
+                    <c:when test="${empty topInfluencer}">
+                        <div class="alert alert-info table-div text-center">
+                            Currently, no user is available in this system.
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+
+                        <div class="logo-div text-right" style="margin-top: 20px;" >
+                           <input type="submit" name="button"  class="btn btn-lg btn-primary btn-block" onclick="showTopInfluencer()"  value="Top Influencer"/>
+                        </div>
+                        <div class="logo-div text-right" style="margin-top: 20px;" ></div>
+                        <div class="table-responsive table-div" id="TopInfluencer" style="display:none;">
+                            <table id="topInfluencer" style="width:100%" class="table table-hover"  style="color: purple;">
+                                <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Mail</th>
+                                    <th>Influenced People</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="influencer" items="${topInfluencer}">
+                                    <tr>
+                                        <td>${influencer.user.userName}</td>
+                                        <td>${influencer.user.userMail}</td>
+                                        <td>${influencer.influenced}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
 
    </div>
 </div>
@@ -181,6 +216,11 @@ $(document).ready(function() {
     $('#topContributor').DataTable();
     $('#postContributionList').DataTable();
     $('#postRatingList').DataTable();
+    $('#topInfluencer').DataTable();
+    $('.dataTables_length').hide();
+    $('.dataTables_info').hide();
+    $('.paginate_disabled_previous').hide();
+    $('.paginate_disabled_next').hide();
 
 } );
 function showTopContributors(){
@@ -190,6 +230,17 @@ function showTopContributors(){
     }
     else if(style == "block"){
         document.getElementById("TopContributor").style.display = "none";
+    }
+
+}
+
+function showTopInfluencer(){
+    var style = document.getElementById("TopInfluencer").style.display;
+    if(style == "none"){
+        document.getElementById("TopInfluencer").style.display = "block";
+    }
+    else if(style == "block"){
+        document.getElementById("TopInfluencer").style.display = "none";
     }
 
 }
@@ -213,6 +264,8 @@ function showTopRatedPost(){
             document.getElementById("TopRatedPost").style.display = "none";
         }
 }
+
+
 </script>
 </body>
 </html>

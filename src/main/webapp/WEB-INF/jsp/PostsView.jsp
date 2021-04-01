@@ -315,12 +315,14 @@ function deletePost(id){
 }
 function setUrl(str){
     document.getElementById("shareUrl").value = str;
+    console.log(str);
     document.getElementById("post_caption").value = "";
 
 }
 function LoadNewData(){
     var userid = "${param.userId}";
     var excludeOwner = "${param.excludeOwner}";
+
     count++;
     $.ajax({
         type: 'get',
@@ -371,7 +373,7 @@ function LoadNewData(){
                              + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                              + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].postShared.id + '" alt=""></a>'
                              + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].postShared.id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                             + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                             + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'&influencerId='+obj[i].uploader.id+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
                              + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                              + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                     }
@@ -406,7 +408,7 @@ function LoadNewData(){
                           + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                           + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
                           + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                          + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                          + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'&influencerId='+obj[i].uploader.id+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
                           + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                           + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                     }
@@ -434,7 +436,6 @@ function LoadNewData(){
 function SharePost(){
  var caption = document.getElementById("post_caption").value;
  var url = document.getElementById("shareUrl").value;
- alert(url);
  $.ajax({
      type: 'get',
      url: url,
@@ -499,7 +500,7 @@ function LoadPreviousData(){
                                + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                                + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].postShared.id + '" alt=""></a>'
                                + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].postShared.id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                               + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                               + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].postShared.id+'&userId='+${sessionScope.currentUser.id}+'&influencerId='+obj[i].uploader.id+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
                                + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].postShared.id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                                + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                       }
@@ -534,7 +535,7 @@ function LoadPreviousData(){
                             + '</div><div class="post-image"><a data-fancybox="post1" data-lightbox-type="comments"> '
                             + '<img style="height:200px; max-width: -webkit-fill-available;" src="/post/coverPhoto?postId=' + obj[i].id + '" alt=""></a>'
                             + '<div class="fab-wrapper is-share"><a style="text-decoration:none;" href="/post/review?postId='+obj[i].id+'" class="small-fab share-fab modal-trigger"><i class="fas fa-comments"></i></a></div>'
-                            + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
+                            + '<div class="like-wrapper"><a data-toggle="modal" onclick="setUrl("/post/share?postId='+obj[i].id+'&userId='+${sessionScope.currentUser.id}+'&influencerId='+obj[i].uploader.id+'")" data-target="#addSection"  class="like-button" style="text-decoration:none;">'
                             + '<i class="fas fa-share"></i></a></div><div class="del"> <div class="fab-wrapper is-comment"><a onclick="deletePost('+obj[i].id+')" class="small-fab share-fab modal-trigger"><i class="fas fa-trash"></i>'
                             + '</a></div></div></div></div><div class="card-footer"></div></div></div></div>';
                       }

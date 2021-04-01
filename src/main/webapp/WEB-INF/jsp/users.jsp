@@ -77,6 +77,7 @@
                                 </c:if>
                                 <c:if test="${user.friendStatus == 'Friends'}">
                                     <button type="button" class="btn btn-outline-primary" title="Friends" disabled><i class="fas fa-user-friends"></i></button>
+                                    <button type="button" class="btn btn-outline-primary" title="Friends" onclick="RemoveFriend(${sessionScope.currentUser.id}, ${user.id})"><i class="fas fa-user-times"></i></button>
                                 </c:if>
                                 <c:if test="${user.friendStatus == 'Requested'}">
                                     <button type="button" class="btn btn-outline-primary" title="Request Pending" disabled><i class="far fa-user-clock"></i></button>
@@ -100,5 +101,17 @@ $(document).ready(function() {
     $('#example').DataTable();
 } );
 
+function RemoveFriend(sessionuser, friendid){
+    if(confirm("Are you sure you want to unfriend?")){
+    $.ajax({
+         type: 'get',
+         url: '/friend/'+friendid+'/user/'+sessionuser,
+         data: { },
+         success: function (data) {
+                location.reload();
+            }
+     });
+}
+}
 </script>
 

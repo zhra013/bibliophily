@@ -94,6 +94,8 @@ public class AdminController {
                     }
 
         });
+        influencerDTOList.sort(Comparator.comparingLong(InfluencerDTO::getInfluenced ).reversed());
+        modelMap.put("topInfluencer", influencerDTOList.stream().limit(10).collect(Collectors.toList()));
         return "adminPage";
     }
 

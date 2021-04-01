@@ -65,26 +65,25 @@
 
     <div class="form-inline search-div dropdown">
             <div class="btn-group dropdown notification-dropdown align-self-center dropleft">
-                                                        <div class="header-icon card-header-btn position-relative mx-2 d-flex justify-content-center"
-                                                            role="button" id="notification" data-toggle="dropdown"
-                                                            aria-expanded="false" title="Notification">
-                                                            <i class="fas fa-bell align-self-center"></i>
-                                                           <div class="bg-primary-color" id="notification_sign"></div>
+                <div class="header-icon card-header-btn position-relative mx-2 d-flex justify-content-center"
+                    role="button" id="notification" data-toggle="dropdown"
+                    aria-expanded="false" title="Notification">
+                    <i class="fas fa-bell align-self-center"></i>
+                   <div class="bg-primary-color" id="notification_sign">
+                   </div>
+                </div>
 
+                <ul class="dropdown-menu" aria-labelledby="notification" id="notifications">
 
-                                                        </div>
+                </ul>
 
-                                                        <ul class="dropdown-menu" aria-labelledby="notification" id="notifications">
-
-                                                        </ul>
-
-                                                    </div>
+            </div>
 
 
 
 
             <input type="search" name="param" class="form-control mr-sm-2" placeholder="Search">
-            <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown">Search</button>
+            <button class="search-button btn btn-outline-success" type="button" onclick ="search()" data-toggle="dropdown1">Search</button>
             <div class="dropdown-menu search-menu w-100">
             </div>
         </div>
