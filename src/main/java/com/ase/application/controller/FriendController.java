@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +57,12 @@ public class FriendController {
         return "users";
     }
 
+    @RequestMapping(value = "/{friendId}/user/{userId}", method = RequestMethod.GET)
+    public String declineFriendRequest(@PathVariable(value = "userId") long userId,
+                                     @PathVariable(value = "friendId") long friendId, HttpServletResponse response) {
+        friendService.deleteFriend(userId,friendId);
+        return "/friend/"+userId+"/getFriends";
+    }
 
 
 }
