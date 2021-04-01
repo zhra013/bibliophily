@@ -67,4 +67,10 @@ public class FriendServiceImpl implements FriendService {
         Friend friend = friendRepository.getFriendRequestById(userId,friendRequestId);
         friendRepository.delete(friend);
     }
+
+    @Override
+    public void deleteFriend(long userId, long friendId) {
+        List<Friend> friends= friendRepository.getFriends(userId,true);
+        friendRepository.delete(friends.stream().filter(friend -> friend.getUser().getId().equals(friendId) || friend.getFriend().equals(friendId)).findAny().get());
+    }
 }
