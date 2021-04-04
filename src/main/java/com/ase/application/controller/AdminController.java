@@ -47,6 +47,7 @@ public class AdminController {
             UserServiceImpl.decryptUser(user);
             TopActiveUserDTO topActiveUserDTO =userToTopContributorDTOMapper.map(user);
             topActiveUserDTO.setTotalPost(user.getPosts().size());
+            if(topActiveUserDTO.getTotalPost()>0)
             topActiveUserDTOS.add(topActiveUserDTO);
 
         });
@@ -75,7 +76,8 @@ public class AdminController {
                             }
                         });
                         postDTO.setRating(total.get() == 0 ? 0 : rating.get() / total.get());
-                        postDTOS.add(postDTO);
+                        if(postDTO.getRating()>0)
+                           postDTOS.add(postDTO);
                     }
                 });
         postDTOS.sort(Comparator.comparingLong(PostDTO::getRating).reversed());
