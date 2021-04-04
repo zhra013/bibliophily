@@ -56,8 +56,9 @@ public class AdminController {
         List<Post> topSharedPost =  postService.getPosts();
         List<PostDTO> sharedPostDTO = postToDTOMapper.map(topSharedPost);
         List<PostDTO> sharedPostDTO1 = sharedPostDTO.stream().filter(postDTO -> postDTO.getIsShared().equals(Boolean.FALSE)).collect(Collectors.toList());
-        sharedPostDTO1.sort(Comparator.comparingLong(PostDTO::getShareCounter).reversed());
 
+        sharedPostDTO1 = sharedPostDTO1.stream().filter(postDTO -> postDTO.getShareCounter()>0).collect(Collectors.toList());
+        sharedPostDTO1.sort(Comparator.comparingLong(PostDTO::getShareCounter).reversed());
         modelMap.put("postContributionList",  sharedPostDTO1.stream().limit(10).collect(Collectors.toList()));
 
         List<Post> posts= postService.getPosts();
