@@ -137,6 +137,7 @@
 								<form:input type="email" id="forgotUserMail" path="userMail" size = "35" maxlength="35"  cssClass="email" placeholder="E-mail" required="required" onblur="validateForgotPasswordEmail()"/>
                                                                  <form:errors path="userMail" />
 							</div>
+							<div id="ForgotuserMail_error"></div>
 							<button type="submit"  class="btn submit last-btn">Reset</button>
 						</form:form>
 					</article>

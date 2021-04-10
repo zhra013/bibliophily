@@ -8,9 +8,6 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 --%>
 
-
-<script type="application/javascript" src="/js/jQuery-3.4.1.js"></script>
-
 <script type="application/javascript" src="/js/jsPdf.js"></script>
 
 <script type="application/javascript" src="/js/popper.min.js"></script>
@@ -27,4 +24,4 @@
         crossorigin="anonymous"></script>
 
 --%>
-
+<script type="application/javascript" src="/js/jQuery-3.4.1.js"></script>

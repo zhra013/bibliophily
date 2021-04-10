@@ -33,7 +33,7 @@ var x= $(user.userMail).value;
      var atposition=userMail.indexOf("@");
         var dotposition=userMail.lastIndexOf(".");
         if (atposition<1 || dotposition<atposition+2 || dotposition+2>=userMail.length){
-          alert("Please enter a valid e-mail address");
+          //alert("Please enter a valid e-mail address");
           $("#userMail").val("");
           return null;
           }
@@ -69,7 +69,7 @@ var x= $(user.userContact).value;
       var re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
      if(!re.test(userContact)){
-      alert("Please enter correct phone no.")
+      //alert("Please enter correct phone no.")
       $("#userContact").val("");
      }
 if(typeof x === 'undefined' || x !== userContact){
@@ -100,11 +100,11 @@ if(typeof x === 'undefined' || x !== userContact){
 }
 
 function validateForgotPasswordEmail(){
-    var userMail = document.getElementById("userMail").value;
+    var userMail = document.getElementById("forgotUserMail").value;
     var atposition=userMail.indexOf("@");
             var dotposition=userMail.lastIndexOf(".");
             if (atposition<1 || dotposition<atposition+2 || dotposition+2>=userMail.length){
-//              alert("Please enter a valid e-mail address");
+              alert("Please enter a valid e-mail address");
               $("#userMail").val("");
               return null;
               }
@@ -114,21 +114,22 @@ function validateForgotPasswordEmail(){
         url: 'validate',
         data: { userMail: userMail, action: "validateEmail" },
         success: function (data) {
+        console.log(data);
             if(data === "Allow"){
-                $("#userMail_error").removeClass("d-none");
-                document.getElementById("userMail_error").innerHTML = "Email not registered";
-                document.getElementById("userMail_error").style.color = "red";
-                document.getElementById("userMail_error").style.display = "block";
-                $("#userMail_error").addClass("is-invalid");
+                $("#ForgotuserMail_error").removeClass("d-none");
+                document.getElementById("ForgotuserMail_error").innerHTML = "Email not registered";
+                document.getElementById("ForgotuserMail_error").style.color = "red";
+                document.getElementById("ForgotuserMail_error").style.display = "block";
+                $("#ForgotuserMail_error").addClass("is-invalid");
                  $("#userMail").val("");
                 document.getElementById("submitBtn").disabled = true;
             }
             else if(data === "User Already Exist"){
                 document.getElementById("submitBtn").disabled = false;
-                $("#userMail_error").removeClass("is-invalid");
-                document.getElementById("userMail_error").innerHTML = "";
-                document.getElementById("userMail_error").style.display = "none";
-                $("#userMail_error").addClass("d-none");
+                $("#ForgotuserMail_error").removeClass("is-invalid");
+                document.getElementById("ForgotuserMail_error").innerHTML = "";
+                document.getElementById("ForgotuserMail_error").style.display = "none";
+                $("#ForgotuserMail_error").addClass("d-none");
             }
         }
     })

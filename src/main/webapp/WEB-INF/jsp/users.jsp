@@ -52,6 +52,7 @@
                     <th>Mail</th>
                     <th>Contact</th>
                     <th>Action</th>
+                    <th>Friendship Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,13 +72,16 @@
                             <div class="btn-group">
                                 <a href="${view}" class="btn btn-outline-primary">View Posts</a>
                             </div>
+                        </td>
+                        <td>
                             <div class="btn-group">
                                 <c:if test="${user.friendStatus == 'Allow'}">
                                      <button onclick="window.location.href='/friend/${sessionScope.currentUser.id}/sendRequest/${user.id}'" type="button" class="btn btn-outline-primary" title="Add Friend"><i class="fas fa-user-plus"></i></button>
                                 </c:if>
                                 <c:if test="${user.friendStatus == 'Friends'}">
                                     <button type="button" class="btn btn-outline-primary" title="Friends" disabled><i class="fas fa-user-friends"></i></button>
-                                    <button type="button" class="btn btn-outline-primary" title="Friends" onclick="RemoveFriend(${sessionScope.currentUser.id}, ${user.id})"><i class="fas fa-user-times"></i></button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-outline-primary" title="UnFriend" onclick="RemoveFriend(${sessionScope.currentUser.id}, ${user.id})"><i class="fas fa-user-times"></i></button>
                                 </c:if>
                                 <c:if test="${user.friendStatus == 'Requested'}">
                                     <button type="button" class="btn btn-outline-primary" title="Request Pending" disabled><i class="far fa-user-clock"></i></button>
