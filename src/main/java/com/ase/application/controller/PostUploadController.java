@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * This controller will handle request regarding sharing and uploading post
+ */
 @Controller
 @RequestMapping(value = "/post")
 public class PostUploadController {
@@ -46,6 +49,11 @@ public class PostUploadController {
     @Autowired
     private Mapper<Post, SharedPostDTO> postToSharePostDTOMapper;
 
+    /**
+     * this method fill fetch data to be needed at FE while uploading post
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to postUpload.jsp
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String viewPostUploadPage(ModelMap modelMap) {
         PostDTO post = new PostDTO();
@@ -54,6 +62,14 @@ public class PostUploadController {
         return "postUpload";
     }
 
+    /**
+     * This method will upload the post on user timeline
+     * @param postDTO data of post to be uploaded
+     * @param result for error handling
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to PostViews.jsp
+     * @throws IOException
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String uploadPost(@ModelAttribute PostDTO postDTO, BindingResult result, ModelMap modelMap) throws IOException {
         if (result.hasErrors()) {
@@ -69,6 +85,13 @@ public class PostUploadController {
         return "redirect:/post/list/page?userId=" + post.getUploader().getId() + "&excludeOwner=false&page=0";
     }
 
+    /**
+     * This method will fetch the posts based on user request
+     * @param userId LoggedIn userId
+     * @param excludeOwner to view post of other user or not
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to PostViews.jsp
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String postList(@RequestParam(required = false) Long userId,
                            @RequestParam(required = false) boolean excludeOwner,
@@ -109,6 +132,13 @@ public class PostUploadController {
         return "PostsView";
     }
 
+    /**
+     * This method will fetch the post details
+     * @param modelMap to transfer data between FE and BE
+     * @param postId Id of Post
+     * @param users LoggedInd user Id
+     * @return redirect to postDetail.jsp
+     */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public String PostDetails(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam(required = false) Long users) {
 
@@ -121,6 +151,13 @@ public class PostUploadController {
             return "postDetail";
     }
 
+    /**
+     * this method is used to delete the post
+     * @param modelMap to transfer data between FE and BE
+     * @param postId Id of post to be deleted
+     * @param userId LoggedIn userId
+     * @return redirect to PostsView.jsp
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String PostDelete(ModelMap modelMap, @RequestParam("postId") Long postId, @RequestParam Long userId) {
 
@@ -128,6 +165,12 @@ public class PostUploadController {
         return "redirect:/post/list/page?userId=" + userId + "&excludeOwner=false&page=0";
     }
 
+    /**
+     * this method is used to get cover photo of post
+     * @param postId Id of Post
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/coverPhoto", method = RequestMethod.GET)
     public void getImage(@RequestParam("postId") Long postId, HttpServletResponse response) throws IOException {
 
@@ -140,6 +183,14 @@ public class PostUploadController {
         IOUtils.copy(inputStream, response.getOutputStream());
     }
 
+    /**
+     * This method is used to search the post
+     * @param userId LoggedIn userId
+     * @param excludeOwner to show post of LoggedIn user or not
+     * @param searchParam search input of user
+     * @param response
+     * @return the post matches the searchParam
+     */
     @RequestMapping(value = "/list/search", method = RequestMethod.GET)
     public List<PostDTO> postListSearch(@RequestParam(required = false) Long userId,
                                         @RequestParam(required = false) boolean excludeOwner,
@@ -183,6 +234,15 @@ public class PostUploadController {
         return postDTOS;
     }
 
+    /**
+     * This method is used to fetch paginated response of Posts
+     * @param userId LoggedIn userId
+     * @param excludeOwner to exclude LoggedIn user post or not
+     * @param users to verify user
+     * @param page page number
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to postView.jsp
+     */
     @RequestMapping(value = "/list/page", method = RequestMethod.GET)
     public String postListPaginated(@RequestParam(required = false) Long userId,
                                     @RequestParam(required = false) boolean excludeOwner,
@@ -248,6 +308,16 @@ public class PostUploadController {
         return "PostsView";
     }
 
+    /**
+     * This method used to share a post
+     * @param userId LoggedIn user Id
+     * @param postId Id of post ehich to be shared
+     * @param influencerId the UserId who influence
+     * @param session to get current user
+     * @param comment comment while sharing post
+     * @return redirect to postView.jsp
+     * @throws IOException
+     */
     @RequestMapping(value = "/share", method = RequestMethod.GET)
     public String sharePost(@RequestParam(required = false) Long userId,
                             @RequestParam(required = false) Long postId,

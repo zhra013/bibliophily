@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * This controller will handle search post request from user
+ */
 @RestController
 public class SearchController {
 
@@ -35,6 +38,13 @@ public class SearchController {
     @Autowired
     private PostService postService;
 
+    /**
+     * this method will search the post based on user input
+     * @param userId LoggedIn userId
+     * @param excludeOwner to exclude loggedIn userId or not
+     * @param searchParam search input from user
+     * @return post details
+     */
     @RequestMapping(value = "/post/search", method = RequestMethod.GET)
     public List<PostDTO> postListSearch(@RequestParam(required = false) Long userId,
                                         @RequestParam(required = false) boolean excludeOwner,

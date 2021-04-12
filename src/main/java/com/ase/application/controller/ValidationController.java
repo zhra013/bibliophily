@@ -26,6 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+/**
+ * This controller used to handle all the validations in the system
+ */
 @Controller
 public class ValidationController {
 

@@ -20,6 +20,9 @@ import java.util.Objects;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+/**
+ * This controoller will handle request regarding forgotPassword
+ */
 @Controller
 @RequestMapping(value = "/forgotPassword")
 public class ForgotPasswordController {
@@ -29,6 +32,11 @@ public class ForgotPasswordController {
     @Autowired
     private UserService userService;
 
+    /**
+     * This method will fetch the password of user
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to forgotPassword.jsp
+     */
     @RequestMapping(method = GET)
     public String view(ModelMap modelMap) {
         User user = new User();
@@ -37,11 +45,17 @@ public class ForgotPasswordController {
         return "forgotPassword";
     }
 
+    /**
+     * This method will send mail on forgot password request
+     * @param user user Id
+     * @param bindingResult for error handling
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to login.jsp
+     */
     @RequestMapping(method = POST)
     public String sendEmail(@ModelAttribute User user,
                        BindingResult bindingResult,
-                       ModelMap modelMap,
-                       HttpSession session) {
+                       ModelMap modelMap) {
 
         user = userService.findUserByUserMail(user.getUserMail());
 

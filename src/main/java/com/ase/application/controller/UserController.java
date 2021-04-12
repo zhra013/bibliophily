@@ -26,6 +26,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * This controller will handle user details requests
+ */
 @Controller
 public class UserController {
     @Autowired
@@ -37,6 +40,12 @@ public class UserController {
     @Autowired
     private FriendService friendService;
 
+    /**
+     * This method is used fetch user details
+     * @param modelMap to transfer data between FE and BE
+     * @param session to fetch LoggedIn user
+     * @return redirect to profile.jsp
+     */
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String viewProfile(ModelMap modelMap, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
@@ -47,11 +56,21 @@ public class UserController {
         return "profile";
     }
 
+    /**
+     * this method used to redirect to home page
+     * @return redirect to home.jsp
+     */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(ModelMap modelMap, HttpSession session) {
+    public String home() {
         return "home";
     }
 
+    /**
+     * This method is used fetch user details for update
+     * @param userId LoggedIn userId
+     * @param modelMap  to transfer data between FE and BE
+     * @return redirect to editProfile.jsp
+     */
     @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
     public String viewEditProfilePage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
@@ -61,12 +80,24 @@ public class UserController {
         return "editProfile";
     }
 
+    /**
+     * This method used to update profile of user
+     * @param user user's updated data
+     * @param userId LoggedIn userId
+     * @return redirect to profile.jsp
+     */
     @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
     public String updateUserProfile(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         userService.updateUserInformation(user, userId);
         return "redirect:http://localhost:9090/profile";
     }
 
+    /**
+     * This method user to get password which need to be changed
+     * @param userId LoggedIn user Id
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to changePassword.jsp
+     */
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
     public String viewUpdatePasswordPage(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
@@ -76,6 +107,12 @@ public class UserController {
         return "changePassword";
     }
 
+    /**
+     * This method is used to update a password of user
+     * @param user updated password
+     * @param userId LoggedIn userId
+     * @return redirect to profile.jsp
+     */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public String updateUserPassword(@ModelAttribute User user, @RequestParam("userId") Long userId) {
         user = userService.updateUserPassword(user, userId);
@@ -84,13 +121,24 @@ public class UserController {
         return "redirect:http://localhost:9090/profile";
     }
 
+    /**
+     * This method is used for logout of useer
+     * @param session current user session
+     * @return redirect to login.jsp
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(ModelMap modelMap, HttpSession session) {
+    public String logout(HttpSession session) {
         session.removeAttribute("currentUser");
         session.invalidate();
         return "redirect:login";
     }
 
+    /**
+     * This method used to fetch all registered user in the system
+     * @param userId LoggedIn user Id
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to users.jsp
+     */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String getUsers(@RequestParam("userId") Long userId, ModelMap modelMap) {
         List<User> users = userService.getUsers();
@@ -114,8 +162,14 @@ public class UserController {
         return "users";
     }
 
+    /**
+     * This method used to get post of user
+     * @param userId LoggedIn user Id
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to PostsView.jsp
+     */
     @RequestMapping(value = "/view/post", method = RequestMethod.GET)
-    public String getPosts(@RequestParam("userId") Long userId, ModelMap modelMap, HttpSession session) {
+    public String getPosts(@RequestParam("userId") Long userId, ModelMap modelMap) {
         User user = userService.findUserById(userId);
         List<PostDTO> postDTOS = new ArrayList<>();
         AtomicInteger rating = new AtomicInteger();

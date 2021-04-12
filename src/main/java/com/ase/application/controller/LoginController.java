@@ -32,6 +32,9 @@ import java.util.Optional;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+/**
+ * This controller will handle Login requests
+ */
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
@@ -39,6 +42,11 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    /**
+     * this method fetch the entity fields to be mapped in FE
+     * @param modelMap to transfer data between FE and BE
+     * @return entry.jsp
+     */
     @RequestMapping(method = GET)
     public String view(ModelMap modelMap) {
         User verifyUser=userService.findByUserType(UserType.ADMIN);
@@ -58,6 +66,14 @@ public class LoginController {
         return "entry";
     }
 
+    /**
+     * this method will login the user in system
+     * @param user data of User like userName and password
+     * @param bindingResult for error handling
+     * @param modelMap to transfer data between FE and BE
+     * @param session to create a session
+     * @return redirect to home.jsp
+     */
     @RequestMapping(method = POST)
     public String save(@ModelAttribute User user,
                        BindingResult bindingResult,

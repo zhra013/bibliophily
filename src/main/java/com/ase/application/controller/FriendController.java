@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * This controller will handle request regarding friends
+ */
 @Controller
 @RequestMapping(value = "/friend/")
 public class FriendController {
@@ -28,6 +27,12 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
 
+    /**
+     * this method will send friend request to another user
+     * @param friendId another userId
+     * @param userId loggedIn user Id
+     * @return redirect to users.jsp
+     */
     @RequestMapping(value = "{userId}/sendRequest/{friendId}", method = RequestMethod.GET)
     public String sendFriendRequest(@PathVariable(value = "friendId") long friendId,
                                     @PathVariable(value = "userId") long userId) {
@@ -35,6 +40,12 @@ public class FriendController {
         return "redirect:/users?userId="+userId;
     }
 
+    /**
+     * It will fetch all the friends of user
+     * @param userId loggedId userId
+     * @param modelMap to transfer data between FE and BE
+     * @return redirect to user.jsp
+     */
     @RequestMapping(value = "{userId}/getFriends", method = RequestMethod.GET)
     public String getFriends(@PathVariable(value = "userId") long userId, ModelMap modelMap) {
         List<User> friends =friendService.getFriends(userId);
@@ -57,9 +68,15 @@ public class FriendController {
         return "users";
     }
 
+    /**
+     * This method used to decline the friend request
+     * @param userId loggedIn userId
+     * @param friendId friendRequestId
+     * @return redirect to users.jsp
+     */
     @RequestMapping(value = "/{friendId}/user/{userId}", method = RequestMethod.GET)
     public String declineFriendRequest(@PathVariable(value = "userId") long userId,
-                                     @PathVariable(value = "friendId") long friendId, HttpServletResponse response) {
+                                     @PathVariable(value = "friendId") long friendId) {
         friendService.deleteFriend(userId,friendId);
         return "redirect:/friend/"+userId+"/getFriends";
     }

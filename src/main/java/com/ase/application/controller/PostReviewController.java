@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * This controller will handle Post Review Request on particular post
+ */
 @Controller
 @RequestMapping(value = "/post")
 public class PostReviewController {
@@ -28,6 +31,13 @@ public class PostReviewController {
     @Autowired
     PostReviewService postReviewService;
 
+    /**
+     * This method will fetch the data of reviews on particular post
+     * @param postId PostId for fetching it's review
+     * @param modelMap to transfer data between FE and BE
+     * @param users userId for double check
+     * @return redirect to postReview.jsp
+     */
     @RequestMapping(value = "/review", method = RequestMethod.GET)
     public String getReviewDetails(@RequestParam("postId") Long postId, ModelMap modelMap, @RequestParam(required = false) Long users) {
         Post post = postService.getPostById(postId);
@@ -63,6 +73,12 @@ public class PostReviewController {
             return "userPostReview";
     }
 
+    /**
+     * This method will save the Review by users on particular post
+     * @param review review of user on post
+     * @param users userId
+     * @return redirect to postReview.jsp
+     */
     @RequestMapping(value = "/review", method = RequestMethod.POST)
     public String savePostReview(@ModelAttribute PostReview review, @RequestParam(required = false) Long users) {
         postReviewService.saveReview(review);

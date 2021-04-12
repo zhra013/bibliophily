@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * This controller handles the request for admin
+ */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -38,8 +41,13 @@ public class AdminController {
     @Autowired
     private Mapper<Post, PostDTO> postToDTOMapper;
 
+    /**
+     * This method will fetch data for admin analysis
+     * @param modelMap to transfer data between FE and BE
+     * @return it will redirect to admin page
+     */
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public String topContributors(ModelMap modelMap) {
+    public String getAdminData(ModelMap modelMap) {
 
         List<User> topContributor = userService.getTopContributor();
         List<TopActiveUserDTO> topActiveUserDTOS =new ArrayList<>();
